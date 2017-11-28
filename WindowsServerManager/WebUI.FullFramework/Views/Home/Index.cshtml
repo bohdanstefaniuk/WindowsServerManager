@@ -1,32 +1,96 @@
-﻿@using System.Collections
-@{
-    ViewBag.Title = "Home Page";
+﻿@{
+    ViewBag.Title = "Main page";
 }
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-</div>
-
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+<section class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Work server status information</h1>
+        </div>
     </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
+    <br>
+    <div class="row">
+        <div class="FastTravel">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Быстрые ссылки (последние сборки)</h3>
+                </div>
+                <div class="panel-body">
+                    <ul class="nav nav-pills">
+                        <li class="active">
+                            <a href="#">Work-AppPool</a>
+                        </li>
+                        <li>
+                            <a href="#">WORK-19324-1229</a>
+                        </li>
+                        <li>
+                            <a href="#">WORK-19324-1229</a>
+                        </li>
+                        <li>
+                            <a href="#">WORK-19324-1229</a>
+                        </li>
+                        <li>
+                            <a href="#">WORK-19324-1229</a>
+                        </li>
+                        <li>
+                            <a href="#">WORK-19324-1229</a>
+                        </li>
+                        <li>
+                            <a href="#">WORK-19324-1229</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+    <br>
+    <div class="row">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">Мониторинг сервера (название: work-web)</h3>
+            </div>
+            <div class="panel-body">
+                <h4>
+                    Ниже представлены основные показатели производительности сервера (авто-обновление: 5 сек.)
+                </h4>
+                <div id="perfomance-chart"></div>
+                <div>
+                    <p>Список наиболее требовательных процессов</p>
+                </div>
+                <div class="table-bordered">
+                    <table class="table" id="perfomance-detail-table">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Название</th>
+                                <th>Потребление ресурсов</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>103536</td>
+                                <td>GoogleCrome.exe</td>
+                                <td>20%</td>
+                            </tr>
+                            <tr>
+                                <td>103536</td>
+                                <td>GoogleCrome.exe</td>
+                                <td>20%</td>
+                            </tr>
+                            <tr>
+                                <td>103536</td>
+                                <td>GoogleCrome.exe</td>
+                                <td>20%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h4>Статиска свободного места на локальных дисках:</h4>
+                <div class="row">
+                    <div id="disk-space-chart" class="col-md-6"></div>
+                    <div id="disk-space-char2" class="col-md-6"></div>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
+</section>

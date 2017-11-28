@@ -45,6 +45,7 @@ namespace WebUI.FullFramework.Controllers
                     {
                         IsPersistent = true
                     }, claim);
+
                     return RedirectToAction("Index", "Home");
                 }
             }
@@ -63,6 +64,7 @@ namespace WebUI.FullFramework.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterModel model)
         {
@@ -78,9 +80,13 @@ namespace WebUI.FullFramework.Controllers
                 };
                 OperationDetails operationDetails = await UserService.Create(userDto);
                 if (operationDetails.Succedeed)
+                {
                     return View("SuccessRegister");
+                }
                 else
+                {
                     ModelState.AddModelError(operationDetails.Property, operationDetails.Message);
+                }
             }
             return View(model);
         }
@@ -92,7 +98,7 @@ namespace WebUI.FullFramework.Controllers
                 UserName = "somemail@mail.ru",
                 Password = "ad46D_ewr3",
                 Name = "Семен Семенович Горбунков",
-                Role = "admin",
+                Role = "Admin",
             }, new List<string> { "user", "admin" });
         }
     }
