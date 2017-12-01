@@ -1,0 +1,128 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+@Styles.Render("~/Content/JsTree.min.css")
+<section class="container-fluid">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Сервер: B-STEfaniuk(TSCRM)</h3>
+                </div>
+                <div class="panel-body">
+                    <div id="jstree"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="">
+                <blockquote>
+                    <p>Название сайта</p>
+                </blockquote>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Действия</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="IISButton text-center">
+                        <a href="#">
+                            <img src="@Url.Content("~/Resources/Images/StatusInformation_16x.svg")" 
+                                 alt=""
+                                 onclick="GetComponent('InformationComponent')"
+                                 class="IISButtonIco">
+                            <p class="text-center">
+                                Информация
+                                <br>i
+                            </p>
+                        </a>
+                    </div>
+                    <div class="IISButton text-center">
+                        <a href="#">
+                            <img src="@Url.Content("~/Resources/Images/StatusPause_cyan_16x.svg")"
+                                 alt=""
+                                 class="IISButtonIco">
+                            <p class="text-center">Остановить пулл</p>
+                        </a>
+                    </div>
+                    <div class="IISButton text-center">
+                        <a href="#">
+                            <img src="@Url.Content("~/Resources/Images/StatusRun_16x.svg")"
+                                 alt=""
+                                 class="IISButtonIco">
+                            <p class="text-center">Запустить пулл</p>
+                        </a>
+                    </div>
+                    <div class="IISButton text-center">
+                        <a href="#">
+                            <img src="@Url.Content("~/Resources/Images/Refresh_16x.svg")"
+                                 alt="" 
+                                 class="IISButtonIco">
+                            <p class="text-center">
+                                Рестарт
+                                <br>пулла
+                            </p>
+                        </a>
+                    </div>
+                    <div class="IISButton text-center">
+                        <a href="#">
+                            <img src="@Url.Content("~/Resources/Images/AzureRedisCache_color_16x.svg")"
+                                 alt="" 
+                                 class="IISButtonIco">
+                            <p class="text-center">Очистить Redis</p>
+                        </a>
+                    </div>
+                    <div class="IISButton text-center">
+                        <a href="#">
+                            <img src="@Url.Content("~/Resources/Images/DatabaseSetting_16x.svg")" 
+                                 alt="" 
+                                 onclick="GetComponent('ConnectionStringsComponent')"
+                                 class="IISButtonIco">
+                            <p class="text-center">Строки подключений</p>
+                        </a>
+                    </div>
+                    <div class="IISButton text-center">
+                        <a href="#">
+                            <img src="@Url.Content("~/Resources/Images/ConfigurationFile_16x.svg")"
+                                 alt=""
+                                 onclick="GetComponent('ConfigFileComponent')"
+                                 class="IISButtonIco">
+                            <p class="text-center">
+                                Конфиг.
+                                <br> файл
+                            </p>
+                        </a>
+                    </div>
+                    <div class="IISButton text-center">
+                        <a href="#">
+                            <img src="@Url.Content("~/Resources/Images/MagicWand_16x.svg")" 
+                                 alt=""
+                                 onclick="GetComponent('FeaturesComponent')"
+                                 class="IISButtonIco">
+                            <p class="text-center">
+                                Список
+                                <br>фич
+                            </p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div id="IISPageComponentContainer"></div>
+        </div>
+    </div>
+</section>
+@section scripts {
+    @Scripts.Render("~/Scripts/jstree.min.js")
+    @Scripts.Render("~/Scripts/Custom/LoadJsTree.js")
+    @Scripts.Render("~/Scripts/Custom/IISPageComponens.js")
+
+    <script>
+        var componentLoader = IISPageComponentLoader();
+
+        function GetComponent(componentName) {
+            componentLoader.LoadComponent(componentName);
+        }
+    </script>
+}

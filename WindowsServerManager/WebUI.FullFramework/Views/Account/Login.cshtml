@@ -2,45 +2,50 @@
 
 @{
     ViewBag.Title = "Login";
+    Layout = null;
 }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Login</title>
+    @Styles.Render("~/Content/css")
+</head>
 
-<h2>Windows Server Manager</h2>
-
-
-@using (Html.BeginForm("Login", "Account"))
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Вход</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @*@Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })*@
-            <p class="control-label col-md-2">Логин</p>
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+<body>
+<section class="container">
+    <div class="row">
+        <div class="LoginContainer center-block">
+            <div class="text-center">
+                <h3>
+                    <strong>Windows Server Manager</strong>
+                </h3>
+                <img src="@Url.Content("~/Resources/Images/work-logo.jpg")" alt="" class="LoginLogo">
             </div>
-        </div>
-
-        <div class="form-group">
-            @*@Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })*@
-            <p class="control-label col-md-2">Пароль</p>
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Вход" class="btn btn-default" />
-            </div>
+            @using (Html.BeginForm("Login", "Account"))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    <label for="Email">Email</label>
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    <label for="Password">Пароль</label>
+                    @Html.EditorFor(model => model.Password, new {htmlAttributes = new {@class = "form-control"}})
+                    @Html.ValidationMessageFor(model => model.Password, "", new {@class = "text-danger"})
+                </div>
+                <button type="submit" class="btn btn-default">Войти</button>
+            }
         </div>
     </div>
-}
-
+</section>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
+</body>
+
+</html>

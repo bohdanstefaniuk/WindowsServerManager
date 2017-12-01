@@ -17,15 +17,46 @@ namespace AppPoolManager
             _serverManager = new ServerManager();
         }
 
+        /// <summary>
+        /// Get sites hosted in IIS
+        /// </summary>
+        /// <returns>SiteCollection</returns>
         public SiteCollection GetSiteCollection()
         {
             return _serverManager.Sites;
         }
 
+        /// <summary>
+        /// Get site hosted in IIS by name
+        /// </summary>
+        /// <param name="name">Site name</param>
+        /// <returns>Site</returns>
         public Site GetSiteByName(string name)
         {
             var sites = _serverManager.Sites;
             return sites.SingleOrDefault(x => x.Name.IndexOf(name, StringComparison.OrdinalIgnoreCase) >= 0);
+        }
+
+        public void GetApplication(string applicationName)
+        {
+            
+        }
+
+        /// <summary>
+        /// Get all aplications in Site
+        /// </summary>
+        /// <param name="siteName"></param>
+        /// <returns>ApplicationCollection</returns>
+        public ApplicationCollection GetSiteApplications(string siteName)
+        {
+            var site = GetSiteByName(siteName);
+            return site.Applications;
+        }
+
+        public ApplicationCollection GetAppsIncludeInApplication(Application application)
+        {
+            var collection = application.GetCollection(typeof(ApplicationCollection));
+            return null;
         }
 
         public List<string> GetSiteConnectionStrings(Site site)

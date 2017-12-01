@@ -22,3 +22,51 @@ select,
 textarea {
     max-width: 280px;
 }*/
+
+.LoginContainer {
+    margin-top: 100px;
+    width: 400px;
+    height: 400px;
+}
+
+.LoginLogo {
+    width: 300px;
+    height: 300px;
+    text-align: center;
+}
+
+.IISButtonIco {
+    width: 50px;
+    margin-top: 0px;
+    margin-left: 0px;
+}
+
+.IISButton {
+    width: 95px;
+    height: 110px;
+    margin-top: 0;
+    margin-left: 5px;
+    padding-top: 5px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+    .IISButton a:hover {
+        text-decoration: none;
+    }
+
+    .IISButton:hover {
+        background-color: rgb(204, 239, 250);
+    }
+
+    .IISButton:first-of-type {
+        background-color: rgb(176, 236, 253);
+    }
+
+.featuresTable tr:first-of-type:hover {
+    background-color: white;
+}
+
+.col3 {
+    width: 33%;
+}
