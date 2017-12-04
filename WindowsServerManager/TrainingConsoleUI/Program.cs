@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AppPoolManager;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +11,10 @@ namespace TrainingConsoleUI
     {
         static void Main(string[] args)
         {
+            var siteManager = new SitesManager();
+            siteManager.GetApplications();
+
+            Console.Read();
         }
     }
 }

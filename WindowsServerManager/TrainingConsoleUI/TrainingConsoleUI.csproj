@@ -8,9 +8,10 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>TrainingConsoleUI</RootNamespace>
     <AssemblyName>TrainingConsoleUI</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -44,9 +45,28 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SiteManager_Demo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AppPoolManager\AppPoolManager.csproj">
+      <Project>{a5106e84-2642-48ec-bb59-4664faacb05f}</Project>
+      <Name>AppPoolManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BLL\BLL.csproj">
+      <Project>{ba2e7b9d-1848-4e87-8bc0-31292660edfe}</Project>
+      <Name>BLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PerformanceManager\PerformanceManager.csproj">
+      <Project>{d8e3d147-c34d-4039-adbf-b4672dec63be}</Project>
+      <Name>PerformanceManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RedisManager\RedisManager.csproj">
+      <Project>{ad897ffe-a86e-4af5-8b69-c1104d3e8a84}</Project>
+      <Name>RedisManager</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

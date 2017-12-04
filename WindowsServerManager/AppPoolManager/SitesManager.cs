@@ -37,9 +37,23 @@ namespace AppPoolManager
             return sites.SingleOrDefault(x => x.Name.IndexOf(name, StringComparison.OrdinalIgnoreCase) >= 0);
         }
 
-        public void GetApplication(string applicationName)
+        public void GetApplications()
         {
-            
+            var sites = _serverManager.Sites;
+            foreach (var site in sites)
+            {
+                var applications = site.Applications;
+                Console.WriteLine($"Site: {site.Name}");
+                foreach (var application in applications)
+                {
+                    Console.WriteLine($"\tApplication: {application.ToString()}");
+                    var smth = application.Attributes;
+                    foreach (var applicationAttribute in application.Attributes)
+                    {
+                        Console.WriteLine($"\t\tAttribute: {applicationAttribute.Name}, value: {applicationAttribute.Value}");
+                    }
+                }
+            }
         }
 
         /// <summary>
