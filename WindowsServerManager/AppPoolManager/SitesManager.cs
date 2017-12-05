@@ -46,7 +46,7 @@ namespace AppPoolManager
                 Console.WriteLine($"Site: {site.Name}");
                 foreach (var application in applications)
                 {
-                    Console.WriteLine($"\tApplication: {application.ToString()}");
+                    Console.WriteLine($"\tApplication: {application.ToString()}, FullPath: {application.Path}");
                     var smth = application.Attributes;
                     foreach (var applicationAttribute in application.Attributes)
                     {
