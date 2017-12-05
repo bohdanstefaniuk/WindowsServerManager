@@ -10,9 +10,6 @@ namespace TrainingConsoleUI
     {
         static void Main(string[] args)
         {
-            var siteManager = new SitesManager();
-            //siteManager.GetApplications();
-
             var jsTreeMenuGenerator = new JsTreeMenuGenerator();
             var node = jsTreeMenuGenerator.GetTreeMenuData();
 
