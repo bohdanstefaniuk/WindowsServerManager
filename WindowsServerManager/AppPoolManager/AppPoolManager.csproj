@@ -176,13 +176,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationPoolManager.cs" />
-    <Compile Include="Dto\JsTreeModel.cs" />
     <Compile Include="SitesManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Dto\ApplicationPath.cs" />
     <Compile Include="Tools\AppPoolManagerConfiguration.cs" />
     <Compile Include="Tools\ConnectionStringsTool.cs" />
-    <Compile Include="Tools\JsTreeMenuGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

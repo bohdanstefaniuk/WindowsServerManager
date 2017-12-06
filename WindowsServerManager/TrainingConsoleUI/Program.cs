@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using AppPoolManager.Dto;
 using AppPoolManager.Tools;
+using BLL.Dto;
+using BLL.Services;
 
 namespace TrainingConsoleUI
 {
@@ -10,7 +12,7 @@ namespace TrainingConsoleUI
     {
         static void Main(string[] args)
         {
-            var jsTreeMenuGenerator = new JsTreeMenuGenerator();
+            var jsTreeMenuGenerator = new JsTreeMenuService();
             var node = jsTreeMenuGenerator.GetTreeMenuData();
 
             ViewJsTree(node.Childrens);

@@ -1,19 +1,21 @@
-﻿using System;
+﻿using AppPoolManager;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AppPoolManager.Dto;
+using BLL.Dto;
 using Microsoft.Web.Administration;
 
-namespace AppPoolManager.Tools
+namespace BLL.Services
 {
-    public partial class JsTreeMenuGenerator: IDisposable
+    public class JsTreeMenuService: IDisposable
     {
         private readonly SiteCollection _siteCollection;
         private readonly SitesManager _sitesManager;
 
-        public JsTreeMenuGenerator()
+        public JsTreeMenuService()
         {
             _sitesManager = new SitesManager();
             _siteCollection = _sitesManager.GetSiteCollection();

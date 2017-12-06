@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace AppPoolManager.Dto
+namespace BLL.Dto
 {
     public class JsTreeModel
     {
