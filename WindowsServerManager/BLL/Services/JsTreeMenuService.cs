@@ -2,9 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AppPoolManager.Dto;
 using BLL.Dto;
 using Microsoft.Web.Administration;
 
@@ -62,7 +59,7 @@ namespace BLL.Services
             }
         }
 
-        private void RecursiveAdd(List<ApplicationPath> splitPaths, JsTreeModel node)
+        private void RecursiveAdd(IEnumerable<ApplicationPath> splitPaths, JsTreeModel node)
         {
             var groups = splitPaths.GroupBy(x => x.PathElements[0]).ToList();
             foreach (var group in groups)

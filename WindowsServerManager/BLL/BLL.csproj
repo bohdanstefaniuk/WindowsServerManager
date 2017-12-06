@@ -187,6 +187,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dto\ApplicationPath.cs" />
     <Compile Include="Dto\JsTreeModel.cs" />
     <Compile Include="Dto\UserDTO.cs" />
     <Compile Include="Infrastructure\OperationDetails.cs" />

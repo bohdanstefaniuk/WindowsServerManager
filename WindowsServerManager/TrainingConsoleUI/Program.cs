@@ -1,7 +1,6 @@
 ﻿using AppPoolManager;
 using System;
 using System.Collections.Generic;
-using AppPoolManager.Dto;
 using AppPoolManager.Tools;
 using BLL.Dto;
 using BLL.Services;
@@ -20,7 +19,7 @@ namespace TrainingConsoleUI
             Console.Read();
         }
 
-        static void ViewJsTree(List<JsTreeModel> nodesList, int tabCount = 0)
+        private static void ViewJsTree(IEnumerable<JsTreeModel> nodesList, int tabCount = 0)
         {
             foreach (var node in nodesList)
             {
