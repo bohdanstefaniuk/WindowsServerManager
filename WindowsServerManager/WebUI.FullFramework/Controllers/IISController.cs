@@ -7,6 +7,7 @@ using BLL.Dto;
 using BLL.Interfaces;
 using Microsoft.AspNet.Identity.Owin;
 using Newtonsoft.Json;
+using WebUI.FullFramework.Enums;
 
 namespace WebUI.FullFramework.Controllers
 {
@@ -14,26 +15,53 @@ namespace WebUI.FullFramework.Controllers
     {
         private IJsTreeMenuService JsTreeViewMenuService => HttpContext.GetOwinContext().GetUserManager<IJsTreeMenuService>();
 
-        public ActionResult Index()
+        public ActionResult Index(IISViewActionType viewActionType = IISViewActionType.InformationComponent)
         {
+            ViewBag.ActionViewType = viewActionType;
             return View();
         }
 
         #region Methods: Get partial Views (Components)
 
+        public PartialViewResult GetActionComponentByType(IISViewActionType actionType)
+        {
+            switch (actionType)
+            {
+                case IISViewActionType.InformationComponent:
+                    return GetInformationComponent();
+                case IISViewActionType.ConnectionStringsComponent:
+                    return GetConnectionStringsComponent();
+                case IISViewActionType.FeaturesComponent:
+                    return GetFeaturesComponent();
+                case IISViewActionType.ConfigFileComponent:
+                    return GetConfigurationFileComponent();
+                default:
+                    return null;
+            }
+        }
+
+        [ChildActionOnly]
         public PartialViewResult GetFeaturesComponent()
         {
             return PartialView("_FeaturesComponent");
         }
 
+        [ChildActionOnly]
         public PartialViewResult GetConnectionStringsComponent()
         {
             return PartialView("_ConnectionStringsComponent");
         }
 
+        [ChildActionOnly]
         public PartialViewResult GetConfigurationFileComponent()
         {
             return PartialView("_ConfigurationFileComponent");
+        }
+
+        [ChildActionOnly]
+        public PartialViewResult GetInformationComponent()
+        {
+            return PartialView("_InformationComponent");
         }
 
         #endregion

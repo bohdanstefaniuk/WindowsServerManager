@@ -170,6 +170,7 @@
     <Compile Include="Controllers\IISController.cs" />
     <Compile Include="Controllers\RedisController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
+    <Compile Include="Enums\IISViewActionType.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -260,6 +261,7 @@
     <Content Include="Views\IIS\_FeaturesComponent.cshtml" />
     <Content Include="Views\IIS\_ConnectionStringsComponent.cshtml" />
     <Content Include="Views\IIS\_ConfigurationFileComponent.cshtml" />
+    <Content Include="Views\IIS\_InformationComponent.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

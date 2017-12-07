@@ -1,4 +1,5 @@
-﻿
+﻿@using WebUI.FullFramework.Enums
+
 @{
     ViewBag.Title = "Index";
 }
@@ -27,8 +28,8 @@
                     <h3 class="panel-title">Действия</h3>
                 </div>
                 <div class="panel-body">
-                    <div class="IISButton text-center">
-                        <a href="#">
+                    <div class="IISButton text-center @(ViewBag.ActionViewType == IISViewActionType.InformationComponent ? "IISButtonSelected" : "")">
+                        <a href="@Url.Action("Index", "IIS", new { viewActionType = IISViewActionType.InformationComponent })">
                             <img src="@Url.Content("~/Resources/Images/StatusInformation_16x.svg")" 
                                  alt=""
                                  onclick="GetComponent('InformationComponent')"
@@ -74,20 +75,18 @@
                             <p class="text-center">Очистить Redis</p>
                         </a>
                     </div>
-                    <div class="IISButton text-center">
-                        <a href="#">
+                    <div class="IISButton text-center @(ViewBag.ActionViewType == IISViewActionType.ConnectionStringsComponent ? "IISButtonSelected" : "")">
+                        <a href="@Url.Action("Index", "IIS", new { viewActionType = IISViewActionType.ConnectionStringsComponent })">
                             <img src="@Url.Content("~/Resources/Images/DatabaseSetting_16x.svg")" 
-                                 alt="" 
-                                 onclick="GetComponent('ConnectionStringsComponent')"
+                                 alt=""
                                  class="IISButtonIco">
                             <p class="text-center">Строки подключений</p>
                         </a>
                     </div>
-                    <div class="IISButton text-center">
-                        <a href="#">
+                    <div class="IISButton text-center @(ViewBag.ActionViewType == IISViewActionType.ConfigFileComponent ? "IISButtonSelected" : "")">
+                        <a href="@Url.Action("Index", "IIS", new { viewActionType = IISViewActionType.ConfigFileComponent })">
                             <img src="@Url.Content("~/Resources/Images/ConfigurationFile_16x.svg")"
                                  alt=""
-                                 onclick="GetComponent('ConfigFileComponent')"
                                  class="IISButtonIco">
                             <p class="text-center">
                                 Конфиг.
@@ -95,8 +94,8 @@
                             </p>
                         </a>
                     </div>
-                    <div class="IISButton text-center">
-                        <a href="#">
+                    <div class="IISButton text-center @(ViewBag.ActionViewType == IISViewActionType.FeaturesComponent ? "IISButtonSelected" : "")">
+                        <a href="@Url.Action("Index", "IIS", new { viewActionType = IISViewActionType.FeaturesComponent })">
                             <img src="@Url.Content("~/Resources/Images/MagicWand_16x.svg")" 
                                  alt=""
                                  onclick="GetComponent('FeaturesComponent')"
@@ -109,7 +108,23 @@
                     </div>
                 </div>
             </div>
-            <div id="IISPageComponentContainer"></div>
+            <div id="IISPageComponentContainer">
+                @switch ((IISViewActionType)ViewBag.ActionViewType)
+                {
+                    case IISViewActionType.InformationComponent:
+                        Html.RenderAction("GetInformationComponent", "IIS");
+                        break;
+                    case IISViewActionType.ConnectionStringsComponent:
+                        Html.RenderAction("GetConnectionStringsComponent", "IIS");
+                        break;
+                    case IISViewActionType.FeaturesComponent:
+                        Html.RenderAction("GetFeaturesComponent", "IIS");
+                        break;
+                    case IISViewActionType.ConfigFileComponent:
+                        Html.RenderAction("GetConfigurationFileComponent", "IIS");
+                        break;
+                }
+            </div>
         </div>
     </div>
 </section>
@@ -122,7 +137,7 @@
         var componentLoader = IISPageComponentLoader();
 
         function GetComponent(componentName) {
-            componentLoader.LoadComponent(componentName);
+            //componentLoader.LoadComponent(componentName);
         }
 
         $(document).ready(function () {
