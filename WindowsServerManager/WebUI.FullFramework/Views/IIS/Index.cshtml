@@ -1,4 +1,5 @@
 ﻿@using WebUI.FullFramework.Enums
+@using WebUI.FullFramework.Helpers
 
 @{
     ViewBag.Title = "Index";
@@ -13,7 +14,9 @@
                     <h3 class="panel-title">Сервер: B-STEfaniuk(TSCRM)</h3>
                 </div>
                 <div class="panel-body">
-                    <div id="jstree"></div>
+                    <div id="jstree">
+                        @Html.GetJsTreeMenu();
+                    </div>
                 </div>
             </div>
         </div>
