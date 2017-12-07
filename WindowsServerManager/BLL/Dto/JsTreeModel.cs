@@ -1,12 +1,20 @@
 ﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace BLL.Dto
 {
     public class JsTreeModel
     {
-        public string Data;
-        public JsTreeAttribute Attribute;
-        public string State = "open";
+        [JsonProperty(PropertyName = "text")]
+        public string Data { get; set; }
+
+        [JsonProperty(PropertyName = "id")]
+        public string Id;
+
+        [JsonProperty(PropertyName = "state")]
+        public JsTreeModelState State { get; set; }
+
+        [JsonProperty(PropertyName = "children")]
         public List<JsTreeModel> Childrens;
 
         public JsTreeModel()
@@ -15,8 +23,15 @@ namespace BLL.Dto
         }
     }
 
-    public class JsTreeAttribute
+    public class JsTreeModelState
     {
-        public string Id;
+        [JsonProperty(PropertyName = "opened")]
+        public bool Opened { get; set; }
+
+        [JsonProperty(PropertyName = "disabled")]
+        public bool Disabled { get; set; }
+
+        [JsonProperty(PropertyName = "selected")]
+        public bool Selected { get; set; }
     }
 }

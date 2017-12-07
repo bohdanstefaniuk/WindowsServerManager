@@ -23,7 +23,7 @@ namespace TrainingConsoleUI
         {
             foreach (var node in nodesList)
             {
-                Console.WriteLine($"{new string('\t', tabCount)}Node name: {node.Data}, Id: {node.Attribute.Id}");
+                Console.WriteLine($"{new string('\t', tabCount)}Node name: {node.Data}, Id: {node.Id}");
                 if (node.Childrens.Count > 0)
                 {
                     ViewJsTree(node.Childrens, ++tabCount);

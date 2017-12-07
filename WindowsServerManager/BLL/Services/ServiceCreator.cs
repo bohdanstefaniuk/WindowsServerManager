@@ -15,5 +15,10 @@ namespace BLL.Services
         {
             return new UserService(new IdentityUnitOfWork(connection));
         }
+
+        public IJsTreeMenuService CreaJsTreeMenuService()
+        {
+            return new JsTreeMenuService();
+        }
     }
 }

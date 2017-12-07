@@ -3,11 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using BLL.Dto;
+using BLL.Interfaces;
 using Microsoft.Web.Administration;
 
 namespace BLL.Services
 {
-    public class JsTreeMenuService: IDisposable
+    public class JsTreeMenuService : IJsTreeMenuService
     {
         private readonly SiteCollection _siteCollection;
         private readonly SitesManager _sitesManager;
@@ -22,10 +23,13 @@ namespace BLL.Services
         {
             var rootNode = new JsTreeModel
             {
-                Attribute = new JsTreeAttribute(),
+                State = new JsTreeModelState
+                {
+                    Opened = true
+                },
                 Data = "Server"
             };
-            rootNode.Attribute.Id = "Root";
+            rootNode.Id = "Root";
 
             PopulateTree(rootNode);
 
@@ -37,14 +41,17 @@ namespace BLL.Services
             foreach (var site in _siteCollection)
             {
                 var siteJsTreeModel = new JsTreeModel();
-                siteJsTreeModel.Attribute = new JsTreeAttribute();
-                siteJsTreeModel.Attribute.Id = site.Name;
+                siteJsTreeModel.State = new JsTreeModelState
+                {
+                    Opened = true
+                };
+                siteJsTreeModel.Id = site.Name;
                 siteJsTreeModel.Data = site.Name;
                 node.Childrens.Add(siteJsTreeModel);
 
                 if (site.Applications.Count > 0)
                 {
-                    var applications = site.Applications;
+                    var applications = site.Applications.Where(x => x.Path != "/" && !string.IsNullOrEmpty(x.Path));
                     List<ApplicationPath> splitPaths = applications
                         .Select(x => new ApplicationPath
                         {
@@ -66,9 +73,9 @@ namespace BLL.Services
             {
                 var childNode = new JsTreeModel
                 {
-                    Attribute = new JsTreeAttribute
+                    State = new JsTreeModelState
                     {
-                        Id = group.Select(x => x.FullPath).FirstOrDefault()
+                        Opened = true
                     },
                     Data = group.Key
                 };
