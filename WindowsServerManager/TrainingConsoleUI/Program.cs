@@ -11,25 +11,10 @@ namespace TrainingConsoleUI
     {
         static void Main(string[] args)
         {
-            var jsTreeMenuGenerator = new JsTreeMenuService();
-            var node = jsTreeMenuGenerator.GetTreeMenuData();
+            // Here you can execute your code withot running full web UI (ASP.NET MVC or ASP.NET Core)
 
-            ViewJsTree(node.Childrens);
-
+            // Delay
             Console.Read();
-        }
-
-        private static void ViewJsTree(IEnumerable<JsTreeModel> nodesList, int tabCount = 0)
-        {
-            foreach (var node in nodesList)
-            {
-                Console.WriteLine($"{new string('\t', tabCount)}Node name: {node.Data}, Id: {node.Id}");
-                if (node.Childrens.Count > 0)
-                {
-                    ViewJsTree(node.Childrens, ++tabCount);
-                    tabCount--;
-                }
-            }
         }
     }
 }

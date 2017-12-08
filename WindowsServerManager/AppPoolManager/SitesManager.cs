@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Web.Administration;
 using AppPoolManager.Tools;
 
@@ -78,39 +76,22 @@ namespace AppPoolManager
             return default(List<string>);
         }
 
-        public ConnectionStringsSection GetSiteConnectionStrings(string siteName)
-        {
-            var site = GetSiteByName(siteName);
-            var siteApplications = site.Applications;
-
-            var connectionStringFileUrl = "";
-            var rootApplication = siteApplications.SingleOrDefault(x => x.Path == "/");
-            var dictionary = rootApplication.VirtualDirectories.FirstOrDefault();
-            connectionStringFileUrl += $@"{dictionary.PhysicalPath}\{AppPoolManagerConfiguration.AppConfigFileName}";
-
-            var map = new ExeConfigurationFileMap { ExeConfigFilename = connectionStringFileUrl };
-            var configFile = ConfigurationManager.OpenMappedExeConfiguration(map, ConfigurationUserLevel.None);
-
-            return configFile.ConnectionStrings;
-        }
-
-        public string GetRedisDb(string siteName)
-        {
-            var connectionStrings = GetSiteConnectionStrings(siteName);
-            var redisConnectionString = connectionStrings.ConnectionStrings[AppPoolManagerConfiguration.RedisConnectionStringKey];
-
-            if (redisConnectionString != null)
-            {
-                return ConnectionStringsTool.GetSectionFromString(
-                    redisConnectionString.ConnectionString, "db");
-            }
-
-            return null;
-        }
-
         public void Dispose()
         {
-            _serverManager?.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        private bool _disposed = false;
+
+        public virtual void Dispose(bool disposing)
+        {
+            if (_disposed) return;
+
+            if (disposing)
+            {
+                _serverManager.Dispose();
+            }
+            _disposed = true;
         }
     }
 }
