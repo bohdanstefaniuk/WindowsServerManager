@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using BLL.Dto;
 using BLL.Services;
 
@@ -28,7 +30,13 @@ namespace WebUI.FullFramework.Helpers
             {
                 TagBuilder li = new TagBuilder("li");
                 TagBuilder a = new TagBuilder("a");
-                a.Attributes.Add("href", "#");
+                var requestContext = HttpContext.Current.Request.RequestContext;
+                var href = new UrlHelper(requestContext).Action("Index", "IIS", new
+                {
+                    applicationPath = node.Id,
+                    siteType = node.Properties.IISSiteType
+                });
+                a.Attributes.Add("href", href);
                 a.SetInnerText(node.Data);
                 li.InnerHtml += a.ToString();
                 

@@ -23,7 +23,7 @@
         <div class="col-md-9">
             <div class="">
                 <blockquote>
-                    <p>Название сайта</p>
+                    <p>@ViewBag.Name</p>
                 </blockquote>
             </div>
             <div class="panel panel-default">
@@ -137,14 +137,9 @@
     @Scripts.Render("~/Scripts/Custom/IISPageComponens.js")
 
     <script>
-        var componentLoader = IISPageComponentLoader();
-
-        function GetComponent(componentName) {
-            //componentLoader.LoadComponent(componentName);
-        }
-
-        $(document).ready(function () {
-            Refresh();
+        $("#jstree").jstree().bind("select_node.jstree", function (e, data) {
+            var href = data.node.a_attr.href;
+            document.location.href = href;
         });
     </script>
 }

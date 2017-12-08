@@ -193,6 +193,7 @@
     <Compile Include="Dto\ApplicationPath.cs" />
     <Compile Include="Dto\JsTreeModel.cs" />
     <Compile Include="Dto\UserDTO.cs" />
+    <Compile Include="Enums\IISSiteType.cs" />
     <Compile Include="Infrastructure\OperationDetails.cs" />
     <Compile Include="Interfaces\IServiceCreator.cs" />
     <Compile Include="Interfaces\IUserService.cs" />

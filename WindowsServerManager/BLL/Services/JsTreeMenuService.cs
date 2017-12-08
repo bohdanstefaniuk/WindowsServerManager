@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using BLL.Dto;
+using BLL.Enums;
 using BLL.Interfaces;
 using Microsoft.Web.Administration;
 
@@ -23,10 +25,7 @@ namespace BLL.Services
         {
             var rootNode = new JsTreeModel
             {
-                State = new JsTreeModelState
-                {
-                    Opened = true
-                },
+                Properties = new JsTreeModelProperties(),
                 Data = "Server"
             };
             rootNode.Id = "Root";
@@ -41,9 +40,9 @@ namespace BLL.Services
             foreach (var site in _siteCollection)
             {
                 var siteJsTreeModel = new JsTreeModel();
-                siteJsTreeModel.State = new JsTreeModelState
+                siteJsTreeModel.Properties = new JsTreeModelProperties
                 {
-                    Opened = true
+                    IISSiteType = IISSiteType.Site
                 };
                 siteJsTreeModel.Id = site.Name;
                 siteJsTreeModel.Data = site.Name;
@@ -73,11 +72,12 @@ namespace BLL.Services
             {
                 var childNode = new JsTreeModel
                 {
-                    State = new JsTreeModelState
+                    Properties = new JsTreeModelProperties
                     {
-                        Opened = true
+                        IISSiteType = IISSiteType.Application
                     },
-                    Data = group.Key
+                    Data = group.Key,
+                    Id = group.Select(x => x.FullPath).FirstOrDefault()
                 };
                 node.Childrens.Add(childNode);
 

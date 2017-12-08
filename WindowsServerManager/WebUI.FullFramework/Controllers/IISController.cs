@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using BLL.Dto;
+using BLL.Enums;
 using BLL.Interfaces;
 using Microsoft.AspNet.Identity.Owin;
 using Newtonsoft.Json;
@@ -15,8 +16,11 @@ namespace WebUI.FullFramework.Controllers
     {
         private IJsTreeMenuService JsTreeViewMenuService => HttpContext.GetOwinContext().GetUserManager<IJsTreeMenuService>();
 
-        public ActionResult Index(IISViewActionType viewActionType = IISViewActionType.InformationComponent)
+        public ActionResult Index(string applicationPath = null, 
+            IISSiteType siteType = IISSiteType.Default, 
+            IISViewActionType viewActionType = IISViewActionType.InformationComponent)
         {
+            ViewBag.Name = applicationPath;
             ViewBag.ActionViewType = viewActionType;
             return View();
         }
