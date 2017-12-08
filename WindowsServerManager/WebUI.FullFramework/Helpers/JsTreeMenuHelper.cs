@@ -3,6 +3,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using BLL.Dto;
+using BLL.Enums;
 using BLL.Services;
 
 namespace WebUI.FullFramework.Helpers
@@ -30,16 +31,33 @@ namespace WebUI.FullFramework.Helpers
             {
                 TagBuilder li = new TagBuilder("li");
                 TagBuilder a = new TagBuilder("a");
+
                 var requestContext = HttpContext.Current.Request.RequestContext;
-                var href = new UrlHelper(requestContext).Action("Index", "IIS", new
+                var urlHelper = new UrlHelper(requestContext);
+                var href = urlHelper.Action("Index", "IIS", new
                 {
                     applicationPath = node.Id,
                     siteType = node.Properties.IISSiteType
                 });
+
                 a.Attributes.Add("href", href);
                 a.SetInnerText(node.Data);
+
+                var iconFileUrl = "";
+
+                switch (node.Properties.IISSiteType)
+                {
+                    case IISSiteType.Application:
+                        iconFileUrl = urlHelper.Content("~/Content/Images/rsz_server-icon.png");
+                        break;
+                    case IISSiteType.Site:
+                        iconFileUrl = urlHelper.Content("~/Content/Images/rsz_site-icon.png");
+                        break;
+                }
+                var iconUrl = $"{{\"icon\":\"{iconFileUrl}\"}}";
+
+                li.Attributes.Add("data-jstree", iconUrl);
                 li.InnerHtml += a.ToString();
-                
 
                 if (node.Childrens.Count > 0)
                 {
