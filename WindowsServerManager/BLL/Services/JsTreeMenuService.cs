@@ -50,7 +50,7 @@ namespace BLL.Services
 
                 if (site.Applications.Count > 0)
                 {
-                    var applications = site.Applications.Where(x => x.Path != "/" && !string.IsNullOrEmpty(x.Path));
+                    var applications = site.Applications.Where(x => x.Path != "/" && !string.IsNullOrWhiteSpace(x.Path));
                     List<ApplicationPath> splitPaths = applications
                         .Select(x => new ApplicationPath
                         {
