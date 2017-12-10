@@ -1,4 +1,61 @@
-﻿<h3>
-    INFORMATION COMPONENT
-</h3>
+﻿@model BLL.Dto.SiteInformation
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Информация</h3>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-sm-2">
+                <p><strong>Название: </strong></p>
+            </div>
+            <div class="col-sm-2">
+                @Model.Name
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2">
+                <p><strong>Пул: </strong></p>
+            </div>
+            <div class="col-sm-2">
+                @Model.ApplicationPoolName
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2">
+                <p><strong>Физический путь: </strong></p>
+            </div>
+            <div class="col-sm-2">
+                @Model.PhysicalPath
+            </div>
+        </div>
+        @if (Model.BindingInformation.Count > 0)
+        {
+            <p><strong>Привязки</strong></p>
+            <table class="table table-hover featuresTable">
+                <tr>
+                    <td class="col3">
+                        <strong>Протокол</strong>
+                    </td>
+                    <td>
+                        <strong>Хост</strong>
+                    </td>
+                    <td>
+                        <strong>IP и порт</strong>
+                    </td>
+                </tr>
+                @foreach (var binding in Model.BindingInformation)
+                {
+                    <tr>
+                        <td>@binding.Protocol</td>
+                        <td>@binding.Host</td>
+                        <td>@binding.BindingInformation</td>
+                    </tr>
+                }
+            </table>
+        }
+    </div>
+</div>
+
+
 

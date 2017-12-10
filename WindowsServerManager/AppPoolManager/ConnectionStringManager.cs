@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using AppPoolManager.Tools;
@@ -8,8 +9,13 @@ namespace AppPoolManager
     public class ConnectionStringManager: IDisposable
     {
         private readonly SitesManager _sitesManager;
-        public ConnectionStringManager()
+        private readonly string _redisConnectionStringKey;
+        private readonly string _appConfigFineName;
+
+        public ConnectionStringManager(string redisConnectionStringKey, string appConfigFineName)
         {
+            _redisConnectionStringKey = redisConnectionStringKey;
+            _appConfigFineName = appConfigFineName;
             _sitesManager = new SitesManager();
         }
 
@@ -21,7 +27,7 @@ namespace AppPoolManager
             var connectionStringFileUrl = "";
             var rootApplication = siteApplications.SingleOrDefault(x => x.Path == "/");
             var dictionary = rootApplication.VirtualDirectories.FirstOrDefault();
-            connectionStringFileUrl += $@"{dictionary.PhysicalPath}\{AppPoolManagerConfiguration.AppConfigFileName}";
+            connectionStringFileUrl += $@"{dictionary.PhysicalPath}\{_appConfigFineName}";
 
             var map = new ExeConfigurationFileMap { ExeConfigFilename = connectionStringFileUrl };
             var configFile = ConfigurationManager.OpenMappedExeConfiguration(map, ConfigurationUserLevel.None);
@@ -32,7 +38,7 @@ namespace AppPoolManager
         public string GetRedisDb(string siteName)
         {
             var connectionStrings = GetSiteConnectionStrings(siteName);
-            var redisConnectionString = connectionStrings.ConnectionStrings[AppPoolManagerConfiguration.RedisConnectionStringKey];
+            var redisConnectionString = connectionStrings.ConnectionStrings[_redisConnectionStringKey];
 
             if (redisConnectionString != null)
             {

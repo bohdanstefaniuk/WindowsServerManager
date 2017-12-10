@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,5 +14,7 @@ namespace DataAccessLayer.EF
         public ApplicationDbContext(string conectionString) : base(conectionString) { }
 
         public ApplicationDbContext(): base("DbConnection") {}
+
+        public DbSet<Settings> Settings { get; set; }
     }
 }

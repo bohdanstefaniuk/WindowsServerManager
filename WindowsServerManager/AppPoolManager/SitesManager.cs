@@ -35,25 +35,6 @@ namespace AppPoolManager
             return sites.SingleOrDefault(x => x.Name.IndexOf(name, StringComparison.OrdinalIgnoreCase) >= 0);
         }
 
-        public void GetApplications()
-        {
-            var sites = _serverManager.Sites;
-            foreach (var site in sites)
-            {
-                var applications = site.Applications;
-                Console.WriteLine($"Site: {site.Name}");
-                foreach (var application in applications)
-                {
-                    Console.WriteLine($"\tApplication: {application.ToString()}, FullPath: {application.Path}");
-                    var smth = application.Attributes;
-                    foreach (var applicationAttribute in application.Attributes)
-                    {
-                        Console.WriteLine($"\t\tAttribute: {applicationAttribute.Name}, value: {applicationAttribute.Value}");
-                    }
-                }
-            }
-        }
-
         /// <summary>
         /// Get all aplications in Site
         /// </summary>
@@ -65,13 +46,28 @@ namespace AppPoolManager
             return site.Applications;
         }
 
-        public ApplicationCollection GetAppsIncludeInApplication(Application application)
+        public Application GetApplicationByPath(string appPath)
         {
-            var collection = application.GetCollection(typeof(ApplicationCollection));
-            return null;
+            var sites = _serverManager.Sites;
+            var applications = sites.Select(x => x.Applications);
+
+            Application application = null;
+
+            foreach (var app in applications)
+            {
+                application =
+                    app.FirstOrDefault(x => x.Path.IndexOf(appPath, StringComparison.OrdinalIgnoreCase) >= 0);
+
+                if (application != null)
+                {
+                    break;
+                }
+            }
+
+            return application;
         }
 
-        public List<string> GetSiteConnectionStrings(Site site)
+        public List<string> GetSiteConnectionStrings(string siteName)
         {
             return default(List<string>);
         }

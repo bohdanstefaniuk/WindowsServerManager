@@ -29,7 +29,6 @@ namespace WebUI.FullFramework.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginModel model)
         {
-            await SetInitialDataAsync();
             if (ModelState.IsValid)
             {
                 UserDTO userDto = new UserDTO { Email = model.Email, Password = model.Password };
@@ -68,7 +67,6 @@ namespace WebUI.FullFramework.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterModel model)
         {
-            await SetInitialDataAsync();
             if (ModelState.IsValid)
             {
                 UserDTO userDto = new UserDTO
@@ -83,23 +81,9 @@ namespace WebUI.FullFramework.Controllers
                 {
                     return View("SuccessRegister");
                 }
-                else
-                {
-                    ModelState.AddModelError(operationDetails.Property, operationDetails.Message);
-                }
+                ModelState.AddModelError(operationDetails.Property, operationDetails.Message);
             }
             return View(model);
-        }
-        private async Task SetInitialDataAsync()
-        {
-            await UserService.SetInitialData(new UserDTO
-            {
-                Email = "somemail@mail.ru",
-                UserName = "somemail@mail.ru",
-                Password = "ad46D_ewr3",
-                Name = "Семен Семенович Горбунков",
-                Role = "Admin",
-            }, new List<string> { "user", "admin" });
         }
     }
 }

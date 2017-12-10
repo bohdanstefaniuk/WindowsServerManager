@@ -113,7 +113,7 @@
                 @switch ((IISViewActionType)ViewBag.ActionViewType)
                 {
                     case IISViewActionType.InformationComponent:
-                        Html.RenderAction("GetInformationComponent", "IIS");
+                        Html.RenderAction("GetInformationComponent", "IIS", new { path = ViewBag.Name, siteType = ViewBag.SiteType });
                         break;
                     case IISViewActionType.ConnectionStringsComponent:
                         Html.RenderAction("GetConnectionStringsComponent", "IIS");

@@ -192,6 +192,7 @@
   <ItemGroup>
     <Compile Include="Dto\ApplicationPath.cs" />
     <Compile Include="Dto\JsTreeModel.cs" />
+    <Compile Include="Dto\SiteInformation.cs" />
     <Compile Include="Dto\UserDTO.cs" />
     <Compile Include="Enums\IISSiteType.cs" />
     <Compile Include="Infrastructure\OperationDetails.cs" />
@@ -201,6 +202,7 @@
     <Compile Include="Interfaces\IJsTreeMenuService.cs" />
     <Compile Include="Services\JsTreeMenuService.cs" />
     <Compile Include="Services\ServiceCreator.cs" />
+    <Compile Include="Services\SiteInformationService.cs" />
     <Compile Include="Services\UserService.cs" />
   </ItemGroup>
   <ItemGroup />

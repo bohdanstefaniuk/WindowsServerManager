@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 using DataAccessLayer.EF;
 using DataAccessLayer.Entities;
 using DataAccessLayer.Identity;
+using DataAccessLayer.Interfaces;
 using Microsoft.AspNet.Identity.EntityFramework;
-using UserStore.DAL.Interfaces;
 
 namespace DataAccessLayer.Repositories
 {

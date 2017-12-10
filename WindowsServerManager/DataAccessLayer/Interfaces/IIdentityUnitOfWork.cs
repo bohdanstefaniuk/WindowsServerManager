@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using DataAccessLayer.Identity;
 
-namespace UserStore.DAL.Interfaces
+namespace DataAccessLayer.Interfaces
 {
     public interface IIdentityUnitOfWork : IDisposable
     {

@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using BLL.Dto;
 using BLL.Enums;
 using BLL.Interfaces;
+using BLL.Services;
 using Microsoft.AspNet.Identity.Owin;
 using Newtonsoft.Json;
 using WebUI.FullFramework.Enums;
@@ -21,6 +22,7 @@ namespace WebUI.FullFramework.Controllers
             IISViewActionType viewActionType = IISViewActionType.InformationComponent)
         {
             ViewBag.Name = applicationPath;
+            ViewBag.SiteType = siteType;
             ViewBag.ActionViewType = viewActionType;
             return View();
         }
@@ -32,7 +34,7 @@ namespace WebUI.FullFramework.Controllers
             switch (actionType)
             {
                 case IISViewActionType.InformationComponent:
-                    return GetInformationComponent();
+                    //return GetInformationComponent();
                 case IISViewActionType.ConnectionStringsComponent:
                     return GetConnectionStringsComponent();
                 case IISViewActionType.FeaturesComponent:
@@ -63,9 +65,14 @@ namespace WebUI.FullFramework.Controllers
         }
 
         [ChildActionOnly]
-        public PartialViewResult GetInformationComponent()
+        public PartialViewResult GetInformationComponent(string path, IISSiteType siteType)
         {
-            return PartialView("_InformationComponent");
+            SiteInformation information;
+            using (var infoService = new SiteInformationService())
+            {
+                information = infoService.GetInformationBySiteType(path, siteType);
+            }
+            return PartialView("_InformationComponent", information);
         }
 
         #endregion
