@@ -35,15 +35,11 @@ namespace MssqlManager
                 {
                     while (await reader.ReadAsync())
                     {
-                        var id = reader.GetValue(0);
-                        var code = reader.GetValue(1);
-                        var state = reader.GetValue(2);
-
                         features.Add(new FeatureDto
                         {
-                            Id = (Guid)id,
-                            Code = (string)code,
-                            State = (bool)state
+                            Id = (Guid)reader.GetValue(0),
+                            Code = (string)reader.GetValue(1),
+                            State = Convert.ToBoolean(reader.GetValue(2))
                         });
                     }
                 }
@@ -52,6 +48,39 @@ namespace MssqlManager
             }
 
             return features;
+        }
+
+        public async Task SetFeaturesState(List<FeatureDto> features)
+        {
+            var groupByFeatureState = features.GroupBy(x => x.State);
+            foreach (var group in groupByFeatureState)
+            {
+                var featuresId = group.Select(x => x.Id);
+                var featuresIdString = string.Join("','", featuresId);
+                var state = group.Key;
+
+                await SetFeatureState(featuresIdString, state);
+            }
+        }
+
+        private async Task SetFeatureState(string featuresId, bool state)
+        {
+            const string sqlExpression = @"UPDATE AdminUnitFeatureState
+                                           SET FeatureState = @featureState
+                                           WHERE FeatureId IN (@featuresId)";
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                SqlCommand command = new SqlCommand(sqlExpression, connection);
+                SqlParameter featureStateParam = new SqlParameter("@featureState", state);
+                command.Parameters.Add(featureStateParam);
+                SqlParameter featuresIdParam = new SqlParameter("@featuresId", featuresId);
+                command.Parameters.Add(featuresIdParam);
+
+                await command.ExecuteNonQueryAsync();
+                connection.Close();
+            }
         }
     }
 }
