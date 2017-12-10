@@ -57,10 +57,13 @@
     <Compile Include="EF\ApplicationDbContext.cs" />
     <Compile Include="Entities\ApplicationRole.cs" />
     <Compile Include="Entities\ApplicationUser.cs" />
+    <Compile Include="Entities\Entity.cs" />
+    <Compile Include="Entities\Settings.cs" />
     <Compile Include="Enums\Role.cs" />
     <Compile Include="Identity\ApplicationRoleManager.cs" />
     <Compile Include="Identity\ApplicationUserManager.cs" />
-    <Compile Include="Interfaces\IUnitOfWork.cs" />
+    <Compile Include="Interfaces\IRepository.cs" />
+    <Compile Include="Interfaces\IIdentityUnitOfWork.cs" />
     <Compile Include="Migrations\201711281815296_Init.cs" />
     <Compile Include="Migrations\201711281815296_Init.Designer.cs">
       <DependentUpon>201711281815296_Init.cs</DependentUpon>
@@ -68,7 +71,10 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\IdentityUnitOfWork.cs" />
+    <Compile Include="Repositories\SettingsRepository.cs" />
+    <Compile Include="Repositories\UnitOfWork.cs" />
     <Compile Include="SeedData\ApplicationUserSeed.cs" />
+    <Compile Include="SeedData\SettingsSeed.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="MigrationCommands.txt" />

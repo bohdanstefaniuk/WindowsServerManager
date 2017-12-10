@@ -197,6 +197,10 @@
       <Project>{ba2e7b9d-1848-4e87-8bc0-31292660edfe}</Project>
       <Name>BLL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MssqlManager\MssqlManager.csproj">
+      <Project>{0856c756-ae16-4e15-8e6d-d8b472ed5d9c}</Project>
+      <Name>MssqlManager</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PerformanceManager\PerformanceManager.csproj">
       <Project>{d8e3d147-c34d-4039-adbf-b4672dec63be}</Project>
       <Name>PerformanceManager</Name>
