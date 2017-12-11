@@ -8,6 +8,7 @@ using BLL.Enums;
 using BLL.Interfaces;
 using BLL.Services;
 using Microsoft.AspNet.Identity.Owin;
+using MssqlManager.Dto;
 using Newtonsoft.Json;
 using WebUI.FullFramework.Enums;
 
@@ -50,6 +51,7 @@ namespace WebUI.FullFramework.Controllers
         [ChildActionOnly]
         public PartialViewResult GetFeaturesComponent()
         {
+            //TODO get db name from iis instance
             var features = FeatureService.GetFeatures("BPMonline7111_BStefaniuk_WORK_3_Build").GetAwaiter().GetResult();
             return PartialView("_FeaturesComponent", features);
         }
@@ -79,19 +81,11 @@ namespace WebUI.FullFramework.Controllers
 
         #endregion
 
-        #region Methods: Tree View Menu handlers
-
-        /// <summary>
-        /// Returns tree view result for creating JsTree menu at View
-        /// </summary>
-        /// <returns>JsonResult</returns>
-        public ActionResult GetIISMenuModel()
+        [HttpPost]
+        public void SaveFeatures(List<FeatureDto> features)
         {
-            var result = JsTreeViewMenuService.GetTreeMenuData();
-            var jsonResult = JsonConvert.SerializeObject(result, Formatting.Indented);
-            return Content(jsonResult, "application/json");
+            //TODO get db name from iis instance
+            FeatureService.UpdateFeatures(features, "BPMonline7111_BStefaniuk_WORK_3_Build").GetAwaiter();
         }
-
-        #endregion
     }
 }

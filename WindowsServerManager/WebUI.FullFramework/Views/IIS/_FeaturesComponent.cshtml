@@ -5,6 +5,12 @@
         <h3 class="panel-title">Список фич</h3>
     </div>
     <div class="panel-body">
+        <div class="row" id="saveFeaturesBlock">
+            <div class="col-sm-12">
+                <button id="saveFeaturesButton" class="btn btn-info">Сохранить фичи</button>
+            </div>
+        </div>
+        <br/>
         <table class="table table-hover featuresTable">
             <tr>
                 <td class="col3">
@@ -23,7 +29,7 @@
                     <td>@feature.Id</td>
                     <td>@feature.Code</td>
                     <td>
-                        <select>
+                        <select class="featureControl" data-feature-id="@feature.Id">
                             @if (feature.State)
                             {
                                 <option selected="selected" value="true">Включено</option>
@@ -38,6 +44,18 @@
                     </td>
                 </tr>
             }
-</table>
+        </table>
     </div>
 </div>
+
+@Scripts.Render("~/Scripts/Custom/FeatureManager.js")
+
+<script>
+    var featuresSaveUrl = "@Url.Action("SaveFeatures", "IIS")";
+    var featureManager = new FeatureManager();
+    featureManager.initializeChangeEvents();
+
+    $("#saveFeaturesButton").click(function() {
+        featureManager.saveFeatures(featuresSaveUrl);
+    });
+</script>
