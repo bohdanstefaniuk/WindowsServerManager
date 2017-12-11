@@ -32,7 +32,7 @@
                 </div>
                 <div class="panel-body">
                     <div class="IISButton text-center @(ViewBag.ActionViewType == IISViewActionType.InformationComponent ? "IISButtonSelected" : "")">
-                        <a href="@Url.Action("Index", "IIS", new { viewActionType = IISViewActionType.InformationComponent })">
+                        <a href="@Url.Action("Index", "IIS", new { viewActionType = IISViewActionType.InformationComponent, siteType = ViewBag.SiteType, applicationPath = ViewBag.Name })">
                             <img src="@Url.Content("~/Resources/Images/StatusInformation_16x.svg")" 
                                  alt=""
                                  class="IISButtonIco">
@@ -78,7 +78,7 @@
                         </a>
                     </div>
                     <div class="IISButton text-center @(ViewBag.ActionViewType == IISViewActionType.ConnectionStringsComponent ? "IISButtonSelected" : "")">
-                        <a href="@Url.Action("Index", "IIS", new { viewActionType = IISViewActionType.ConnectionStringsComponent })">
+                        <a href="@Url.Action("Index", "IIS", new { viewActionType = IISViewActionType.ConnectionStringsComponent, siteType = ViewBag.SiteType, applicationPath = ViewBag.Name })">
                             <img src="@Url.Content("~/Resources/Images/DatabaseSetting_16x.svg")" 
                                  alt=""
                                  class="IISButtonIco">
@@ -86,7 +86,7 @@
                         </a>
                     </div>
                     <div class="IISButton text-center @(ViewBag.ActionViewType == IISViewActionType.ConfigFileComponent ? "IISButtonSelected" : "")">
-                        <a href="@Url.Action("Index", "IIS", new { viewActionType = IISViewActionType.ConfigFileComponent })">
+                        <a href="@Url.Action("Index", "IIS", new { viewActionType = IISViewActionType.ConfigFileComponent, siteType = ViewBag.SiteType, applicationPath = ViewBag.Name })">
                             <img src="@Url.Content("~/Resources/Images/ConfigurationFile_16x.svg")"
                                  alt=""
                                  class="IISButtonIco">
@@ -97,7 +97,7 @@
                         </a>
                     </div>
                     <div class="IISButton text-center @(ViewBag.ActionViewType == IISViewActionType.FeaturesComponent ? "IISButtonSelected" : "")">
-                        <a href="@Url.Action("Index", "IIS", new { viewActionType = IISViewActionType.FeaturesComponent })">
+                        <a href="@Url.Action("Index", "IIS", new { viewActionType = IISViewActionType.FeaturesComponent, siteType = ViewBag.SiteType, applicationPath = ViewBag.Name })">
                             <img src="@Url.Content("~/Resources/Images/MagicWand_16x.svg")" 
                                  alt=""
                                  class="IISButtonIco">

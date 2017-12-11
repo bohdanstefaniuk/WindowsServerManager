@@ -10,11 +10,17 @@ namespace MssqlManager
 {
     public class FeatureManager
     {
-        private readonly string _connectionString;
+        private string _connectionString;
+        private readonly string _dataSource;
 
-        public FeatureManager(string dataSource, string db)
+        public FeatureManager(string dataSource)
         {
-            _connectionString = $@"Server={dataSource}; Initial Catalog={db}; Persist Security Info=True; MultipleActiveResultSets=True; Integrated Security=SSPI;";
+            _dataSource = dataSource;
+        }
+
+        public void ConfigureConnectionString(string db)
+        {
+            _connectionString = $@"Server={_dataSource}; Initial Catalog={db}; Persist Security Info=True; MultipleActiveResultSets=True; Integrated Security=SSPI;";
         }
 
         public async Task<IEnumerable<FeatureDto>> GetFeatures()
@@ -29,7 +35,15 @@ namespace MssqlManager
             {
                 connection.Open();
                 SqlCommand command = new SqlCommand(sqlExpression, connection);
-                SqlDataReader reader = await command.ExecuteReaderAsync();
+                SqlDataReader reader;
+                try
+                {
+                    reader = command.ExecuteReaderAsync().Result;
+                }
+                catch (Exception e)
+                {
+                    throw;
+                }
 
                 if (reader.HasRows)
                 {

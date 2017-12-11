@@ -16,6 +16,7 @@ namespace WebUI.FullFramework.Controllers
     public class IISController : Controller
     {
         private IJsTreeMenuService JsTreeViewMenuService => HttpContext.GetOwinContext().GetUserManager<IJsTreeMenuService>();
+        private IFeatureService FeatureService => HttpContext.GetOwinContext().GetUserManager<IFeatureService>();
 
         public ActionResult Index(string applicationPath = null, 
             IISSiteType siteType = IISSiteType.Default, 
@@ -49,7 +50,8 @@ namespace WebUI.FullFramework.Controllers
         [ChildActionOnly]
         public PartialViewResult GetFeaturesComponent()
         {
-            return PartialView("_FeaturesComponent");
+            var features = FeatureService.GetFeatures("BPMonline7111_BStefaniuk_WORK_3_Build").GetAwaiter().GetResult();
+            return PartialView("_FeaturesComponent", features);
         }
 
         [ChildActionOnly]

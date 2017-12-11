@@ -1,4 +1,6 @@
-﻿<div class="panel panel-default">
+﻿@model IEnumerable<MssqlManager.Dto.FeatureDto>
+
+<div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title">Список фич</h3>
     </div>
@@ -15,46 +17,27 @@
                     <strong>State</strong>
                 </td>
             </tr>
-            <tr>
-                <td>03c5a9dc-0aa8-44c5-be03-089aa9fc3d2a</td>
-                <td>OrdersAndInvoicesEpicFeature</td>
-                <td>
-                    <select>
-                        <option>Включено</option>
-                        <option>Выключено</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td>03c5a9dc-0aa8-44c5-be03-089aa9fc3d2a</td>
-                <td>OrdersAndInvoicesEpicFeature</td>
-                <td>
-                    <select>
-                        <option>Включено</option>
-                        <option>Выключено</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td>03c5a9dc-0aa8-44c5-be03-089aa9fc3d2a</td>
-                <td>OrdersAndInvoicesEpicFeature</td>
-                <td>
-                    <select>
-                        <option>Включено</option>
-                        <option>Выключено</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td>03c5a9dc-0aa8-44c5-be03-089aa9fc3d2a</td>
-                <td>OrdersAndInvoicesEpicFeature</td>
-                <td>
-                    <select>
-                        <option>Включено</option>
-                        <option>Выключено</option>
-                    </select>
-                </td>
-            </tr>
-        </table>
+            @foreach (var feature in Model)
+            {
+                <tr>
+                    <td>@feature.Id</td>
+                    <td>@feature.Code</td>
+                    <td>
+                        <select>
+                            @if (feature.State)
+                            {
+                                <option selected="selected" value="true">Включено</option>
+                                <option value="false">Выключено</option>
+                            }
+                            else
+                            {
+                                <option value="true">Включено</option>
+                                <option selected="selected" value="false">Выключено</option>
+                            }
+                        </select>
+                    </td>
+                </tr>
+            }
+</table>
     </div>
 </div>

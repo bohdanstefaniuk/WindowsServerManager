@@ -16,6 +16,7 @@ namespace WebUI.FullFramework
         {
             app.CreatePerOwinContext<IUserService>(CreateUserService);
             app.CreatePerOwinContext<IJsTreeMenuService>(CreateJsTreeMenuService);
+            app.CreatePerOwinContext<IFeatureService>(CreateFeatureService);
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
@@ -30,7 +31,12 @@ namespace WebUI.FullFramework
 
         private IJsTreeMenuService CreateJsTreeMenuService()
         {
-            return _serviceCreator.CreaJsTreeMenuService();
+            return _serviceCreator.CreateJsTreeMenuService();
+        }
+
+        private IFeatureService CreateFeatureService()
+        {
+            return _serviceCreator.CreateFeatureService();
         }
     }
 }
