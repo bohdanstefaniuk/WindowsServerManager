@@ -49,13 +49,17 @@
 </div>
 
 @Scripts.Render("~/Scripts/Custom/FeatureManager.js")
+@Scripts.Render("~/Scripts/Custom/StyleEngine.js")
 
 <script>
     var featuresSaveUrl = "@Url.Action("SaveFeatures", "IIS")";
     var featureManager = new FeatureManager();
     featureManager.initializeChangeEvents();
 
-    $("#saveFeaturesButton").click(function() {
-        featureManager.saveFeatures(featuresSaveUrl);
+    var $saveButton = $("#saveFeaturesButton");
+
+    $saveButton.click(function () {
+        $saveButton.prop("disabled", true);
+        featureManager.saveFeatures(featuresSaveUrl, $saveButton);
     });
 </script>

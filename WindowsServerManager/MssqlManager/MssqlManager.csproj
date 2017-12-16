@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DbManager.cs" />
     <Compile Include="Dto\FeatureDto.cs" />
     <Compile Include="FeatureManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

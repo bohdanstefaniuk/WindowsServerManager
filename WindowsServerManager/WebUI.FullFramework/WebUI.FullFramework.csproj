@@ -267,6 +267,7 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\Custom\FeatureManager.js" />
     <Content Include="Scripts\Custom\IISPageComponens.js" />
+    <Content Include="Scripts\Custom\StyleEngine.js" />
     <Content Include="Scripts\jquery-3.2.1.js" />
     <Content Include="Scripts\jquery-3.2.1.min.js" />
     <Content Include="Scripts\jquery-3.2.1.slim.js" />

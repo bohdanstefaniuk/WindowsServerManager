@@ -1,5 +1,6 @@
 ﻿function FeatureManager() {
     var changedFeatures = [];
+    var changedFeaturesElements = [];
 
     var debug = function () {
         console.log(changedFeatures);
@@ -49,6 +50,9 @@
                             changedFeatures.push(feature);
                         }
                         elem.data("oldVal", elem.val());
+                        var parentTr = elem.parents("tr");
+                        changedFeaturesElements.push(parentTr);
+                        parentTr.css("background-color", "#ddd");
                     }
 
                     debug();
@@ -56,7 +60,13 @@
         });
     };
 
-    var saveFeatures = function (url) {
+    var resetStyle = function() {
+        changedFeaturesElements.forEach(function (item, i, arr) {
+            item.css("background-color", "white");
+        });
+    };
+
+    var saveFeatures = function (url, saveButton) {
         var jsonData = JSON.stringify({ "features": changedFeatures });
 
         $.ajax({
@@ -65,8 +75,20 @@
             url: url,
             type: "POST",
             data: jsonData,
-            success: function() {
-                alert("Сохранение успошно");
+            success: function(response) {
+                if (response != null && response.success) {
+                    alert(response.responseText);
+                } else {
+                    alert(response.responseText);
+                } 
+            },
+            error: function(response) {
+                alert(response.responseText);
+            },
+            complete: function() {
+                saveButton.prop("disabled", false);
+                changedFeatures = [];
+                resetStyle();
             }
         });
     }

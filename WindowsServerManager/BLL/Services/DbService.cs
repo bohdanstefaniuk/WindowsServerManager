@@ -27,7 +27,5 @@ namespace BLL.Services
         {
             GC.SuppressFinalize(this);
         }
-
-        
     }
 }

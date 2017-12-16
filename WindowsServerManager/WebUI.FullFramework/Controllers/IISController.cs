@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Services.Description;
 using BLL.Dto;
 using BLL.Enums;
 using BLL.Interfaces;
@@ -82,10 +83,19 @@ namespace WebUI.FullFramework.Controllers
         #endregion
 
         [HttpPost]
-        public void SaveFeatures(List<FeatureDto> features)
+        public JsonResult SaveFeatures(List<FeatureDto> features)
         {
             //TODO get db name from iis instance
-            FeatureService.UpdateFeatures(features, "BPMonline7111_BStefaniuk_WORK_3_Build").GetAwaiter();
+            try
+            {
+                FeatureService.UpdateFeatures(features, "BPMonline7111_BStefaniuk_WORK_3_Build").GetAwaiter();
+            }
+            catch (Exception e)
+            {
+                return Json(new {success = false, responseText = $"{e.Message}"}, JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(new { success = true, responseText = $"Success" }, JsonRequestBehavior.AllowGet);
         }
     }
 }
