@@ -27,6 +27,7 @@ namespace WebUI.FullFramework.Controllers
             ViewBag.Name = applicationPath;
             ViewBag.SiteType = siteType;
             ViewBag.ActionViewType = viewActionType;
+            ViewBag.IsFeatureTableExist = FeatureService.GetFeatureTableExist("BPMonline7111_BStefaniuk_WORK_3_Build").GetAwaiter().GetResult();
             return View();
         }
 

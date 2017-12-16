@@ -98,17 +98,20 @@
                                 </p>
                             </a>
                         </div>
-                        <div class="IISButton text-center @(ViewBag.ActionViewType == IISViewActionType.FeaturesComponent ? "IISButtonSelected" : "")">
-                            <a href="@Url.Action("Index", "IIS", new { viewActionType = IISViewActionType.FeaturesComponent, siteType = ViewBag.SiteType, applicationPath = ViewBag.Name })">
-                                <img src="@Url.Content("~/Resources/Images/MagicWand_16x.svg")"
-                                     alt=""
-                                     class="IISButtonIco">
-                                <p class="text-center">
-                                    Список
-                                    <br>фич
-                                </p>
-                            </a>
-                        </div>
+                        @if (ViewBag.IsFeatureTableExist)
+                        {
+                            <div class="IISButton text-center @(ViewBag.ActionViewType == IISViewActionType.FeaturesComponent ? "IISButtonSelected" : "")">
+                                <a href="@Url.Action("Index", "IIS", new { viewActionType = IISViewActionType.FeaturesComponent, siteType = ViewBag.SiteType, applicationPath = ViewBag.Name })">
+                                    <img src="@Url.Content("~/Resources/Images/MagicWand_16x.svg")"
+                                         alt=""
+                                         class="IISButtonIco">
+                                    <p class="text-center">
+                                        Список
+                                        <br>фич
+                                    </p>
+                                </a>
+                            </div>
+                        }
                     </div>
                 </div>
                 <div id="IISPageComponentContainer">

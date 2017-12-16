@@ -34,6 +34,12 @@ namespace BLL.Services
             await _featureManager.SetFeaturesState(featuresToUpdate.ToList());
         }
 
+        public async Task<bool> GetFeatureTableExist(string db)
+        {
+            _featureManager.ConfigureConnectionString(db);
+            return await _featureManager.GetFeatureTableExist();
+        }
+
         public void Dispose()
         {
             GC.SuppressFinalize(this);

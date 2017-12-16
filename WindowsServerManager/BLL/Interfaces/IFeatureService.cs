@@ -9,5 +9,6 @@ namespace BLL.Interfaces
     {
         Task<List<FeatureDto>> GetFeatures(string db);
         Task UpdateFeatures(IEnumerable<FeatureDto> featuresToUpdate, string db);
+        Task<bool> GetFeatureTableExist(string db);
     }
 }
