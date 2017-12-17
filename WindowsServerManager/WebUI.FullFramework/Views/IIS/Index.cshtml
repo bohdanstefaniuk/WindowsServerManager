@@ -116,20 +116,20 @@
                 </div>
                 <div id="IISPageComponentContainer">
                     @switch ((IISViewActionType)ViewBag.ActionViewType)
-                {
-                    case IISViewActionType.InformationComponent:
-                        Html.RenderAction("GetInformationComponent", "IIS", new { path = ViewBag.Name, siteType = ViewBag.SiteType });
-                        break;
-                    case IISViewActionType.ConnectionStringsComponent:
-                        Html.RenderAction("GetConnectionStringsComponent", "IIS");
-                        break;
-                    case IISViewActionType.FeaturesComponent:
-                        Html.RenderAction("GetFeaturesComponent", "IIS");
-                        break;
-                    case IISViewActionType.ConfigFileComponent:
-                        Html.RenderAction("GetConfigurationFileComponent", "IIS");
-                        break;
-                }
+                    {
+                        case IISViewActionType.InformationComponent:
+                            Html.RenderAction("GetInformationComponent", "IIS", new { path = ViewBag.Name, siteType = ViewBag.SiteType });
+                            break;
+                        case IISViewActionType.ConnectionStringsComponent:
+                            Html.RenderAction("GetConnectionStringsComponent", "IIS");
+                            break;
+                        case IISViewActionType.FeaturesComponent:
+                            Html.RenderAction("GetFeaturesComponent", "IIS", new { db = ViewBag.Database });
+                            break;
+                        case IISViewActionType.ConfigFileComponent:
+                            Html.RenderAction("GetConfigurationFileComponent", "IIS");
+                            break;
+                    }
                 </div>
             </div>
         }

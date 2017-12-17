@@ -17,6 +17,8 @@ namespace WebUI.FullFramework
             app.CreatePerOwinContext<IUserService>(CreateUserService);
             app.CreatePerOwinContext<IJsTreeMenuService>(CreateJsTreeMenuService);
             app.CreatePerOwinContext<IFeatureService>(CreateFeatureService);
+            app.CreatePerOwinContext<ISettingsService>(CreateSettingsService);
+            app.CreatePerOwinContext<IConnectionStringsService>(CreateConnectionStringsService);
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
@@ -29,6 +31,11 @@ namespace WebUI.FullFramework
             return _serviceCreator.CreateUserService("DbConnection");
         }
 
+        private ISettingsService CreateSettingsService()
+        {
+            return _serviceCreator.CreateSettingsService();
+        }
+
         private IJsTreeMenuService CreateJsTreeMenuService()
         {
             return _serviceCreator.CreateJsTreeMenuService();
@@ -37,6 +44,11 @@ namespace WebUI.FullFramework
         private IFeatureService CreateFeatureService()
         {
             return _serviceCreator.CreateFeatureService();
+        }
+
+        private IConnectionStringsService CreateConnectionStringsService()
+        {
+            return _serviceCreator.CreateConnectionStringsService();
         }
     }
 }

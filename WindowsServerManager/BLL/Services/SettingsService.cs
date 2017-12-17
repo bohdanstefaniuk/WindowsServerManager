@@ -50,5 +50,10 @@ namespace BLL.Services
             _unitOfWork.Settings.Update(settings);
             _unitOfWork.Save();
         }
+
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+        }
     }
 }

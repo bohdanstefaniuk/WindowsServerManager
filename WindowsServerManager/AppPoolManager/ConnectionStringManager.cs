@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using AppPoolManager.Tools;
+using Microsoft.Web.Administration;
 
 namespace AppPoolManager
 {
@@ -19,13 +20,21 @@ namespace AppPoolManager
             _sitesManager = new SitesManager();
         }
 
-        public ConnectionStringsSection GetSiteConnectionStrings(string siteName)
+        public ConnectionStringsSection GetSiteConnectionStrings(string siteName, bool isSite)
         {
-            var site = _sitesManager.GetSiteByName(siteName);
-            var siteApplications = site.Applications;
+            Application rootApplication = null;
+            if (isSite)
+            {
+                var site = _sitesManager.GetSiteByName(siteName);
+                var siteApplications = site.Applications;
+                rootApplication = siteApplications.SingleOrDefault(x => x.Path == "/");
+            }
+            else
+            {
+                rootApplication = _sitesManager.GetApplicationByPath(siteName);
+            }
 
             var connectionStringFileUrl = "";
-            var rootApplication = siteApplications.SingleOrDefault(x => x.Path == "/");
             var dictionary = rootApplication.VirtualDirectories.FirstOrDefault();
             connectionStringFileUrl += $@"{dictionary.PhysicalPath}\{_appConfigFineName}";
 
@@ -35,15 +44,29 @@ namespace AppPoolManager
             return configFile.ConnectionStrings;
         }
 
-        public string GetRedisDb(string siteName)
+        public string GetRedisDb(string siteName, bool isSite)
         {
-            var connectionStrings = GetSiteConnectionStrings(siteName);
+            var connectionStrings = GetSiteConnectionStrings(siteName, isSite);
             var redisConnectionString = connectionStrings.ConnectionStrings[_redisConnectionStringKey];
 
             if (redisConnectionString != null)
             {
                 return ConnectionStringsTool.GetSectionFromString(
                     redisConnectionString.ConnectionString, "db");
+            }
+
+            return null;
+        }
+
+        public string GetMssqlDb(string siteName, bool isSite)
+        {
+            var connectionStrings = GetSiteConnectionStrings(siteName, isSite);
+            var redisConnectionString = connectionStrings.ConnectionStrings["db"];
+
+            if (redisConnectionString != null)
+            {
+                return ConnectionStringsTool.GetSectionFromString(
+                    redisConnectionString.ConnectionString, "Initial Catalog");
             }
 
             return null;

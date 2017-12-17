@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using BLL.Interfaces;
+using DataAccessLayer.Repositories;
 using MssqlManager;
 
 namespace BLL.Services
@@ -11,10 +12,10 @@ namespace BLL.Services
 
         public DbService()
         {
-            //var settingsManager = new SettingsService(new UnitOfWork());
-            //var mssqlSettings = settingsManager.GetSettingByCode("ApplicationDbServer");
+            var settingsManager = new SettingsService(new UnitOfWork());
+            var mssqlSettings = settingsManager.GetSettingByCode("ApplicationDbServer");
 
-            _dbManager = new DbManager(@"WORK-MS-02\MSSQL2016");
+            _dbManager = new DbManager(mssqlSettings.Value);
         }
 
         public async Task DropDatabase(string db)

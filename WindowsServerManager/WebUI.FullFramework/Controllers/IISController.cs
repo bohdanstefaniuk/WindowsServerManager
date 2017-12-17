@@ -19,15 +19,41 @@ namespace WebUI.FullFramework.Controllers
     {
         private IJsTreeMenuService JsTreeViewMenuService => HttpContext.GetOwinContext().GetUserManager<IJsTreeMenuService>();
         private IFeatureService FeatureService => HttpContext.GetOwinContext().GetUserManager<IFeatureService>();
+        private IConnectionStringsService ConnectionStringsService => HttpContext.GetOwinContext().GetUserManager<IConnectionStringsService>();
 
         public ActionResult Index(string applicationPath = null, 
             IISSiteType siteType = IISSiteType.Default, 
             IISViewActionType viewActionType = IISViewActionType.InformationComponent)
         {
+            string db = null;
+            if (!string.IsNullOrEmpty(applicationPath))
+            {
+                switch (siteType)
+                {
+                    case IISSiteType.Application:
+                        db = ConnectionStringsService.GetMssqlDb(applicationPath, false);
+                        break;
+                    case IISSiteType.Site:
+                        db = ConnectionStringsService.GetMssqlDb(applicationPath, true);
+                        break;
+                }
+                
+            }
+
             ViewBag.Name = applicationPath;
             ViewBag.SiteType = siteType;
             ViewBag.ActionViewType = viewActionType;
-            ViewBag.IsFeatureTableExist = FeatureService.GetFeatureTableExist("BPMonline7111_BStefaniuk_WORK_3_Build").GetAwaiter().GetResult();
+            ViewBag.Database = db;
+
+            if (!string.IsNullOrEmpty(db))
+            {
+                ViewBag.IsFeatureTableExist = FeatureService.GetFeatureTableExist(db).GetAwaiter().GetResult();
+            }
+            else
+            {
+                ViewBag.IsFeatureTableExist = false;
+            }
+
             return View();
         }
 
@@ -37,35 +63,35 @@ namespace WebUI.FullFramework.Controllers
         {
             switch (actionType)
             {
-                case IISViewActionType.InformationComponent:
-                    //return GetInformationComponent();
-                case IISViewActionType.ConnectionStringsComponent:
-                    return GetConnectionStringsComponent();
-                case IISViewActionType.FeaturesComponent:
-                    return GetFeaturesComponent();
-                case IISViewActionType.ConfigFileComponent:
-                    return GetConfigurationFileComponent();
+                //case IISViewActionType.InformationComponent:
+                //    //return GetInformationComponent();
+                //case IISViewActionType.ConnectionStringsComponent:
+                //    return GetConnectionStringsComponent();
+                //case IISViewActionType.FeaturesComponent:
+                //    return GetFeaturesComponent();
+                //case IISViewActionType.ConfigFileComponent:
+                //    return GetConfigurationFileComponent();
                 default:
                     return null;
             }
         }
 
         [ChildActionOnly]
-        public PartialViewResult GetFeaturesComponent()
+        public PartialViewResult GetFeaturesComponent(string db)
         {
             //TODO get db name from iis instance
-            var features = FeatureService.GetFeatures("BPMonline7111_BStefaniuk_WORK_3_Build").GetAwaiter().GetResult();
+            var features = FeatureService.GetFeatures(ViewBag.Database).GetAwaiter().GetResult();
             return PartialView("_FeaturesComponent", features);
         }
 
         [ChildActionOnly]
-        public PartialViewResult GetConnectionStringsComponent()
+        public PartialViewResult GetConnectionStringsComponent(string db)
         {
             return PartialView("_ConnectionStringsComponent");
         }
 
         [ChildActionOnly]
-        public PartialViewResult GetConfigurationFileComponent()
+        public PartialViewResult GetConfigurationFileComponent(string db)
         {
             return PartialView("_ConfigurationFileComponent");
         }
