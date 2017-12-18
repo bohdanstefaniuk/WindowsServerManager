@@ -9,6 +9,7 @@ using DataAccessLayer.Repositories;
 namespace BLL.Services
 {
     //TODO Change to DI
+    //Rename for some kind of factory
     public class ServiceCreator : IServiceCreator
     {
         public IUserService CreateUserService(string connection)
@@ -16,7 +17,7 @@ namespace BLL.Services
             return new UserService(new IdentityUnitOfWork(connection));
         }
 
-        public IJsTreeMenuService CreaJsTreeMenuService()
+        public IJsTreeMenuService CreateJsTreeMenuService()
         {
             return new JsTreeMenuService();
         }

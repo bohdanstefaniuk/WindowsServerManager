@@ -197,6 +197,7 @@
     <Compile Include="Enums\IISSiteType.cs" />
     <Compile Include="Infrastructure\OperationDetails.cs" />
     <Compile Include="Interfaces\IServiceCreator.cs" />
+    <Compile Include="Interfaces\IApplicationPoolService.cs" />
     <Compile Include="Interfaces\ISettingsService.cs" />
     <Compile Include="Interfaces\IUserService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -204,6 +205,7 @@
     <Compile Include="Services\JsTreeMenuService.cs" />
     <Compile Include="Services\ServiceCreator.cs" />
     <Compile Include="Services\SettingsService.cs" />
+    <Compile Include="Services\ApplicationPoolService.cs" />
     <Compile Include="Services\SiteInformationService.cs" />
     <Compile Include="Services\UserService.cs" />
   </ItemGroup>
