@@ -58,6 +58,7 @@ namespace WebUI.FullFramework.Helpers
 
                 li.Attributes.Add("data-jstree", iconUrl);
                 li.InnerHtml += a.ToString();
+                li.Attributes.Add("class", "jstree-open");
 
                 if (node.Childrens.Count > 0)
                 {

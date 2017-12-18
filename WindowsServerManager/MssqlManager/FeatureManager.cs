@@ -10,11 +10,45 @@ namespace MssqlManager
 {
     public class FeatureManager
     {
-        private readonly string _connectionString;
+        private string _connectionString;
+        private readonly string _dataSource;
+        private string _db;
 
-        public FeatureManager(string dataSource, string db)
+        public FeatureManager(string dataSource)
         {
-            _connectionString = $@"Server={dataSource}; Initial Catalog={db}; Persist Security Info=True; MultipleActiveResultSets=True; Integrated Security=SSPI;";
+            _dataSource = dataSource;
+        }
+
+        public void ConfigureConnectionString(string db)
+        {
+            _connectionString = $@"Server={_dataSource}; Initial Catalog={db}; Persist Security Info=True; MultipleActiveResultSets=True; Integrated Security=SSPI;";
+        }
+
+        public async Task<bool> GetFeatureTableExist()
+        {
+            var sqlExpression = $@"
+                                SELECT CASE WHEN EXISTS (
+                                    SELECT *  FROM INFORMATION_SCHEMA.TABLES 
+                                    WHERE TABLE_NAME = 'Feature'
+                                )
+                                THEN CAST(1 AS BIT)
+                                ELSE CAST(0 AS BIT) END";
+
+            var tableExists = false; 
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                SqlCommand command = new SqlCommand(sqlExpression, connection);
+                SqlDataReader reader = command.ExecuteReaderAsync().Result;
+
+                await reader.ReadAsync();
+                tableExists = Convert.ToBoolean(reader.GetValue(0));
+
+                reader.Close();
+                connection.Close();
+            }
+
+            return tableExists;
         }
 
         public async Task<IEnumerable<FeatureDto>> GetFeatures()
@@ -29,8 +63,7 @@ namespace MssqlManager
             {
                 connection.Open();
                 SqlCommand command = new SqlCommand(sqlExpression, connection);
-                SqlDataReader reader = await command.ExecuteReaderAsync();
-
+                SqlDataReader reader = command.ExecuteReaderAsync().Result;
                 if (reader.HasRows)
                 {
                     while (await reader.ReadAsync())
@@ -45,6 +78,7 @@ namespace MssqlManager
                 }
 
                 reader.Close();
+                connection.Close();
             }
 
             return features;
@@ -56,31 +90,33 @@ namespace MssqlManager
             foreach (var group in groupByFeatureState)
             {
                 var featuresId = group.Select(x => x.Id);
-                var featuresIdString = string.Join("','", featuresId);
                 var state = group.Key;
 
-                await SetFeatureState(featuresIdString, state);
+                await SetFeatureState(featuresId.ToArray(), state);
             }
         }
 
-        private async Task SetFeatureState(string featuresId, bool state)
+        private async Task SetFeatureState(Guid[] featuresId, bool state)
         {
-            const string sqlExpression = @"UPDATE AdminUnitFeatureState
-                                           SET FeatureState = @featureState
-                                           WHERE FeatureId IN (@featuresId)";
-
-            using (SqlConnection connection = new SqlConnection(_connectionString))
+            var featuresIdParameters = new string[featuresId.Length];
+            SqlCommand command = new SqlCommand();
+            for (var i = 0; i < featuresId.Length; i++)
             {
-                connection.Open();
-                SqlCommand command = new SqlCommand(sqlExpression, connection);
-                SqlParameter featureStateParam = new SqlParameter("@featureState", state);
-                command.Parameters.Add(featureStateParam);
-                SqlParameter featuresIdParam = new SqlParameter("@featuresId", featuresId);
-                command.Parameters.Add(featuresIdParam);
-
-                await command.ExecuteNonQueryAsync();
-                connection.Close();
+                featuresIdParameters[i] = $"@Feature{i}Id";
+                command.Parameters.AddWithValue(featuresIdParameters[i], featuresId[i]);
             }
+
+            var featuresIdParametersString = string.Join(", ", featuresIdParameters);
+            var sqlExpression = $@"UPDATE AdminUnitFeatureState
+                                    SET FeatureState = {Convert.ToInt32(state)}
+                                    WHERE FeatureId in ({featuresIdParametersString})";
+
+            command.CommandText = sqlExpression;
+            command.Connection = new SqlConnection(_connectionString);
+            await command.Connection.OpenAsync();
+            await command.ExecuteNonQueryAsync();
+            command.Connection.Close();
+            command.Dispose();
         }
     }
 }

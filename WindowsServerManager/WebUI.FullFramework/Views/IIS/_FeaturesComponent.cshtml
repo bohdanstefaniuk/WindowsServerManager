@@ -1,8 +1,16 @@
-﻿<div class="panel panel-default">
+﻿@model IEnumerable<MssqlManager.Dto.FeatureDto>
+
+<div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title">Список фич</h3>
     </div>
     <div class="panel-body">
+        <div class="row" id="saveFeaturesBlock">
+            <div class="col-sm-12">
+                <button id="saveFeaturesButton" class="btn btn-info">Сохранить фичи</button>
+            </div>
+        </div>
+        <br/>
         <table class="table table-hover featuresTable">
             <tr>
                 <td class="col3">
@@ -15,46 +23,43 @@
                     <strong>State</strong>
                 </td>
             </tr>
-            <tr>
-                <td>03c5a9dc-0aa8-44c5-be03-089aa9fc3d2a</td>
-                <td>OrdersAndInvoicesEpicFeature</td>
-                <td>
-                    <select>
-                        <option>Включено</option>
-                        <option>Выключено</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td>03c5a9dc-0aa8-44c5-be03-089aa9fc3d2a</td>
-                <td>OrdersAndInvoicesEpicFeature</td>
-                <td>
-                    <select>
-                        <option>Включено</option>
-                        <option>Выключено</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td>03c5a9dc-0aa8-44c5-be03-089aa9fc3d2a</td>
-                <td>OrdersAndInvoicesEpicFeature</td>
-                <td>
-                    <select>
-                        <option>Включено</option>
-                        <option>Выключено</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td>03c5a9dc-0aa8-44c5-be03-089aa9fc3d2a</td>
-                <td>OrdersAndInvoicesEpicFeature</td>
-                <td>
-                    <select>
-                        <option>Включено</option>
-                        <option>Выключено</option>
-                    </select>
-                </td>
-            </tr>
+            @foreach (var feature in Model)
+            {
+                <tr>
+                    <td>@feature.Id</td>
+                    <td>@feature.Code</td>
+                    <td>
+                        <select class="featureControl" data-feature-id="@feature.Id">
+                            @if (feature.State)
+                            {
+                                <option selected="selected" value="true">Включено</option>
+                                <option value="false">Выключено</option>
+                            }
+                            else
+                            {
+                                <option value="true">Включено</option>
+                                <option selected="selected" value="false">Выключено</option>
+                            }
+                        </select>
+                    </td>
+                </tr>
+            }
         </table>
     </div>
 </div>
+
+@Scripts.Render("~/Scripts/Custom/FeatureManager.js")
+@Scripts.Render("~/Scripts/Custom/StyleEngine.js")
+
+<script>
+    var featuresSaveUrl = "@Url.Action("SaveFeatures", "IIS")";
+    var featureManager = new FeatureManager();
+    featureManager.initializeChangeEvents();
+
+    var $saveButton = $("#saveFeaturesButton");
+
+    $saveButton.click(function () {
+        $saveButton.prop("disabled", true);
+        featureManager.saveFeatures(featuresSaveUrl, $saveButton);
+    });
+</script>
