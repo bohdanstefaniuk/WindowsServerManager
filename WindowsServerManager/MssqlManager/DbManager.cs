@@ -16,12 +16,20 @@ namespace MssqlManager
             _dataSource = dataSource;
         }
 
+        /// <summary>
+        /// Configure connection string
+        /// </summary>
+        /// <param name="db">Database name</param>
         public void ConfigureConnectionString(string db)
         {
             _db = db;
             _connectionString = $@"Server={_dataSource}; Initial Catalog={db}; Persist Security Info=True; MultipleActiveResultSets=True; Integrated Security=SSPI;";
         }
 
+        /// <summary>
+        /// Drop database from connection string
+        /// </summary>
+        /// <returns>async Task</returns>
         public async Task DropDatabaseAsync()
         {
             var sqlExpression = $@"ALTER DATABASE {_db} SET SINGLE_USER WITH ROLLBACK IMMEDIATE

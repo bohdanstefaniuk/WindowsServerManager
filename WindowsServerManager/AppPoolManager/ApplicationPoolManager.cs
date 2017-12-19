@@ -34,11 +34,20 @@ namespace AppPoolManager
             return state == ObjectState.Starting || state == ObjectState.Started;
         }
 
+        /// <summary>
+        /// Return all application pools hosted on currenct server
+        /// </summary>
+        /// <returns>application pool collection</returns>
         public ApplicationPoolCollection GetApplicationPoolCollection()
         {
             return _serverManager.ApplicationPools;
         }
 
+        /// <summary>
+        /// Get application pool by name
+        /// </summary>
+        /// <param name="name">Name of application pool</param>
+        /// <returns>Application pool</returns>
         public ApplicationPool GetApplicationPoolByName(string name)
         {
             var pools = _serverManager.ApplicationPools;
@@ -70,6 +79,10 @@ namespace AppPoolManager
             
         }
 
+        /// <summary>
+        /// TODO Implemetn this method in the next version (1.3)
+        /// </summary>
+        /// <returns></returns>
         public bool AddApplicationPool()
         {
             return default(bool);

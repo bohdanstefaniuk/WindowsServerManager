@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using PerfomanceManager.Dto;
 
-namespace PerfomanceManager
+namespace PerformanceManager
 {
     public class DiskManager
     {

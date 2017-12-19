@@ -5,7 +5,7 @@ namespace RedisManager
 {
     public class RedisManager : IDisposable
     {
-        ConnectionMultiplexer _redis = ConnectionMultiplexer.Connect("localhost");
+        private readonly ConnectionMultiplexer _redis = ConnectionMultiplexer.Connect("localhost");
 
         public async void FlushDatabaseAsync(int db)
         {
@@ -13,7 +13,7 @@ namespace RedisManager
             await server.FlushDatabaseAsync(db);
         }
 
-        public async void FluashAllDatabasesAsync()
+        public async void FlushAllDatabasesAsync()
         {
             var server = _redis.GetServer("localhost");
             await server.FlushAllDatabasesAsync();

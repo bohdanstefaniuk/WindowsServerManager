@@ -1,17 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using PerfomanceManager.Dto;
 
-namespace PerfomanceManager
+namespace PerformanceManager
 {
     public class PerfomanceManager : IDisposable
     {
-        private PerformanceCounter _cpuCounter;
-        private PerformanceCounter _ramCounter;
+        private readonly PerformanceCounter _cpuCounter;
+        private readonly PerformanceCounter _ramCounter;
         private PerformanceCounter _diskCounter;
 
         public PerfomanceManager()

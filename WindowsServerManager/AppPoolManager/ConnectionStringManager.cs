@@ -20,6 +20,12 @@ namespace AppPoolManager
             _sitesManager = new SitesManager();
         }
 
+        /// <summary>
+        /// Get connection strings for site or application
+        /// </summary>
+        /// <param name="siteName">Name of site or application path</param>
+        /// <param name="isSite">True when siteName contains site, false when siteName is application path</param>
+        /// <returns>connection strings section</returns>
         public ConnectionStringsSection GetSiteConnectionStrings(string siteName, bool isSite)
         {
             Application rootApplication = null;
@@ -44,6 +50,12 @@ namespace AppPoolManager
             return configFile.ConnectionStrings;
         }
 
+        /// <summary>
+        /// Get redis database number from connection string for site or application
+        /// </summary>
+        /// <param name="siteName">Name of site or application path</param>
+        /// <param name="isSite">True when siteName contains site, false when siteName is application path</param>
+        /// <returns>Redis db number or null when application/site doesn`t have redis</returns>
         public string GetRedisDb(string siteName, bool isSite)
         {
             var connectionStrings = GetSiteConnectionStrings(siteName, isSite);
@@ -58,6 +70,12 @@ namespace AppPoolManager
             return null;
         }
 
+        /// <summary>
+        /// Get mssql database name from connection string for site or application
+        /// </summary>
+        /// <param name="siteName">Name of site or application path</param>
+        /// <param name="isSite">True when siteName contains site, false when siteName is application path</param>
+        /// <returns>mssql database name or null when application/site doesn`t have mssql</returns>
         public string GetMssqlDb(string siteName, bool isSite)
         {
             var connectionStrings = GetSiteConnectionStrings(siteName, isSite);

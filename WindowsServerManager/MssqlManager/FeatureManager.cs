@@ -19,11 +19,19 @@ namespace MssqlManager
             _dataSource = dataSource;
         }
 
+        /// <summary>
+        /// Configure connection string
+        /// </summary>
+        /// <param name="db">Database name</param>
         public void ConfigureConnectionString(string db)
         {
             _connectionString = $@"Server={_dataSource}; Initial Catalog={db}; Persist Security Info=True; MultipleActiveResultSets=True; Integrated Security=SSPI;";
         }
 
+        /// <summary>
+        /// Get information about existing Feature table in db
+        /// </summary>
+        /// <returns>True if table exists</returns>
         public async Task<bool> GetFeatureTableExist()
         {
             var sqlExpression = $@"
@@ -51,6 +59,10 @@ namespace MssqlManager
             return tableExists;
         }
 
+        /// <summary>
+        /// Get features from Feature/AdminUnitFeatureState tables
+        /// </summary>
+        /// <returns>list of features</returns>
         public async Task<IEnumerable<FeatureDto>> GetFeatures()
         {
             const string sqlExpression = @"SELECT f.Id, f.Code, a.FeatureState 
@@ -84,6 +96,11 @@ namespace MssqlManager
             return features;
         }
 
+        /// <summary>
+        /// Set features states
+        /// </summary>
+        /// <param name="features">List of features which need to update</param>
+        /// <returns>async Task</returns>
         public async Task SetFeaturesState(List<FeatureDto> features)
         {
             var groupByFeatureState = features.GroupBy(x => x.State);
@@ -96,6 +113,12 @@ namespace MssqlManager
             }
         }
 
+        /// <summary>
+        /// Set feature status for needed feature
+        /// </summary>
+        /// <param name="featuresId">Feature guid</param>
+        /// <param name="state">Feature state</param>
+        /// <returns>async Task</returns>
         private async Task SetFeatureState(Guid[] featuresId, bool state)
         {
             var featuresIdParameters = new string[featuresId.Length];
