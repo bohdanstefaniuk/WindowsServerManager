@@ -20,31 +20,36 @@ namespace WebUI.FullFramework.Controllers
         private IFeatureService FeatureService => HttpContext.GetOwinContext().GetUserManager<IFeatureService>();
         private IConnectionStringsService ConnectionStringsService => HttpContext.GetOwinContext().GetUserManager<IConnectionStringsService>();
         private IApplicationPoolService ApplicationPoolService => HttpContext.GetOwinContext().GetUserManager<IApplicationPoolService>();
-        
+        private IRedisService RedisService => HttpContext.GetOwinContext().GetUserManager<IRedisService>();
 
         public ActionResult Index(string applicationPath = null, 
             IISSiteType siteType = IISSiteType.Default, 
             IISViewActionType viewActionType = IISViewActionType.InformationComponent)
         {
             string db = null;
+            string redisDb = null;
             if (!string.IsNullOrEmpty(applicationPath))
             {
                 switch (siteType)
                 {
                     case IISSiteType.Application:
                         db = ConnectionStringsService.GetMssqlDb(applicationPath, false);
+                        redisDb = ConnectionStringsService.GetRedisDb(applicationPath, false);
                         break;
                     case IISSiteType.Site:
                         db = ConnectionStringsService.GetMssqlDb(applicationPath, true);
+                        redisDb = ConnectionStringsService.GetRedisDb(applicationPath, true);
                         break;
                 }
                 
             }
 
+            // TODO Move into view model
             ViewBag.Name = applicationPath;
             ViewBag.SiteType = siteType;
             ViewBag.ActionViewType = viewActionType;
             ViewBag.Database = db;
+            ViewBag.RedisDb = redisDb;
 
             if (!string.IsNullOrEmpty(db))
             {
@@ -156,6 +161,37 @@ namespace WebUI.FullFramework.Controllers
             }
 
             return Json(new { success = true, responseText = $"Success", poolStatus = isPoolStartedOrStarting }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult RecycleApplicationPool(string poolName)
+        {
+            bool isPoolStartedOrStarting;
+            try
+            {
+                isPoolStartedOrStarting = ApplicationPoolService.RecyclePoolByName(poolName);
+            }
+            catch (Exception e)
+            {
+                return Json(new { success = false, responseText = $"{e.Message}" }, JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(new { success = true, responseText = $"Success", poolStatus = isPoolStartedOrStarting }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult FlushRedisDb(int redisDb)
+        {
+            try
+            {
+                RedisService.FlushDatabaseAsync(redisDb).GetAwaiter();
+            }
+            catch (Exception e)
+            {
+                return Json(new { success = false, responseText = $"{e.Message}" }, JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(new { success = true, responseText = $"Success" }, JsonRequestBehavior.AllowGet);
         }
     }
 }

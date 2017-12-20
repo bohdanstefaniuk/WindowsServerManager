@@ -36,6 +36,11 @@ namespace BLL.Services
             return _applicationPoolManager.StopPoolByName(name);
         }
 
+        public bool RecyclePoolByName(string name)
+        {
+            return _applicationPoolManager.RecyclePoolByName(name);
+        }
+
         public bool IsPoolStartingOrStarted(string poolName)
         {
             return _applicationPoolManager.IsPoolStartingOrStarted(poolName);

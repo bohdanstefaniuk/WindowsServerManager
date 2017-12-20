@@ -1,19 +1,20 @@
 ﻿using System;
+using System.Threading.Tasks;
 using StackExchange.Redis;
 
 namespace RedisManager
 {
     public class RedisManager : IDisposable
     {
-        private readonly ConnectionMultiplexer _redis = ConnectionMultiplexer.Connect("localhost");
+        private readonly ConnectionMultiplexer _redis = ConnectionMultiplexer.Connect("localhost,allowAdmin=true");
 
-        public async void FlushDatabaseAsync(int db)
+        public async Task FlushDatabaseAsync(int db)
         {
-            var server = _redis.GetServer("localhost");
+            var server = _redis.GetServer("localhost:6379");
             await server.FlushDatabaseAsync(db);
         }
 
-        public async void FlushAllDatabasesAsync()
+        public async Task FlushAllDatabasesAsync()
         {
             var server = _redis.GetServer("localhost");
             await server.FlushAllDatabasesAsync();

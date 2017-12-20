@@ -209,7 +209,9 @@
     <Compile Include="Services\DbService.cs" />
     <Compile Include="Services\FeatureService.cs" />
     <Compile Include="Interfaces\IConnectionStringsService.cs" />
+    <Compile Include="Interfaces\IRedisService.cs" />
     <Compile Include="Services\JsTreeMenuService.cs" />
+    <Compile Include="Services\RedisService.cs" />
     <Compile Include="Services\ServiceCreator.cs" />
     <Compile Include="Services\SettingsService.cs" />
     <Compile Include="Services\ApplicationPoolService.cs" />

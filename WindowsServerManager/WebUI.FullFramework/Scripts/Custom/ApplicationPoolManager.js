@@ -1,4 +1,4 @@
-﻿function ApplicationPoolManager() {
+﻿function AjaxPost() {
     var post = function(url) {
         $.ajax({
             contentType: "application/json; charset=utf-8",

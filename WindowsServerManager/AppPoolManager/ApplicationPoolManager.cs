@@ -79,6 +79,14 @@ namespace AppPoolManager
             
         }
 
+        public bool RecyclePoolByName(string name)
+        {
+            var pool = GetApplicationPoolByName(name);
+            var poolState = pool.Recycle();
+            return IsPoolStartingOrStarted(poolState);
+
+        }
+
         public bool IsPoolStartingOrStarted(string poolName)
         {
             var pool = GetApplicationPoolByName(poolName);

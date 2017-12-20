@@ -68,21 +68,26 @@
                                 </a>
                             </div>
                         }
-                        <div class="IISButton text-center">
-                            <a href="#">
-                                <img src="@Url.Content("~/Resources/Images/Refresh_16x.svg")"
-                                     alt=""
-                                     class="IISButtonIco">
-                                <p class="text-center">
-                                    Рестарт
-                                    <br>пулла
-                                </p>
-                            </a>
-                        </div>
+                        @if (ViewBag.IsPoolStartingOrStarted)
+                        {
+                            <div class="IISButton text-center">
+                                <a href="#">
+                                    <img src="@Url.Content("~/Resources/Images/Refresh_16x.svg")"
+                                         alt=""
+                                         id="recyclePoolActionButton"
+                                         class="IISButtonIco">
+                                    <p class="text-center">
+                                        Рестарт
+                                        <br>пулла
+                                    </p>
+                                </a>
+                            </div>
+                        }
                         <div class="IISButton text-center">
                             <a href="#">
                                 <img src="@Url.Content("~/Resources/Images/AzureRedisCache_color_16x.svg")"
                                      alt=""
+                                     id="flushRedisDbActionButton"
                                      class="IISButtonIco">
                                 <p class="text-center">Очистить Redis</p>
                             </a>
@@ -155,14 +160,22 @@
             document.location.href = href;
         });
 
-        var applicationPoolManager = ApplicationPoolManager();
+        var ajaxPost = AjaxPost();
         $("#startPoolActionButton").click(function () {
             var url = "@Url.Action("StartApplicationPool","IIS", new { poolName = ViewBag.ApplicationPoolName })";
-            applicationPoolManager.post(url);
+            ajaxPost.post(url);
         });
         $("#stopPoolActionButton").click(function() {
             var url = "@Url.Action("StopApplicationPool","IIS", new { poolName = ViewBag.ApplicationPoolName })";
-            applicationPoolManager.post(url);
+            ajaxPost.post(url);
+        });
+        $("#recyclePoolActionButton").click(function() {
+            var url = "@Url.Action("RecycleApplicationPool","IIS", new { poolName = ViewBag.ApplicationPoolName })";
+            ajaxPost.post(url);
+        });
+        $("#flushRedisDbActionButton").click(function() {
+            var url = "@Url.Action("FlushRedisDb","IIS", new { redisDb = ViewBag.RedisDb })";
+            ajaxPost.post(url);
         });
     </script>
 }

@@ -20,6 +20,7 @@ namespace WebUI.FullFramework
             app.CreatePerOwinContext<ISettingsService>(CreateSettingsService);
             app.CreatePerOwinContext<IConnectionStringsService>(CreateConnectionStringsService);
             app.CreatePerOwinContext<IApplicationPoolService>(CreateApplciationPoolService);
+            app.CreatePerOwinContext<IRedisService>(CreateRedisService);
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
@@ -55,6 +56,11 @@ namespace WebUI.FullFramework
         private IApplicationPoolService CreateApplciationPoolService()
         {
             return _serviceCreator.CreateApplciationPoolService();
+        }
+
+        private IRedisService CreateRedisService()
+        {
+            return _serviceCreator.CreateRedisManager();
         }
     }
 }

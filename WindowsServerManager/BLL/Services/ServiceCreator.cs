@@ -41,5 +41,10 @@ namespace BLL.Services
         {
             return new ApplicationPoolService();
         }
+
+        public IRedisService CreateRedisManager()
+        {
+            return new RedisService();
+        }
     }
 }
