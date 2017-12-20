@@ -17,9 +17,9 @@ namespace WebUI.FullFramework.Controllers
 {
     public class IISController : Controller
     {
-        private IJsTreeMenuService JsTreeViewMenuService => HttpContext.GetOwinContext().GetUserManager<IJsTreeMenuService>();
         private IFeatureService FeatureService => HttpContext.GetOwinContext().GetUserManager<IFeatureService>();
         private IConnectionStringsService ConnectionStringsService => HttpContext.GetOwinContext().GetUserManager<IConnectionStringsService>();
+        private IApplicationPoolService ApplicationPoolService => HttpContext.GetOwinContext().GetUserManager<IApplicationPoolService>();
 
         public ActionResult Index(string applicationPath = null, 
             IISSiteType siteType = IISSiteType.Default, 
@@ -80,7 +80,7 @@ namespace WebUI.FullFramework.Controllers
         public PartialViewResult GetFeaturesComponent(string db)
         {
             //TODO get db name from iis instance
-            var features = FeatureService.GetFeatures(ViewBag.Database).GetAwaiter().GetResult();
+            var features = FeatureService.GetFeatures(db).GetAwaiter().GetResult();
             return PartialView("_FeaturesComponent", features);
         }
 
@@ -110,12 +110,12 @@ namespace WebUI.FullFramework.Controllers
         #endregion
 
         [HttpPost]
-        public JsonResult SaveFeatures(List<FeatureDto> features)
+        public JsonResult SaveFeatures(string db, List<FeatureDto> features)
         {
             //TODO get db name from iis instance
             try
             {
-                FeatureService.UpdateFeatures(features, "BPMonline7111_BStefaniuk_WORK_3_Build").GetAwaiter();
+                FeatureService.UpdateFeatures(features, db).GetAwaiter();
             }
             catch (Exception e)
             {

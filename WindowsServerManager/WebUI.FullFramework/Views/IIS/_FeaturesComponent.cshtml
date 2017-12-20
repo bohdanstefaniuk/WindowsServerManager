@@ -52,7 +52,7 @@
 @Scripts.Render("~/Scripts/Custom/StyleEngine.js")
 
 <script>
-    var featuresSaveUrl = "@Url.Action("SaveFeatures", "IIS")";
+    var featuresSaveUrl = "@Url.Action("SaveFeatures", "IIS", new { db = ViewBag.Database })";
     var featureManager = new FeatureManager();
     featureManager.initializeChangeEvents();
 

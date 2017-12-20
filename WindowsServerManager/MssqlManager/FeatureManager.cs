@@ -68,7 +68,8 @@ namespace MssqlManager
             const string sqlExpression = @"SELECT f.Id, f.Code, a.FeatureState 
                                          FROM Feature as f
                                          INNER JOIN AdminUnitFeatureState as a
-	                                        ON f.Id = a.FeatureId";
+	                                        ON f.Id = a.FeatureId
+                                         Group by f.Id, f.Code, a.FeatureState";
             var features = new List<FeatureDto>();
 
             using (var connection = new SqlConnection(_connectionString))

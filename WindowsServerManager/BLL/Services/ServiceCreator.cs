@@ -17,7 +17,6 @@ namespace BLL.Services
             return new UserService(new IdentityUnitOfWork(connection));
         }
 
-
         public ISettingsService CreateSettingsService()
         {
             return new SettingsService(new UnitOfWork());
@@ -36,6 +35,11 @@ namespace BLL.Services
         public IConnectionStringsService CreateConnectionStringsService()
         {
             return new ConnectionStringsService();
+        }
+
+        public IApplicationPoolService CreateApplciationPoolService()
+        {
+            return new ApplicationPoolService();
         }
     }
 }

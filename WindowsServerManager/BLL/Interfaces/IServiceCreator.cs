@@ -9,5 +9,6 @@ namespace BLL.Interfaces
         IFeatureService CreateFeatureService();
         ISettingsService CreateSettingsService();
         IConnectionStringsService CreateConnectionStringsService();
+        IApplicationPoolService CreateApplciationPoolService();
     }
 }

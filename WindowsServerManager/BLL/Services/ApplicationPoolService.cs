@@ -7,11 +7,11 @@ using BLL.Interfaces;
 
 namespace BLL.Services
 {
-    public class ApplicationPoolManager: IApplicationPoolService, IDisposable
+    public class ApplicationPoolService : IApplicationPoolService
     {
         private readonly ApplicationPoolManager _applicationPoolManager;
 
-        public ApplicationPoolManager()
+        public ApplicationPoolService()
         {
             _applicationPoolManager = new ApplicationPoolManager();
         }
@@ -39,6 +39,7 @@ namespace BLL.Services
         public void Dispose()
         {
             _applicationPoolManager?.Dispose();
+            GC.SuppressFinalize(this);
         }
     }
 }

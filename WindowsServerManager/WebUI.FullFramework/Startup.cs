@@ -19,6 +19,7 @@ namespace WebUI.FullFramework
             app.CreatePerOwinContext<IFeatureService>(CreateFeatureService);
             app.CreatePerOwinContext<ISettingsService>(CreateSettingsService);
             app.CreatePerOwinContext<IConnectionStringsService>(CreateConnectionStringsService);
+            app.CreatePerOwinContext<IApplicationPoolService>(CreateApplciationPoolService);
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
@@ -49,6 +50,11 @@ namespace WebUI.FullFramework
         private IConnectionStringsService CreateConnectionStringsService()
         {
             return _serviceCreator.CreateConnectionStringsService();
+        }
+
+        private IApplicationPoolService CreateApplciationPoolService()
+        {
+            return _serviceCreator.CreateApplciationPoolService();
         }
     }
 }
