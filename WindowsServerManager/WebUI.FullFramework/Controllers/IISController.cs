@@ -20,6 +20,7 @@ namespace WebUI.FullFramework.Controllers
         private IFeatureService FeatureService => HttpContext.GetOwinContext().GetUserManager<IFeatureService>();
         private IConnectionStringsService ConnectionStringsService => HttpContext.GetOwinContext().GetUserManager<IConnectionStringsService>();
         private IApplicationPoolService ApplicationPoolService => HttpContext.GetOwinContext().GetUserManager<IApplicationPoolService>();
+        
 
         public ActionResult Index(string applicationPath = null, 
             IISSiteType siteType = IISSiteType.Default, 
@@ -54,27 +55,26 @@ namespace WebUI.FullFramework.Controllers
                 ViewBag.IsFeatureTableExist = false;
             }
 
+            if (!string.IsNullOrEmpty(applicationPath))
+            {
+                SiteInformation information;
+                // TODO Extract interface for DI
+                using (var infoService = new SiteInformationService())
+                {
+                    information = infoService.GetInformationBySiteType(applicationPath, siteType);
+                }
+
+                ViewBag.ApplicationPoolName = information.ApplicationPoolName;
+                ViewBag.IsPoolStoppingOrStopped =
+                    ApplicationPoolService.IsPoolStoppingOrStopped(information.ApplicationPoolName);
+                ViewBag.IsPoolStartingOrStarted =
+                    ApplicationPoolService.IsPoolStartingOrStarted(information.ApplicationPoolName);
+            }
+            
             return View();
         }
 
         #region Methods: Get partial Views (Components)
-
-        public PartialViewResult GetActionComponentByType(IISViewActionType actionType)
-        {
-            switch (actionType)
-            {
-                //case IISViewActionType.InformationComponent:
-                //    //return GetInformationComponent();
-                //case IISViewActionType.ConnectionStringsComponent:
-                //    return GetConnectionStringsComponent();
-                //case IISViewActionType.FeaturesComponent:
-                //    return GetFeaturesComponent();
-                //case IISViewActionType.ConfigFileComponent:
-                //    return GetConfigurationFileComponent();
-                default:
-                    return null;
-            }
-        }
 
         [ChildActionOnly]
         public PartialViewResult GetFeaturesComponent(string db)
@@ -100,6 +100,7 @@ namespace WebUI.FullFramework.Controllers
         public PartialViewResult GetInformationComponent(string path, IISSiteType siteType)
         {
             SiteInformation information;
+            // TODO Extract interface for DI
             using (var infoService = new SiteInformationService())
             {
                 information = infoService.GetInformationBySiteType(path, siteType);
@@ -123,6 +124,38 @@ namespace WebUI.FullFramework.Controllers
             }
 
             return Json(new { success = true, responseText = $"Success" }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult StopApplicationPool(string poolName)
+        {
+            bool isPoolStopedOrStoping;
+            try
+            {
+                isPoolStopedOrStoping = ApplicationPoolService.StopPoolByName(poolName);
+            }
+            catch (Exception e)
+            {
+                return Json(new { success = false, responseText = $"{e.Message}" }, JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(new { success = true, responseText = $"Success", poolStatus = isPoolStopedOrStoping }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult StartApplicationPool(string poolName)
+        {
+            bool isPoolStartedOrStarting;
+            try
+            {
+                isPoolStartedOrStarting = ApplicationPoolService.StartPoolByName(poolName);
+            }
+            catch (Exception e)
+            {
+                return Json(new { success = false, responseText = $"{e.Message}" }, JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(new { success = true, responseText = $"Success", poolStatus = isPoolStartedOrStarting }, JsonRequestBehavior.AllowGet);
         }
     }
 }

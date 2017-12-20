@@ -44,22 +44,30 @@
                                 </p>
                             </a>
                         </div>
-                        <div class="IISButton text-center">
-                            <a href="#">
-                                <img src="@Url.Content("~/Resources/Images/StatusPause_cyan_16x.svg")"
-                                     alt=""
-                                     class="IISButtonIco">
-                                <p class="text-center">Остановить пулл</p>
-                            </a>
-                        </div>
-                        <div class="IISButton text-center">
-                            <a href="#">
-                                <img src="@Url.Content("~/Resources/Images/StatusRun_16x.svg")"
-                                     alt=""
-                                     class="IISButtonIco">
-                                <p class="text-center">Запустить пулл</p>
-                            </a>
-                        </div>
+                        @if (ViewBag.IsPoolStartingOrStarted)
+                        {
+                            <div class="IISButton text-center">
+                                <a href="#">
+                                    <img src="@Url.Content("~/Resources/Images/StatusPause_cyan_16x.svg")"
+                                         alt=""
+                                         id="stopPoolActionButton"
+                                         class="IISButtonIco">
+                                    <p class="text-center">Остановить пулл</p>
+                                </a>
+                            </div>
+                        }
+                        @if (ViewBag.IsPoolStoppingOrStopped)
+                        {
+                            <div class="IISButton text-center">
+                                <a href="#">
+                                    <img src="@Url.Content("~/Resources/Images/StatusRun_16x.svg")"
+                                         alt=""
+                                         id="startPoolActionButton"
+                                         class="IISButtonIco">
+                                    <p class="text-center">Запустить пулл</p>
+                                </a>
+                            </div>
+                        }
                         <div class="IISButton text-center">
                             <a href="#">
                                 <img src="@Url.Content("~/Resources/Images/Refresh_16x.svg")"
@@ -139,11 +147,22 @@
     @Scripts.Render("~/Scripts/jstree.min.js")
     @Scripts.Render("~/Scripts/Custom/LoadJsTree.js")
     @Scripts.Render("~/Scripts/Custom/IISPageComponens.js")
+    @Scripts.Render("~/Scripts/Custom/ApplicationPoolManager.js")
 
     <script>
         $("#jstree").jstree().bind("select_node.jstree", function (e, data) {
             var href = data.node.a_attr.href;
             document.location.href = href;
+        });
+
+        var applicationPoolManager = ApplicationPoolManager();
+        $("#startPoolActionButton").click(function () {
+            var url = "@Url.Action("StartApplicationPool","IIS", new { poolName = ViewBag.ApplicationPoolName })";
+            applicationPoolManager.post(url);
+        });
+        $("#stopPoolActionButton").click(function() {
+            var url = "@Url.Action("StopApplicationPool","IIS", new { poolName = ViewBag.ApplicationPoolName })";
+            applicationPoolManager.post(url);
         });
     </script>
 }

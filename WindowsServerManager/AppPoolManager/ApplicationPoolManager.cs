@@ -79,6 +79,18 @@ namespace AppPoolManager
             
         }
 
+        public bool IsPoolStartingOrStarted(string poolName)
+        {
+            var pool = GetApplicationPoolByName(poolName);
+            return IsPoolStartingOrStarted(pool.State);
+        }
+
+        public bool IsPoolStoppingOrStopped(string poolName)
+        {
+            var pool = GetApplicationPoolByName(poolName);
+            return IsPoolStoppingOrStopped(pool.State);
+        }
+
         /// <summary>
         /// TODO Implemetn this method in the next version (1.3)
         /// </summary>

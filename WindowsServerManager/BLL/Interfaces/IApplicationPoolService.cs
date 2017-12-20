@@ -9,5 +9,7 @@ namespace BLL.Interfaces
     {
         bool StartPoolByName(string name);
         bool StopPoolByName(string name);
+        bool IsPoolStartingOrStarted(string poolName);
+        bool IsPoolStoppingOrStopped(string poolName);
     }
 }
