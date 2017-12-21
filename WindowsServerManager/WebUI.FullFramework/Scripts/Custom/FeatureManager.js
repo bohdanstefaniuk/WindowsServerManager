@@ -66,13 +66,17 @@
         });
     };
 
-    var saveFeatures = function (url, saveButton) {
-        var jsonData = JSON.stringify({ "features": changedFeatures });
+    var saveFeatures = function (urlData, saveButton) {
+        var jsonData = JSON.stringify({
+            "features": changedFeatures,
+            "db": urlData.db,
+            "redisDb": urlData.redisDb
+        });
 
         $.ajax({
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: url,
+            url: urlData.url,
             type: "POST",
             data: jsonData,
             success: function(response) {

@@ -52,7 +52,9 @@
 @Scripts.Render("~/Scripts/Custom/StyleEngine.js")
 
 <script>
-    var featuresSaveUrl = "@Url.Action("SaveFeatures", "IIS", new { db = ViewBag.Database })";
+    var db = "@ViewBag.Database";
+    var redisDb = "@ViewBag.RedisDb";
+    var featuresSaveUrl = "@Url.Action("SaveFeatures", "IIS")";
     var featureManager = new FeatureManager();
     featureManager.initializeChangeEvents();
 
@@ -60,6 +62,10 @@
 
     $saveButton.click(function () {
         $saveButton.prop("disabled", true);
-        featureManager.saveFeatures(featuresSaveUrl, $saveButton);
+        featureManager.saveFeatures({
+            db: db,
+            redisDb: redisDb,
+            url: featuresSaveUrl
+        }, $saveButton);
     });
 </script>

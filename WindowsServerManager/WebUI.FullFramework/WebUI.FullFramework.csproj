@@ -210,6 +210,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\JsTreeMenuHelper.cs" />
+    <Compile Include="Models\FeaturesComponentUpdateModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\RegisterModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -309,6 +310,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Core\" />
+    <Folder Include="Models\Dto\" />
     <Folder Include="Views\Redis\" />
     <Folder Include="Views\Settings\" />
   </ItemGroup>

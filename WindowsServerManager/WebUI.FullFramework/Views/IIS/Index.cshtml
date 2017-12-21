@@ -137,7 +137,7 @@
                             Html.RenderAction("GetConnectionStringsComponent", "IIS");
                             break;
                         case IISViewActionType.FeaturesComponent:
-                            Html.RenderAction("GetFeaturesComponent", "IIS", new { db = ViewBag.Database });
+                            Html.RenderAction("GetFeaturesComponent", "IIS", new { db = ViewBag.Database, redisDb = ViewBag.RedisDb });
                             break;
                         case IISViewActionType.ConfigFileComponent:
                             Html.RenderAction("GetConfigurationFileComponent", "IIS");

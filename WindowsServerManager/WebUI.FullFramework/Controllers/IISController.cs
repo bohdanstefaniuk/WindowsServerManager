@@ -1,17 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.Services.Description;
 using BLL.Dto;
 using BLL.Enums;
 using BLL.Interfaces;
 using BLL.Services;
 using Microsoft.AspNet.Identity.Owin;
-using MssqlManager.Dto;
-using Newtonsoft.Json;
 using WebUI.FullFramework.Enums;
+using WebUI.FullFramework.Models;
 
 namespace WebUI.FullFramework.Controllers
 {
@@ -82,8 +78,10 @@ namespace WebUI.FullFramework.Controllers
         #region Methods: Get partial Views (Components)
 
         [ChildActionOnly]
-        public PartialViewResult GetFeaturesComponent(string db)
+        public PartialViewResult GetFeaturesComponent(string db, int redisDb)
         {
+            ViewBag.RedisDb = redisDb;
+            ViewBag.Database = db;
             //TODO get db name from iis instance
             var features = FeatureService.GetFeatures(db).GetAwaiter().GetResult();
             return PartialView("_FeaturesComponent", features);
@@ -116,12 +114,12 @@ namespace WebUI.FullFramework.Controllers
         #endregion
 
         [HttpPost]
-        public JsonResult SaveFeatures(string db, List<FeatureDto> features)
+        public JsonResult SaveFeatures(FeaturesComponentUpdateModel featuresUpdateModel)
         {
             //TODO get db name from iis instance
             try
             {
-                FeatureService.UpdateFeatures(features, db).GetAwaiter();
+                FeatureService.UpdateFeatures(featuresUpdateModel.Features, featuresUpdateModel.Db, featuresUpdateModel.RedisDb).GetAwaiter();
             }
             catch (Exception e)
             {

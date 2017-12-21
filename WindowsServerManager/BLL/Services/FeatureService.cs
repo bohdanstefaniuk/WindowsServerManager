@@ -12,13 +12,14 @@ namespace BLL.Services
     public class FeatureService: IFeatureService
     {
         private readonly FeatureManager _featureManager;
-
+        private readonly RedisService _redisService;
         public FeatureService()
         {
-            //var settingsManager = new SettingsService(new UnitOfWork());
-            //var mssqlSettings = settingsManager.GetSettingByCode("ApplicationDbServer");
+            var settingsManager = new SettingsService(new UnitOfWork());
+            var mssqlSettings = settingsManager.GetSettingByCode("ApplicationDbServer");
 
-            _featureManager = new FeatureManager(@"WORK-MS-02\MSSQL2016");
+            _featureManager = new FeatureManager(mssqlSettings.Value);
+            _redisService = new RedisService();
         }
 
         public async Task<List<FeatureDto>> GetFeatures(string db)
@@ -28,10 +29,12 @@ namespace BLL.Services
             return features.ToList();
         }
 
-        public async Task UpdateFeatures(IEnumerable<FeatureDto> featuresToUpdate, string db)
+        public async Task UpdateFeatures(IEnumerable<FeatureDto> featuresToUpdate, string db, int redisDb)
         {
             _featureManager.ConfigureConnectionString(db);
             await _featureManager.SetFeaturesState(featuresToUpdate.ToList());
+
+            await _redisService.FlushDatabaseAsync(redisDb);
         }
 
         public async Task<bool> GetFeatureTableExist(string db)
