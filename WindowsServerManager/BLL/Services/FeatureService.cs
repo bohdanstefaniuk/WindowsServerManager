@@ -31,10 +31,15 @@ namespace BLL.Services
 
         public async Task UpdateFeatures(IEnumerable<FeatureDto> featuresToUpdate, string db, int redisDb)
         {
-            _featureManager.ConfigureConnectionString(db);
-            await _featureManager.SetFeaturesState(featuresToUpdate.ToList());
-
-            await _redisService.FlushDatabaseAsync(redisDb);
+            try
+            {
+                _featureManager.ConfigureConnectionString(db);
+                await _featureManager.SetFeaturesState(featuresToUpdate.ToList());
+            }
+            finally
+            {
+                await _redisService.FlushDatabaseAsync(redisDb);
+            }
         }
 
         public async Task<bool> GetFeatureTableExist(string db)

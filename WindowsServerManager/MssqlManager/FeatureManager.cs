@@ -12,7 +12,6 @@ namespace MssqlManager
     {
         private string _connectionString;
         private readonly string _dataSource;
-        private string _db;
 
         public FeatureManager(string dataSource)
         {
