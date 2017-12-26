@@ -23,5 +23,7 @@ namespace BLL.Dto
     public class JsTreeModelProperties
     {
         public IISSiteType IISSiteType { get; set; }
+
+        public string SiteName { get; set; }
     }
 }

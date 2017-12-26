@@ -18,8 +18,10 @@ namespace WebUI.FullFramework.Controllers
         private IApplicationPoolService ApplicationPoolService => HttpContext.GetOwinContext().GetUserManager<IApplicationPoolService>();
         private IRedisService RedisService => HttpContext.GetOwinContext().GetUserManager<IRedisService>();
 
+        // TODO Change for view model
         public ActionResult Index(
-            string applicationPath = null, 
+            string applicationPath = null,
+            string siteName = null,
             IISSiteType siteType = IISSiteType.Default, 
             IISViewActionType viewActionType = IISViewActionType.InformationComponent)
         {
@@ -42,6 +44,7 @@ namespace WebUI.FullFramework.Controllers
             }
 
             // TODO Move into view model
+            // TODO Change and add SiteName
             ViewBag.Name = applicationPath;
             ViewBag.SiteType = siteType;
             ViewBag.ActionViewType = viewActionType;
@@ -76,7 +79,7 @@ namespace WebUI.FullFramework.Controllers
             return View();
         }
 
-        #region Methods: Get partial Views (Components)
+        #region Methods: Partial Views (Components)
 
         [ChildActionOnly]
         public PartialViewResult GetFeaturesComponent(string db, int redisDb)
@@ -113,6 +116,8 @@ namespace WebUI.FullFramework.Controllers
 
         #endregion
 
+        #region Methods: API 
+
         [HttpPost]
         public JsonResult SaveFeatures(FeaturesComponentUpdateModel featuresUpdateModel)
         {
@@ -122,7 +127,7 @@ namespace WebUI.FullFramework.Controllers
             }
             catch (Exception e)
             {
-                return Json(new {success = false, responseText = $"{e.Message}"}, JsonRequestBehavior.AllowGet);
+                return Json(new { success = false, responseText = $"{e.Message}" }, JsonRequestBehavior.AllowGet);
             }
 
             return Json(new { success = true, responseText = $"Success" }, JsonRequestBehavior.AllowGet);
@@ -206,5 +211,8 @@ namespace WebUI.FullFramework.Controllers
             var redirectUrl = Url.Action("Index", "IIS");
             return Json(new { success = true, responseText = $"Success", redirectUrl }, JsonRequestBehavior.AllowGet);
         }
+
+        #endregion
+
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Security.Policy;
 using BLL.Dto;
 using BLL.Enums;
@@ -50,7 +51,7 @@ namespace BLL.Services
 
                 if (site.Applications.Count > 0)
                 {
-                    var applications = site.Applications.Where(x => x.Path != "/" && !string.IsNullOrWhiteSpace(x.Path));
+                    var applications = site.Applications.Where(x => x.Path != "/" || (!string.IsNullOrWhiteSpace(x.ToString()) && x.Path == "/"));
                     List<ApplicationPath> splitPaths = applications
                         .Select(x => new ApplicationPath
                         {
@@ -60,12 +61,12 @@ namespace BLL.Services
                             FullPath = x.Path
                         })
                         .ToList();
-                    RecursiveAdd(splitPaths, siteJsTreeModel);
+                    RecursiveAdd(splitPaths, siteJsTreeModel, site.Name);
                 }
             }
         }
 
-        private void RecursiveAdd(IEnumerable<ApplicationPath> splitPaths, JsTreeModel node)
+        private void RecursiveAdd(IEnumerable<ApplicationPath> splitPaths, JsTreeModel node, string siteName)
         {
             var groups = splitPaths.GroupBy(x => x.PathElements[0]).ToList();
             foreach (var group in groups)
@@ -74,9 +75,10 @@ namespace BLL.Services
                 {
                     Properties = new JsTreeModelProperties
                     {
-                        IISSiteType = IISSiteType.Application
+                        IISSiteType = IISSiteType.Application,
+                        SiteName = siteName
                     },
-                    Data = group.Key,
+                    Data = string.IsNullOrEmpty(group.Key) ? "Root" : group.Key,
                     Id = group.Select(x => x.FullPath).FirstOrDefault()
                 };
                 node.Childrens.Add(childNode);
@@ -90,7 +92,10 @@ namespace BLL.Services
                     }).ToList();
                 if (children.Count > 0)
                 {
-                    RecursiveAdd(children, childNode);
+                    RecursiveAdd(children, childNode, siteName);
+                } else if (childNode.Id == "/")
+                {
+                    node.Childrens.Remove(childNode);
                 }
             }
         }

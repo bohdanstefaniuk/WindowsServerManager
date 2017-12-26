@@ -37,7 +37,8 @@ namespace WebUI.FullFramework.Helpers
                 var href = urlHelper.Action("Index", "IIS", new
                 {
                     applicationPath = node.Id,
-                    siteType = node.Properties.IISSiteType
+                    siteType = node.Properties.IISSiteType,
+                    siteName = node.Properties.SiteName
                 });
 
                 a.Attributes.Add("href", href);
