@@ -60,13 +60,14 @@ namespace BLL.Services
                         var virtualRoot =
                             applicationRoot?.VirtualDirectories.SingleOrDefault(v => v.Path == "/");
                         rootPath = virtualRoot?.PhysicalPath;
-                        site.Delete();
+                        applicationPoolName = applicationRoot?.ApplicationPoolName;
+                        siteManager.DeleteSite(name);
                         break;
                     case IISSiteType.Application:
                         var app = siteManager.GetApplicationByPath(name);
                         applicationPoolName = app.ApplicationPoolName;
                         rootPath = app.VirtualDirectories.SingleOrDefault(v => v.Path == "/")?.PhysicalPath;
-                        app.Delete();
+                        siteManager.DeleteApplication(app.Path);
                         break;
                 }
                 
@@ -80,8 +81,7 @@ namespace BLL.Services
 
             if ((deleteDepth & ApplicationDeleteDepth.ApplicationPool) != 0)
             {
-                var applicaitonPool = _applicationPoolManager.GetApplicationPoolByName(applicationPoolName);
-                applicaitonPool.Delete();
+                _applicationPoolManager.Delete(applicationPoolName);
             }
         }
 

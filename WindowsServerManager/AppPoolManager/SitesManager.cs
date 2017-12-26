@@ -14,7 +14,7 @@ namespace AppPoolManager
         {
             _serverManager = new ServerManager();
         }
-
+        
         /// <summary>
         /// Get sites hosted in IIS
         /// </summary>
@@ -22,6 +22,11 @@ namespace AppPoolManager
         public SiteCollection GetSiteCollection()
         {
             return _serverManager.Sites;
+        }
+
+        private bool IsSiteExists(string name)
+        {
+            return _serverManager.Sites.Any(x => x.Name.IndexOf(name, StringComparison.OrdinalIgnoreCase) >= 0);
         }
 
         /// <summary>
@@ -65,6 +70,28 @@ namespace AppPoolManager
             }
 
             return application;
+        }
+
+        public bool DeleteSite(string name)
+        {
+            var site = GetSiteByName(name);
+            _serverManager.Sites.Remove(site);
+            _serverManager.CommitChanges();
+            return !IsSiteExists(name);
+        }
+
+        public bool DeleteApplication(string name)
+        {
+            var application = GetApplicationByPath(name);
+            foreach (var site in _serverManager.Sites)
+            {
+                if (site.Applications.Contains(application))
+                {
+                    site.Applications.Remove(application);
+                }
+            }
+            _serverManager.CommitChanges();
+            return !_serverManager.Sites.Any(x => x.Applications.Contains(application));
         }
 
         public List<string> GetSiteConnectionStrings(string siteName)

@@ -35,6 +35,17 @@ namespace AppPoolManager
         }
 
         /// <summary>
+        /// Check applications pools for existing pool
+        /// </summary>
+        /// <param name="name">Name of application pool</param>
+        /// <returns>true if pool exists</returns>
+        private bool IsPoolExists(string name)
+        {
+            return _serverManager.ApplicationPools.Any(x =>
+                x.Name.IndexOf(name, StringComparison.OrdinalIgnoreCase) >= 0);
+        }
+
+        /// <summary>
         /// Return all application pools hosted on currenct server
         /// </summary>
         /// <returns>application pool collection</returns>
@@ -112,6 +123,19 @@ namespace AppPoolManager
         {
             var pool = GetApplicationPoolByName(poolName);
             return IsPoolStoppingOrStopped(pool.State);
+        }
+
+        /// <summary>
+        /// Delete application pool from server
+        /// </summary>
+        /// <param name="poolName">Name of application pool</param>
+        /// <returns>True if pool deleted</returns>
+        public bool Delete(string poolName)
+        {
+            var applicationPool = GetApplicationPoolByName(poolName);
+            _serverManager.ApplicationPools.Remove(applicationPool);
+            _serverManager.CommitChanges();
+            return !IsPoolExists(poolName);
         }
 
         /// <summary>

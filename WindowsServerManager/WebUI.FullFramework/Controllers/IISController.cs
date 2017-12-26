@@ -83,7 +83,6 @@ namespace WebUI.FullFramework.Controllers
         {
             ViewBag.RedisDb = redisDb;
             ViewBag.Database = db;
-            //TODO get db name from iis instance
             var features = FeatureService.GetFeatures(db).GetAwaiter().GetResult();
             return PartialView("_FeaturesComponent", features);
         }
@@ -117,7 +116,6 @@ namespace WebUI.FullFramework.Controllers
         [HttpPost]
         public JsonResult SaveFeatures(FeaturesComponentUpdateModel featuresUpdateModel)
         {
-            //TODO get db name from iis instance
             try
             {
                 FeatureService.UpdateFeatures(featuresUpdateModel.Features, featuresUpdateModel.Db, featuresUpdateModel.RedisDb).GetAwaiter();

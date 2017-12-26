@@ -22,17 +22,17 @@ namespace PrepareTestData
             {
                 var applicationPool = new ApplicationPool();
 
-                Console.WriteLine("Create application pool");
+                Console.WriteLine(@"Create application pool");
                 applicationPool.CreateApplicationPool();
-                Console.WriteLine("Create application pool - DONE");
+                Console.WriteLine(@"Create application pool - DONE");
 
-                Console.WriteLine("Create web site");
+                Console.WriteLine(@"Create web site");
                 applicationPool.CreateSite();
-                Console.WriteLine("Create web - DONE");
+                Console.WriteLine(@"Create web - DONE");
 
-                Console.WriteLine("Create application");
+                Console.WriteLine(@"Create application");
                 applicationPool.CreateApplication();
-                Console.WriteLine("Create application - DONE");
+                Console.WriteLine(@"Create application - DONE");
 
 
             }
@@ -40,7 +40,7 @@ namespace PrepareTestData
             {
                 var applicationPool = new ApplicationPool();
                 applicationPool.DeleteAllTestData();
-                Console.WriteLine("Deleting all test IIS Data - DONE");
+                Console.WriteLine(@"Deleting all test IIS Data - DONE");
             }
             else
             {

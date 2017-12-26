@@ -251,6 +251,7 @@
     <Content Include="Resources\Images\AzureRedisCache_color_16x.svg" />
     <Content Include="Resources\Images\ConfigurationFile_16x.svg" />
     <Content Include="Resources\Images\DatabaseSetting_16x.svg" />
+    <Content Include="Resources\Images\DeleteTranslation_16x.svg" />
     <Content Include="Resources\Images\FSWebApplication_16x.svg" />
     <Content Include="Resources\Images\MagicWand_16x.svg" />
     <Content Include="Resources\Images\MobileWebConfig_16x.svg" />
@@ -306,6 +307,7 @@
     <Content Include="Views\IIS\_ConnectionStringsComponent.cshtml" />
     <Content Include="Views\IIS\_ConfigurationFileComponent.cshtml" />
     <Content Include="Views\IIS\_InformationComponent.cshtml" />
+    <Content Include="Views\IIS\_DeleteApplicationModal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
