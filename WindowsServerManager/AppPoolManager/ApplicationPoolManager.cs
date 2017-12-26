@@ -79,6 +79,11 @@ namespace AppPoolManager
             
         }
 
+        /// <summary>
+        /// Recycle application pool by name
+        /// </summary>
+        /// <param name="name">Name of application pool</param>
+        /// <returns>true if application pool is starting or started</returns>
         public bool RecyclePoolByName(string name)
         {
             var pool = GetApplicationPoolByName(name);
@@ -87,12 +92,22 @@ namespace AppPoolManager
 
         }
 
+        /// <summary>
+        /// Check state of application pool for start states
+        /// </summary>
+        /// <param name="poolName">Name of application pool</param>
+        /// <returns>true if application pool is starting or started</returns>
         public bool IsPoolStartingOrStarted(string poolName)
         {
             var pool = GetApplicationPoolByName(poolName);
             return IsPoolStartingOrStarted(pool.State);
         }
 
+        /// <summary>
+        /// Check state of application pool for stop states
+        /// </summary>
+        /// <param name="poolName">Name of application pool</param>
+        /// <returns>true if application pool state is stopping or stopped</returns>
         public bool IsPoolStoppingOrStopped(string poolName)
         {
             var pool = GetApplicationPoolByName(poolName);

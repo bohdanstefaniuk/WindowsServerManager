@@ -195,6 +195,7 @@
     <Compile Include="Dto\JsTreeModel.cs" />
     <Compile Include="Dto\SiteInformation.cs" />
     <Compile Include="Dto\UserDTO.cs" />
+    <Compile Include="Enums\ApplicationDeleteDepth.cs" />
     <Compile Include="Enums\IISSiteType.cs" />
     <Compile Include="Infrastructure\OperationDetails.cs" />
     <Compile Include="Interfaces\IDbService.cs" />
@@ -210,6 +211,7 @@
     <Compile Include="Services\FeatureService.cs" />
     <Compile Include="Interfaces\IConnectionStringsService.cs" />
     <Compile Include="Interfaces\IRedisService.cs" />
+    <Compile Include="Services\FileSystemService.cs" />
     <Compile Include="Services\JsTreeMenuService.cs" />
     <Compile Include="Services\RedisService.cs" />
     <Compile Include="Services\ServiceCreator.cs" />
@@ -229,6 +231,10 @@
     <ProjectReference Include="..\DataAccessLayer\DataAccessLayer.csproj">
       <Project>{cfa6f107-da40-43f8-aa5c-aad47a7bb1d8}</Project>
       <Name>DataAccessLayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FileSystemManager\FileSystemManager.csproj">
+      <Project>{05828741-68ac-4da5-a255-06f4d8bc15cc}</Project>
+      <Name>FileSystemManager</Name>
     </ProjectReference>
     <ProjectReference Include="..\MssqlManager\MssqlManager.csproj">
       <Project>{0856c756-ae16-4e15-8e6d-d8b472ed5d9c}</Project>

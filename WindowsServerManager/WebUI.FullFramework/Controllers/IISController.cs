@@ -18,7 +18,8 @@ namespace WebUI.FullFramework.Controllers
         private IApplicationPoolService ApplicationPoolService => HttpContext.GetOwinContext().GetUserManager<IApplicationPoolService>();
         private IRedisService RedisService => HttpContext.GetOwinContext().GetUserManager<IRedisService>();
 
-        public ActionResult Index(string applicationPath = null, 
+        public ActionResult Index(
+            string applicationPath = null, 
             IISSiteType siteType = IISSiteType.Default, 
             IISViewActionType viewActionType = IISViewActionType.InformationComponent)
         {
@@ -190,6 +191,22 @@ namespace WebUI.FullFramework.Controllers
             }
 
             return Json(new { success = true, responseText = $"Success" }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult DeleteApplicaiton(string name, ApplicationDeleteDepth deleteDepth, IISSiteType siteType)
+        {
+            try
+            {
+                ApplicationPoolService.DeleteApplication(name, deleteDepth, siteType);
+            }
+            catch (Exception e)
+            {
+                return Json(new { success = false, responseText = $"{e.Message}" }, JsonRequestBehavior.AllowGet);
+            }
+
+            var redirectUrl = Url.Action("Index", "IIS");
+            return Json(new { success = true, responseText = $"Success", redirectUrl }, JsonRequestBehavior.AllowGet);
         }
     }
 }
