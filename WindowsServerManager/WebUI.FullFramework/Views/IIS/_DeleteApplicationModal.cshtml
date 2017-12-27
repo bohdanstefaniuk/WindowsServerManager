@@ -1,1 +1,73 @@
-﻿
+﻿@using BLL.Enums
+<div class="modal fade" id="deleteApplicationModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Удаление приложения</h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <p>Название (путь) к приложению или сайту: (@ViewBag.PathOrName)</p>
+                    <p>Название сайта: (@ViewBag.SiteName)</p>
+                </div>
+                <div>
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="needDeleteApplication" checked="checked"> Удалить приложение или сайт
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="needDeleteApplicationPool" checked="checked"> Удалить пулл
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="needDeleteFiles" checked="checked"> Удалить файлы из файловой системы ()
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="needDeleteDatabase" checked="checked"> Удалить базу данных приложения ()
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                <button type="button" class="btn btn-primary" id="sendDeleteStates">Сохранить изменения</button>
+            </div>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/Scripts/Custom/AjaxPost.js")
+<script>
+    var ajaxPost = AjaxPost();
+    $("#sendDeleteStates").click(function () {
+        var url = "@Url.Action("DeleteApplication", "IIS")";
+        var deleteStates = {
+            needDeleteApplication: $("#needDeleteApplication").is(':checked'),
+            needDeleteApplicationPool: $("#needDeleteApplicationPool").is(':checked'),
+            needDeleteFiles: $("#needDeleteFiles").is(':checked'),
+            needDeleteDatabase: $("#needDeleteDatabase").is(':checked')
+        };
+
+        var data = {
+            name: "@ViewBag.PathOrName",
+            deleteStates: deleteStates,
+            siteType: "@((IISSiteType)ViewBag.SiteType)",
+            siteName: "@ViewBag.SiteName",
+            database: "@ViewBag.Database"
+        };
+        ajaxPost.post(url, data);
+    });
+</script>

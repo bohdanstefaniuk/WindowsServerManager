@@ -20,8 +20,8 @@ namespace TrainingConsoleUI
 
             Console.ReadKey();
 
-            var appPooService = new ApplicationPoolService();
-            appPooService.DeleteApplication("test", ApplicationDeleteDepth.ApplicationPool, IISSiteType.Site);
+            var dbService = new DbService();
+            dbService.DropDatabase("TestDatabase_delete").GetAwaiter();
 
             // Delay
             Console.Read();

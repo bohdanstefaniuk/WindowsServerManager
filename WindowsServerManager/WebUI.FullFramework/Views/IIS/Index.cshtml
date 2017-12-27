@@ -162,7 +162,7 @@
 
 <section>
     @{
-        Html.RenderAction("GetDeleteApplicationModal", "IIS", new { pathOrName = Model.ApplicationPath, siteName = Model.SiteName, siteType = Model.SiteType });
+        Html.RenderAction("GetDeleteApplicationModal", "IIS", new { pathOrName = Model.ApplicationPath, siteName = Model.SiteName, siteType = Model.SiteType, database = Model.Database });
     }
 </section>
 
@@ -170,7 +170,7 @@
     @Scripts.Render("~/Scripts/jstree.min.js")
     @Scripts.Render("~/Scripts/Custom/LoadJsTree.js")
     @Scripts.Render("~/Scripts/Custom/IISPageComponens.js")
-    @Scripts.Render("~/Scripts/Custom/ApplicationPoolManager.js")
+    @Scripts.Render("~/Scripts/Custom/AjaxPost.js")
 
     <script>
         $("#jstree").jstree().bind("select_node.jstree", function (e, data) {

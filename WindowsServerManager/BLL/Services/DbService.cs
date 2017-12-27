@@ -21,9 +21,13 @@ namespace BLL.Services
         public async Task DropDatabase(string db)
         {
             _dbManager.ConfigureConnectionString(db);
-            await _dbManager.DropDatabaseAsync();
+
+            if (await _dbManager.GetDatabaseExists())
+            {
+                await _dbManager.DropDatabaseAsync();
+            }
         }
-        
+
         public void Dispose()
         {
             GC.SuppressFinalize(this);

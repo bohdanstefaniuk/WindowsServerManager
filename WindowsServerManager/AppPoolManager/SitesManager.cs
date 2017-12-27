@@ -72,6 +72,13 @@ namespace AppPoolManager
             return application;
         }
 
+        public Application GetApplicationByPath(string appPath, string siteName)
+        {
+            var site = _serverManager.Sites[siteName];
+            return site.Applications.SingleOrDefault(x =>
+                x.Path.IndexOf(appPath, StringComparison.OrdinalIgnoreCase) >= 0);
+        }
+
         public bool DeleteSite(string name)
         {
             var site = GetSiteByName(name);
@@ -80,16 +87,11 @@ namespace AppPoolManager
             return !IsSiteExists(name);
         }
 
-        public bool DeleteApplication(string name)
+        public bool DeleteApplication(string name, string siteName)
         {
             var application = GetApplicationByPath(name);
-            foreach (var site in _serverManager.Sites)
-            {
-                if (site.Applications.Contains(application))
-                {
-                    site.Applications.Remove(application);
-                }
-            }
+            var sites = _serverManager.Sites[siteName];
+            sites.Applications.Remove(application);
             _serverManager.CommitChanges();
             return !_serverManager.Sites.Any(x => x.Applications.Contains(application));
         }

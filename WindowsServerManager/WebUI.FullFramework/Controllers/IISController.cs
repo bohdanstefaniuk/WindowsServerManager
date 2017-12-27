@@ -116,11 +116,12 @@ namespace WebUI.FullFramework.Controllers
             return PartialView("_InformationComponent", information);
         }
 
-        public PartialViewResult GetDeleteApplicationModal(string pathOrName, string siteName, IISSiteType siteType)
+        public PartialViewResult GetDeleteApplicationModal(string pathOrName, string siteName, IISSiteType siteType, string database)
         {
             ViewBag.PathOrName = pathOrName;
             ViewBag.SiteName = siteName;
             ViewBag.SiteType = siteType;
+            ViewBag.Database = database;
             return PartialView("_DeleteApplicationModal");
         }
 
@@ -207,16 +208,16 @@ namespace WebUI.FullFramework.Controllers
         }
 
         [HttpPost]
-        public JsonResult DeleteApplicaiton(string name, ApplicationDeleteDepth deleteDepth, IISSiteType siteType, string siteName)
+        public JsonResult DeleteApplication(DeleteApplicationDto dto)
         {
             try
             {
-                if (string.IsNullOrEmpty(siteName) || string.IsNullOrEmpty(name))
+                if ((string.IsNullOrEmpty(dto.SiteName) && dto.SiteType == IISSiteType.Application) || string.IsNullOrEmpty(dto.Name))
                 {
                     throw new NullReferenceException("Site name or application path is null");
                 }
 
-                ApplicationPoolService.DeleteApplication(name, deleteDepth, siteType, siteName);
+                ApplicationPoolService.DeleteApplicationAsync(dto).GetAwaiter();
             }
             catch (Exception e)
             {

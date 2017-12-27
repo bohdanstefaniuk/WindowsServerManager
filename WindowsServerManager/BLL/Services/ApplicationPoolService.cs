@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Dynamic;
 using System.Linq;
+using System.Threading.Tasks;
 using AppPoolManager;
 using BLL.Dto;
 using BLL.Enums;
@@ -43,45 +44,53 @@ namespace BLL.Services
         }
 
         // TODO Refactor Need to exlude facade method
-        public void DeleteApplication(string name, ApplicationDeleteDepth deleteDepth, IISSiteType siteType)
+        public async Task DeleteApplicationAsync(DeleteApplicationDto dto)
         {
             var rootPath = "";
             var applicationPoolName = "";
 
-            if ((deleteDepth & ApplicationDeleteDepth.ApplicationOrSite) != 0)
+            if (dto.DeleteStates.NeedDeleteApplication)
             {
                 var siteManager = new SitesManager();
-                switch (siteType)
+                switch (dto.SiteType)
                 {
                     case IISSiteType.Site:
-                        var site = siteManager.GetSiteByName(name);
+                        var site = siteManager.GetSiteByName(dto.Name);
                         var applicationRoot =
                             site.Applications.SingleOrDefault(a => a.Path == "/");
                         var virtualRoot =
                             applicationRoot?.VirtualDirectories.SingleOrDefault(v => v.Path == "/");
                         rootPath = virtualRoot?.PhysicalPath;
                         applicationPoolName = applicationRoot?.ApplicationPoolName;
-                        siteManager.DeleteSite(name);
+                        siteManager.DeleteSite(dto.Name);
                         break;
                     case IISSiteType.Application:
-                        var app = siteManager.GetApplicationByPath(name);
+                        var app = siteManager.GetApplicationByPath(dto.Name, dto.SiteName);
                         applicationPoolName = app.ApplicationPoolName;
                         rootPath = app.VirtualDirectories.SingleOrDefault(v => v.Path == "/")?.PhysicalPath;
-                        siteManager.DeleteApplication(app.Path);
+                        siteManager.DeleteApplication(app.Path, dto.SiteName);
                         break;
                 }
                 
             }
 
-            if ((deleteDepth & ApplicationDeleteDepth.FileSystem) != 0 && !string.IsNullOrEmpty(rootPath))
+            if (dto.DeleteStates.NeedDeleteApplicationPool)
+            {
+                _applicationPoolManager.Delete(applicationPoolName);
+            }
+
+            if (dto.DeleteStates.NeedDeleteDatabase && !string.IsNullOrEmpty(dto.Database))
+            {
+                using (var dbService = new DbService())
+                {
+                    await dbService.DropDatabase(dto.Database);
+                }
+            }
+
+            if (dto.DeleteStates.NeedDeleteFiles)
             {
                 var fileSystemService = new FileSystemService();
                 fileSystemService.DeleteFolder(rootPath);
-            }
-
-            if ((deleteDepth & ApplicationDeleteDepth.ApplicationPool) != 0)
-            {
-                _applicationPoolManager.Delete(applicationPoolName);
             }
         }
 
