@@ -1,5 +1,6 @@
 ﻿@using WebUI.FullFramework.Enums
 @using WebUI.FullFramework.Helpers
+@model WebUI.FullFramework.Models.IISIndexViewModel
 
 @{
     ViewBag.Title = "Index";
@@ -20,12 +21,13 @@
                 </div>
             </div>
         </div>
-        @if (!string.IsNullOrEmpty(ViewBag.Name))
+        @if (!string.IsNullOrEmpty( Model.ApplicationPath))
         {
             <div class="col-md-9">
                 <div class="">
                     <blockquote>
-                        <p>@ViewBag.Name</p>
+                        <p>@Model.ApplicationPath</p>
+                        <p>Site name: @Model.SiteName</p>
                     </blockquote>
                 </div>
                 <div class="panel panel-default">
@@ -33,8 +35,8 @@
                         <h3 class="panel-title">Действия</h3>
                     </div>
                     <div class="panel-body">
-                        <div class="IISButton text-center @(ViewBag.ActionViewType == IISViewActionType.InformationComponent ? "IISButtonSelected" : "")">
-                            <a href="@Url.Action("Index", "IIS", new { viewActionType = IISViewActionType.InformationComponent, siteType = ViewBag.SiteType, applicationPath = ViewBag.Name })">
+                        <div class="IISButton text-center @(Model.ActionViewType == IISViewActionType.InformationComponent ? "IISButtonSelected" : "")">
+                            <a href="@Url.Action("Index", "IIS", new { viewActionType = IISViewActionType.InformationComponent, siteType =  Model.SiteType, applicationPath =  Model.ApplicationPath })">
                                 <img src="@Url.Content("~/Resources/Images/StatusInformation_16x.svg")"
                                      alt=""
                                      class="IISButtonIco">
@@ -44,7 +46,7 @@
                                 </p>
                             </a>
                         </div>
-                        @if (ViewBag.IsPoolStartingOrStarted)
+                        @if (Model.IsPoolStartingOrStarted)
                         {
                             <div class="IISButton text-center">
                                 <a href="#">
@@ -56,7 +58,7 @@
                                 </a>
                             </div>
                         }
-                        @if (ViewBag.IsPoolStoppingOrStopped)
+                        @if (Model.IsPoolStoppingOrStopped)
                         {
                             <div class="IISButton text-center">
                                 <a href="#">
@@ -68,7 +70,7 @@
                                 </a>
                             </div>
                         }
-                        @if (ViewBag.IsPoolStartingOrStarted)
+                        @if (Model.IsPoolStartingOrStarted)
                         {
                             <div class="IISButton text-center">
                                 <a href="#">
@@ -84,7 +86,7 @@
                             </div>
                         }
                         <div class="IISButton text-center">
-                            <a href="#">
+                            <a href="#" data-toggle="modal" data-target="#deleteApplicationModal">
                                 <img src="@Url.Content("~/Resources/Images/DeleteTranslation_16x.svg")"
                                      alt=""
                                      id="deleteApplicationActionButton"
@@ -101,16 +103,16 @@
                                 <p class="text-center">Очистить Redis</p>
                             </a>
                         </div>
-                        <div class="IISButton text-center @(ViewBag.ActionViewType == IISViewActionType.ConnectionStringsComponent ? "IISButtonSelected" : "")">
-                            <a href="@Url.Action("Index", "IIS", new { viewActionType = IISViewActionType.ConnectionStringsComponent, siteType = ViewBag.SiteType, applicationPath = ViewBag.Name })">
+                        <div class="IISButton text-center @(Model.ActionViewType == IISViewActionType.ConnectionStringsComponent ? "IISButtonSelected" : "")">
+                            <a href="@Url.Action("Index", "IIS", new { viewActionType = IISViewActionType.ConnectionStringsComponent, siteType =  Model.SiteType, applicationPath =  Model.ApplicationPath })">
                                 <img src="@Url.Content("~/Resources/Images/DatabaseSetting_16x.svg")"
                                      alt=""
                                      class="IISButtonIco">
                                 <p class="text-center">Строки подключений</p>
                             </a>
                         </div>
-                        <div class="IISButton text-center @(ViewBag.ActionViewType == IISViewActionType.ConfigFileComponent ? "IISButtonSelected" : "")">
-                            <a href="@Url.Action("Index", "IIS", new { viewActionType = IISViewActionType.ConfigFileComponent, siteType = ViewBag.SiteType, applicationPath = ViewBag.Name })">
+                        <div class="IISButton text-center @(Model.ActionViewType == IISViewActionType.ConfigFileComponent ? "IISButtonSelected" : "")">
+                            <a href="@Url.Action("Index", "IIS", new { viewActionType = IISViewActionType.ConfigFileComponent, siteType =  Model.SiteType, applicationPath =  Model.ApplicationPath })">
                                 <img src="@Url.Content("~/Resources/Images/ConfigurationFile_16x.svg")"
                                      alt=""
                                      class="IISButtonIco">
@@ -120,10 +122,10 @@
                                 </p>
                             </a>
                         </div>
-                        @if (ViewBag.IsFeatureTableExist)
+                        @if (Model.IsFeatureTableExist)
                         {
-                            <div class="IISButton text-center @(ViewBag.ActionViewType == IISViewActionType.FeaturesComponent ? "IISButtonSelected" : "")">
-                                <a href="@Url.Action("Index", "IIS", new { viewActionType = IISViewActionType.FeaturesComponent, siteType = ViewBag.SiteType, applicationPath = ViewBag.Name })">
+                            <div class="IISButton text-center @(Model.ActionViewType == IISViewActionType.FeaturesComponent ? "IISButtonSelected" : "")">
+                                <a href="@Url.Action("Index", "IIS", new { viewActionType = IISViewActionType.FeaturesComponent, siteType =  Model.SiteType, applicationPath =  Model.ApplicationPath })">
                                     <img src="@Url.Content("~/Resources/Images/MagicWand_16x.svg")"
                                          alt=""
                                          class="IISButtonIco">
@@ -137,16 +139,16 @@
                     </div>
                 </div>
                 <div id="IISPageComponentContainer">
-                    @switch ((IISViewActionType)ViewBag.ActionViewType)
+                    @switch (Model.ActionViewType)
                     {
                         case IISViewActionType.InformationComponent:
-                            Html.RenderAction("GetInformationComponent", "IIS", new { path = ViewBag.Name, siteType = ViewBag.SiteType });
+                            Html.RenderAction("GetInformationComponent", "IIS", new { path =  Model.ApplicationPath, siteType =  Model.SiteType });
                             break;
                         case IISViewActionType.ConnectionStringsComponent:
                             Html.RenderAction("GetConnectionStringsComponent", "IIS");
                             break;
                         case IISViewActionType.FeaturesComponent:
-                            Html.RenderAction("GetFeaturesComponent", "IIS", new { db = ViewBag.Database, redisDb = ViewBag.RedisDb });
+                            Html.RenderAction("GetFeaturesComponent", "IIS", new { db = Model.Database, redisDb = Model.RedisDatabase });
                             break;
                         case IISViewActionType.ConfigFileComponent:
                             Html.RenderAction("GetConfigurationFileComponent", "IIS");
@@ -157,6 +159,13 @@
         }
     </div>
 </section>
+
+<section>
+    @{
+        Html.RenderAction("GetDeleteApplicationModal", "IIS", new { pathOrName = Model.ApplicationPath, siteName = Model.SiteName, siteType = Model.SiteType });
+    }
+</section>
+
 @section scripts {
     @Scripts.Render("~/Scripts/jstree.min.js")
     @Scripts.Render("~/Scripts/Custom/LoadJsTree.js")
@@ -171,20 +180,21 @@
 
         var ajaxPost = AjaxPost();
         $("#startPoolActionButton").click(function () {
-            var url = "@Url.Action("StartApplicationPool","IIS", new { poolName = ViewBag.ApplicationPoolName })";
+            var url = "@Url.Action("StartApplicationPool","IIS", new { poolName = Model.ApplicationPoolName })";
             ajaxPost.post(url);
         });
         $("#stopPoolActionButton").click(function() {
-            var url = "@Url.Action("StopApplicationPool","IIS", new { poolName = ViewBag.ApplicationPoolName })";
+            var url = "@Url.Action("StopApplicationPool","IIS", new { poolName = Model.ApplicationPoolName })";
             ajaxPost.post(url);
         });
         $("#recyclePoolActionButton").click(function() {
-            var url = "@Url.Action("RecycleApplicationPool","IIS", new { poolName = ViewBag.ApplicationPoolName })";
+            var url = "@Url.Action("RecycleApplicationPool","IIS", new { poolName = Model.ApplicationPoolName })";
             ajaxPost.post(url);
         });
         $("#flushRedisDbActionButton").click(function() {
-            var url = "@Url.Action("FlushRedisDb","IIS", new { redisDb = ViewBag.RedisDb })";
+            var url = "@Url.Action("FlushRedisDb","IIS", new { redisDb = Model.RedisDatabase })";
             ajaxPost.post(url);
         });
+
     </script>
 }

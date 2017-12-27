@@ -43,21 +43,23 @@ namespace WebUI.FullFramework.Controllers
                 
             }
 
-            // TODO Move into view model
-            // TODO Change and add SiteName
-            ViewBag.Name = applicationPath;
-            ViewBag.SiteType = siteType;
-            ViewBag.ActionViewType = viewActionType;
-            ViewBag.Database = db;
-            ViewBag.RedisDb = redisDb;
+            var viewModel = new IISIndexViewModel
+            {
+                SiteName = siteName,
+                ApplicationPath = applicationPath,
+                SiteType = siteType,
+                ActionViewType = viewActionType,
+                Database = db,
+                RedisDatabase = redisDb
+            };
 
             if (!string.IsNullOrEmpty(db))
             {
-                ViewBag.IsFeatureTableExist = FeatureService.GetFeatureTableExist(db).GetAwaiter().GetResult();
+                viewModel.IsFeatureTableExist = FeatureService.GetFeatureTableExist(db).GetAwaiter().GetResult();
             }
             else
             {
-                ViewBag.IsFeatureTableExist = false;
+                viewModel.IsFeatureTableExist = false;
             }
 
             if (!string.IsNullOrEmpty(applicationPath))
@@ -69,14 +71,14 @@ namespace WebUI.FullFramework.Controllers
                     information = infoService.GetInformationBySiteType(applicationPath, siteType);
                 }
 
-                ViewBag.ApplicationPoolName = information.ApplicationPoolName;
-                ViewBag.IsPoolStoppingOrStopped =
+                viewModel.ApplicationPoolName = information.ApplicationPoolName;
+                viewModel.IsPoolStoppingOrStopped =
                     ApplicationPoolService.IsPoolStoppingOrStopped(information.ApplicationPoolName);
-                ViewBag.IsPoolStartingOrStarted =
+                viewModel.IsPoolStartingOrStarted =
                     ApplicationPoolService.IsPoolStartingOrStarted(information.ApplicationPoolName);
             }
             
-            return View();
+            return View(viewModel);
         }
 
         #region Methods: Partial Views (Components)
@@ -112,6 +114,14 @@ namespace WebUI.FullFramework.Controllers
                 information = infoService.GetInformationBySiteType(path, siteType);
             }
             return PartialView("_InformationComponent", information);
+        }
+
+        public PartialViewResult GetDeleteApplicationModal(string pathOrName, string siteName, IISSiteType siteType)
+        {
+            ViewBag.PathOrName = pathOrName;
+            ViewBag.SiteName = siteName;
+            ViewBag.SiteType = siteType;
+            return PartialView("_DeleteApplicationModal");
         }
 
         #endregion
@@ -197,11 +207,16 @@ namespace WebUI.FullFramework.Controllers
         }
 
         [HttpPost]
-        public JsonResult DeleteApplicaiton(string name, ApplicationDeleteDepth deleteDepth, IISSiteType siteType)
+        public JsonResult DeleteApplicaiton(string name, ApplicationDeleteDepth deleteDepth, IISSiteType siteType, string siteName)
         {
             try
             {
-                ApplicationPoolService.DeleteApplication(name, deleteDepth, siteType);
+                if (string.IsNullOrEmpty(siteName) || string.IsNullOrEmpty(name))
+                {
+                    throw new NullReferenceException("Site name or application path is null");
+                }
+
+                ApplicationPoolService.DeleteApplication(name, deleteDepth, siteType, siteName);
             }
             catch (Exception e)
             {
@@ -209,7 +224,7 @@ namespace WebUI.FullFramework.Controllers
             }
 
             var redirectUrl = Url.Action("Index", "IIS");
-            return Json(new { success = true, responseText = $"Success", redirectUrl }, JsonRequestBehavior.AllowGet);
+            return Json(new { success = true, responseText = "Success", redirectUrl }, JsonRequestBehavior.AllowGet);
         }
 
         #endregion

@@ -211,6 +211,7 @@
     </Compile>
     <Compile Include="Helpers\JsTreeMenuHelper.cs" />
     <Compile Include="Models\FeaturesComponentUpdateModel.cs" />
+    <Compile Include="Models\IISIndexViewModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\RegisterModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -267,7 +268,7 @@
     <Content Include="Resources\Images\work-logo.jpg" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Scripts\Custom\ApplicationPoolManager.js" />
+    <Content Include="Scripts\Custom\AjaxPost.js" />
     <Content Include="Scripts\Custom\FeatureManager.js" />
     <Content Include="Scripts\Custom\IISPageComponens.js" />
     <Content Include="Scripts\Custom\StyleEngine.js" />

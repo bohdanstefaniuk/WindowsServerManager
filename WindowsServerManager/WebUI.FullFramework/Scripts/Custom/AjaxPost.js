@@ -15,8 +15,12 @@
             error: function (response) {
                 alert(response.responseText);
             },
-            complete: function () {
-                location.reload();
+            complete: function (response) {
+                if (response.redirectUrl) {
+                    document.location.href = response.redirectUrl;
+                } else {
+                    location.reload();
+                }
             }
         });
     };
