@@ -210,6 +210,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\JsTreeMenuHelper.cs" />
+    <Compile Include="Helpers\MenuHelper.cs" />
     <Compile Include="Models\FeaturesComponentUpdateModel.cs" />
     <Compile Include="Models\IISIndexViewModel.cs" />
     <Compile Include="Models\LoginModel.cs" />

@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using WebUI.FullFramework.Helpers
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -22,10 +23,10 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li class="active">
+                <li class="@Html.IsSelected(actions: "Index", controllers: "IIS", cssClass: "active")">
                     <a href="@Url.Action("Index","IIS")">Application pools</a>
                 </li>
-                <li>
+                <li class="@Html.IsSelected(actions: "Index", controllers: "Redis", cssClass: "active")">
                     <a href="#">Redis</a>
                 </li>
                 <li>
@@ -69,7 +70,7 @@
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a href="#">Выход</a>
+                            <a href="@Url.Action("Logout", "Account")">Выход</a>
                         </li>
                     </ul>
                 </li>
