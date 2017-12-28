@@ -51,12 +51,14 @@ namespace WebUI.FullFramework.Controllers
             return View(model);
         }
 
+        [Authorize]
         public ActionResult Logout()
         {
             AuthenticationManager.SignOut();
             return RedirectToAction("Index", "Home");
         }
 
+        [Authorize]
         public ActionResult Register()
         {
             return View();

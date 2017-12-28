@@ -19,6 +19,7 @@ namespace WebUI.FullFramework.Controllers
         private IRedisService RedisService => HttpContext.GetOwinContext().GetUserManager<IRedisService>();
 
         // TODO Change for view model
+        [Authorize]
         public ActionResult Index(
             string applicationPath = null,
             string siteName = null,
@@ -83,6 +84,7 @@ namespace WebUI.FullFramework.Controllers
 
         #region Methods: Partial Views (Components)
 
+        [Authorize]
         [ChildActionOnly]
         public PartialViewResult GetFeaturesComponent(string db, int redisDb)
         {
@@ -92,18 +94,21 @@ namespace WebUI.FullFramework.Controllers
             return PartialView("_FeaturesComponent", features);
         }
 
+        [Authorize]
         [ChildActionOnly]
         public PartialViewResult GetConnectionStringsComponent(string db)
         {
             return PartialView("_ConnectionStringsComponent");
         }
 
+        [Authorize]
         [ChildActionOnly]
         public PartialViewResult GetConfigurationFileComponent(string db)
         {
             return PartialView("_ConfigurationFileComponent");
         }
 
+        [Authorize]
         [ChildActionOnly]
         public PartialViewResult GetInformationComponent(string path, IISSiteType siteType)
         {
@@ -116,6 +121,7 @@ namespace WebUI.FullFramework.Controllers
             return PartialView("_InformationComponent", information);
         }
 
+        [Authorize]
         public PartialViewResult GetDeleteApplicationModal(string pathOrName, string siteName, IISSiteType siteType, string database)
         {
             ViewBag.PathOrName = pathOrName;
@@ -130,6 +136,7 @@ namespace WebUI.FullFramework.Controllers
         #region Methods: API 
 
         [HttpPost]
+        [Authorize]
         public JsonResult SaveFeatures(FeaturesComponentUpdateModel featuresUpdateModel)
         {
             try
@@ -145,6 +152,7 @@ namespace WebUI.FullFramework.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public JsonResult StopApplicationPool(string poolName)
         {
             bool isPoolStopedOrStoping;
@@ -161,6 +169,7 @@ namespace WebUI.FullFramework.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public JsonResult StartApplicationPool(string poolName)
         {
             bool isPoolStartedOrStarting;
@@ -177,6 +186,7 @@ namespace WebUI.FullFramework.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public JsonResult RecycleApplicationPool(string poolName)
         {
             bool isPoolStartedOrStarting;
@@ -193,6 +203,7 @@ namespace WebUI.FullFramework.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public JsonResult FlushRedisDb(int redisDb)
         {
             try
@@ -208,6 +219,7 @@ namespace WebUI.FullFramework.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public JsonResult DeleteApplication(DeleteApplicationDto dto)
         {
             try

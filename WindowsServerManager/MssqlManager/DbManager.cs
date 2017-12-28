@@ -52,19 +52,18 @@ namespace MssqlManager
         public async Task DropDatabaseAsync()
         {
             _connectionString = $@"Server={_dataSource}; Initial Catalog=master; Persist Security Info=True; MultipleActiveResultSets=True; Integrated Security=SSPI;";
-            var sqlExpression = $@"ALTER DATABASE [{_db}] SET OFFLINE WITH ROLLBACK IMMEDIATE
-									GO
+            var sqlExpression = $@"ALTER DATABASE [{_db}] set single_user with rollback immediate
 									DROP DATABASE [{_db}]";
 
             using (var connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
-                var queries = SplitSqlStatements(sqlExpression);
-                foreach (var query in queries)
-                {
-                    SqlCommand command = new SqlCommand(query, connection);
+                //var queries = SplitSqlStatements(sqlExpression);
+                //foreach (var query in queries)
+                //{
+                    SqlCommand command = new SqlCommand(sqlExpression, connection);
                     await command.ExecuteNonQueryAsync();
-                }
+                //}
                 connection.Close();
             }
         }
