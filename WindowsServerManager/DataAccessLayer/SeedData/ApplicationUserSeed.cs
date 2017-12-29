@@ -31,7 +31,9 @@ namespace DataAccessLayer.SeedData
             {
                 Email = Configuration.AppAdminEmail,
                 EmailConfirmed = true,
-                UserName = Configuration.AppAdminEmail
+                UserName = Configuration.AppAdminEmail,
+                IsEnabled = true,
+                Name = "Administrator"
             };
 
             var result = userManager.Create(admin, Configuration.AppAdminPassword);
