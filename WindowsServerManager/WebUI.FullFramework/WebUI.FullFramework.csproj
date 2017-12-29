@@ -325,6 +325,8 @@
     <Content Include="Views\IIS\_ConfigurationFileComponent.cshtml" />
     <Content Include="Views\IIS\_InformationComponent.cshtml" />
     <Content Include="Views\IIS\_DeleteApplicationModal.cshtml" />
+    <Content Include="Views\Account\Index.cshtml" />
+    <Content Include="Views\Account\_AccountLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
