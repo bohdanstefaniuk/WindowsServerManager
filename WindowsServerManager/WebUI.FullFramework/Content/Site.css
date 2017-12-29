@@ -84,8 +84,7 @@ textarea {
 
 .ts-btn {
     display: inline-block;
-    padding: 0 6px;
-    /*padding: 5px 14px 6px;*/
+    padding: 5px 14px 6px;
     outline: 0;
     cursor: pointer;
     background-color: #f6f6f6;
@@ -127,4 +126,160 @@ textarea {
     filter: inherit;
     color: #666;
     box-shadow: inherit;
+}
+
+.ts-btn-mini {
+    padding: 0 6px;
+}
+
+.actionBar {
+    width: 90%;
+    margin: 0 auto;
+    background-color: #f5f5f5;
+    padding: .6em 10px;
+    line-height: 0;
+}
+
+.actionBarElement {
+    display: inline-block;
+    text-align: start;
+}
+
+.userTable {
+    width: 90%;
+    margin: 0 auto;
+    text-align: start;
+}
+
+table {
+    display: table;
+    border-collapse: separate;
+    border-spacing: 2px;
+    border-color: grey;
+}
+
+table.userList {
+    width: 100%;
+    margin: 0 0 1em;
+    padding: 0;
+    border-bottom: solid 2px #e3e9ef;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+tbody {
+    display: table-row-group;
+    vertical-align: middle;
+    border-color: inherit;
+}
+
+tr {
+    display: table-row;
+    vertical-align: inherit;
+    border-color: inherit;
+}
+
+table.dark th {
+    background-color: #ABB1C4;
+    margin: 0;
+    padding: 2px 6px;
+    color: #FFF;
+    text-align: left;
+}
+
+table.dark td {
+    margin: 0;
+    padding: 2px 6px;
+    text-align: left;
+}
+
+table.dark tr:hover {
+    background-color: #FFC;
+}
+
+.admin-sidebar {
+    width: 16%;
+    min-width: 204px;
+    padding: 0 20px 10px 0;
+    box-sizing: content-box;
+}
+
+.sidebar-category, .sidebar-item {
+    padding: 0.2em 0;
+}
+
+.sidebar-category {
+    
+}
+
+.sidebar-item {
+    max-width: 240px;
+    padding-left: 20px;
+    white-space: nowrap;
+}
+
+.admin-sidebar .sidebar-item.active {
+    background: #E9F3FD;
+    font-weight: bold;
+}
+
+.admin-sidebar .sidebar-item:hover {
+    background: #E9F3FD;
+    cursor: pointer;
+}
+
+.toolbarItem {
+    float: left;
+    margin-right: 12px;
+}
+
+.text-center {
+    text-align: center;
+    float: none;
+}
+
+.glyphicon-chevron-down {
+    color: #888888;
+    font-size: 12px;
+}
+
+.glyphicon-plus {
+    color: forestgreen;
+    font-size: 12px;
+}
+
+.block-center {
+    margin: 0 auto;
+}
+
+.ts-btn-primary {
+    color: #FFF;
+    background-color: #2d5fb3;
+    background-repeat: repeat-x;
+    background-image: -webkit-linear-gradient(top, #438ed7, #2d5fb3);
+    background-image: linear-gradient(to bottom, #438ed7, #2d5fb3);
+    filter: none;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    border-color: #2d5fb3 #2d5fb3 #003f81;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+    box-shadow: none;
+}
+
+.ts-btn-primary:hover {
+    color: #FFF;
+    background-color: #2d5fb3;
+    background-position: 0 -15px;
+    box-shadow: none;
+    -webkit-transition: background-position 0.1s linear;
+    transition: background-position 0.1s linear;
+}
+
+.submitButton {
+    margin-right: 1em;
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
+.line {
+    margin-top: 10px;
 }

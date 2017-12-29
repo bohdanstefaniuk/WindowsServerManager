@@ -19,8 +19,6 @@ namespace WebUI.FullFramework.Models
         [Compare("Password")]
         public string ConfirmPassword { get; set; }
         [Required]
-        public string Address { get; set; }
-        [Required]
         public string Name { get; set; }
         [Required]
         public Role Role { get; set; }

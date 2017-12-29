@@ -21,6 +21,7 @@ namespace WebUI.FullFramework.Controllers
 
         private IAuthenticationManager AuthenticationManager => HttpContext.GetOwinContext().Authentication;
 
+        [Authorize]
         public async Task<ActionResult> Index()
         {
             var users = await UserService.GetUsers();
@@ -28,7 +29,6 @@ namespace WebUI.FullFramework.Controllers
             return View(users);
         }
 
-        [Authorize]
         public ActionResult Login()
         {
             return View();
@@ -40,6 +40,14 @@ namespace WebUI.FullFramework.Controllers
         {
             if (ModelState.IsValid)
             {
+                var isEnabled = await UserService.IsUserEnabled(model.Email);
+
+                if (isEnabled.HasValue && !isEnabled.Value || !isEnabled.HasValue)
+                {
+                    ModelState.AddModelError("", @"Ваша учетная запись была деактивирована");
+                    return View(model);
+                }
+
                 UserDTO userDto = new UserDTO { Email = model.Email, Password = model.Password };
                 ClaimsIdentity claim = await UserService.Authenticate(userDto);
                 if (claim == null)
@@ -67,7 +75,7 @@ namespace WebUI.FullFramework.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public ActionResult Register()
         {
             return View();
@@ -90,7 +98,7 @@ namespace WebUI.FullFramework.Controllers
                 var operationDetails = await UserService.Create(userDto);
                 if (operationDetails.Succedeed)
                 {
-                    return View("SuccessRegister");
+                    return RedirectToAction("Index");
                 }
                 ModelState.AddModelError(operationDetails.Property, operationDetails.Message);
             }

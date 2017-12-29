@@ -1,0 +1,38 @@
+﻿@using WebUI.FullFramework.Helpers
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="container-fluid">
+    <div class="row">
+        <div class="col-md-2">
+            <div class="admin-sidebar">
+                <div class="sidebar-category">
+                    User Management
+                </div>
+                <div class="sidebar-item @Html.IsSelected(controllers: "Account", actions: "Index,Register", cssClass: "active")">
+                    <a href="@Url.Action("Index", "Account")">Users</a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="#">Roles</a>
+                </div>
+                <div class="sidebar-category">
+                    System
+                </div>
+                <div class="sidebar-item">
+                    <a href="#">Settings</a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="#">Application log</a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="#">Action log</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-10">
+            @RenderBody()
+        </div>
+    </div>
+</section>
+

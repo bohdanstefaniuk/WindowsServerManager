@@ -36,7 +36,13 @@ namespace BLL.Services
                 return new OperationDetails(false, "Пользователь с таким логином уже существует", "Email");
             }
                 
-            user = new ApplicationUser { Email = userDto.Email, UserName = userDto.Email };
+            user = new ApplicationUser
+            {
+                Email = userDto.Email,
+                UserName = userDto.Email,
+                Name = userDto.Name,
+                IsEnabled = true
+            };
             var result = await Database.UserManager.CreateAsync(user, userDto.Password);
             if (result.Errors.Any())
             {
@@ -45,6 +51,7 @@ namespace BLL.Services
 
             await Database.UserManager.AddToRoleAsync(user.Id, userDto.Role);
             await Database.SaveAsync();
+
             return new OperationDetails(true, "Регистрация успешно пройдена", "");
         }
 
@@ -82,6 +89,7 @@ namespace BLL.Services
             if (result.Succeeded)
             {
                 result = await Database.UserManager.AddToRoleAsync(user.Id, role.ToString());
+                await Database.SaveAsync();
             }
 
             if (result.Errors.Any())
@@ -92,6 +100,21 @@ namespace BLL.Services
             return new OperationDetails(true, "Роль успешно изменена", "");
         }
 
+        public async Task<bool?> IsUserEnabled(string email)
+        {
+            return await Database.UserManager.Users
+                .Where(x => x.Email == email)
+                .Select(x => x.IsEnabled)
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task ChangeIsEnabled(bool isEnabled, string email)
+        {
+            var user = await Database.UserManager.Users.FirstOrDefaultAsync(x => x.Email == email);
+            user.IsEnabled = isEnabled;
+            await Database.SaveAsync();
+        }
+
         public async Task<List<UserDTO>> GetUsers()
         {
             var usersDto = new List<UserDTO>();
@@ -99,16 +122,15 @@ namespace BLL.Services
 
             foreach (var applicationUser in users)
             {
+                var role = await Database.RoleManager.FindByIdAsync(applicationUser.Roles.FirstOrDefault()?.RoleId);
                 var user = new UserDTO
                 {
                     Id = applicationUser.Id,
                     Email = applicationUser.Email,
                     Name = applicationUser.Name,
                     Password = null,
-                    Role = applicationUser.Claims
-                        .Where(x => x.ClaimType == ClaimTypes.Role)
-                        .Select(x => x.ClaimValue)
-                        .FirstOrDefault()
+                    Role = role.Name,
+                    UserName = applicationUser.UserName
                 };
                 usersDto.Add(user);
             }

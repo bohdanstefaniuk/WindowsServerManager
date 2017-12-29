@@ -1,0 +1,43 @@
+﻿@model WebUI.FullFramework.Models.RegisterModel
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<section class="container-fluid">
+    <div class="block-center" style="width: 90%">
+        @using (Html.BeginForm("Register", "Account"))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+            <div class="row line">
+                <p class="col-md-2">Email</p>
+                @Html.EditorFor(model => model.Email, new {htmlAttributes = new {@class = "input-text col-md-4"}})
+                @Html.ValidationMessageFor(model => model.Email, "", new {@class = "text-danger col-md-4"})
+            </div>
+            <div class="row line">
+                <p class="col-md-2">Password</p>
+                @Html.EditorFor(model => model.Password, new {htmlAttributes = new {@class = "input-text col-md-4"}})
+                @Html.ValidationMessageFor(model => model.Password, "", new {@class = "text-danger col-md-4"})
+            </div>
+            <div class="row line">
+                <p class="col-md-2">Retry password</p>
+                @Html.EditorFor(model => model.ConfirmPassword, new {htmlAttributes = new {@class = "input-text col-md-4"}})
+                @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new {@class = "text-danger col-md-4"})
+            </div>
+            <div class="row line">
+                <p class="col-md-2">Name</p>
+                @Html.EditorFor(model => model.Name, new {htmlAttributes = new {@class = "input-text col-md-4"}})
+                @Html.ValidationMessageFor(model => model.Name, "", new {@class = "text-danger col-md-4"})
+            </div>
+            <div class="row line">
+                <p class="col-md-2">System role</p>
+                @Html.EnumDropDownListFor(x => x.Role,
+                    null,
+                    new { @class = "col-md-4" })
+                @Html.ValidationMessageFor(model => model.Role, "", new {@class = "text-danger col-md-4"})
+            </div>
+            <button type="submit" class="ts-btn-primary submitButton">Register</button>
+        }
+    </div>
+</section>

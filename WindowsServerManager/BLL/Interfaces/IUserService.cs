@@ -14,5 +14,7 @@ namespace BLL.Interfaces
         Task<ClaimsIdentity> Authenticate(UserDTO userDto);
         Task<OperationDetails> ChangeUserRole(Role role, string email);
         Task<List<UserDTO>> GetUsers();
+        Task<bool?> IsUserEnabled(string email);
+        Task ChangeIsEnabled(bool isEnabled, string email);
     }
 }
