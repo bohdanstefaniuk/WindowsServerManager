@@ -16,5 +16,6 @@ namespace BLL.Interfaces
         Task<List<UserDTO>> GetUsers();
         Task<bool?> IsUserEnabled(string email);
         Task ChangeIsEnabled(bool isEnabled, string id);
+        Task<bool> DeleteUser(string id);
     }
 }

@@ -138,6 +138,15 @@ namespace BLL.Services
             return usersDto;
         }
 
+        public async Task<bool> DeleteUser(string id)
+        {
+            var user = await Database.UserManager.Users.FirstOrDefaultAsync(x => x.Id == id);
+            await Database.UserManager.DeleteAsync(user);
+            await Database.SaveAsync();
+
+            return await Database.UserManager.Users.AnyAsync(x => x.Id == id);
+        }
+
         public void Dispose()
         {
             Database.Dispose();
