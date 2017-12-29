@@ -13,5 +13,6 @@ namespace BLL.Interfaces
         Task<OperationDetails> Create(UserDTO userDto);
         Task<ClaimsIdentity> Authenticate(UserDTO userDto);
         Task<OperationDetails> ChangeUserRole(Role role, string email);
+        Task<List<UserDTO>> GetUsers();
     }
 }

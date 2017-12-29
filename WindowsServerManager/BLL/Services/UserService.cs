@@ -75,7 +75,7 @@ namespace BLL.Services
         /// <returns>True when role changed</returns>
         public async Task<OperationDetails> ChangeUserRole(Role role, string email)
         {
-            var user = await Database.UserManager.Users.FirstOrDefaultAsync(x => x.Email == email);
+            var user = await Database.UserManager.Users.Include(x => x.Claims).FirstOrDefaultAsync(x => x.Email == email);
             var roles = user.Claims.Where(x => x.ClaimType == ClaimTypes.Role).Select(x => x.ClaimValue);
             var result = await Database.UserManager.RemoveFromRolesAsync(user.Id, roles.ToArray());
 
@@ -90,6 +90,30 @@ namespace BLL.Services
             }
 
             return new OperationDetails(true, "Роль успешно изменена", "");
+        }
+
+        public async Task<List<UserDTO>> GetUsers()
+        {
+            var usersDto = new List<UserDTO>();
+            var users = await Database.UserManager.Users.Include(x => x.Claims).ToListAsync();
+
+            foreach (var applicationUser in users)
+            {
+                var user = new UserDTO
+                {
+                    Id = applicationUser.Id,
+                    Email = applicationUser.Email,
+                    Name = applicationUser.Name,
+                    Password = null,
+                    Role = applicationUser.Claims
+                        .Where(x => x.ClaimType == ClaimTypes.Role)
+                        .Select(x => x.ClaimValue)
+                        .FirstOrDefault()
+                };
+                usersDto.Add(user);
+            }
+
+            return usersDto;
         }
 
         public void Dispose()

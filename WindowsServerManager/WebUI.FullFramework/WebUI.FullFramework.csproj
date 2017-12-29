@@ -211,12 +211,15 @@
     <Compile Include="Controllers\IISController.cs" />
     <Compile Include="Controllers\RedisController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
+    <Compile Include="Controllers\UsersController.cs" />
+    <Compile Include="Core\NLogger.cs" />
     <Compile Include="Enums\IISViewActionType.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\JsTreeMenuHelper.cs" />
     <Compile Include="Helpers\MenuHelper.cs" />
+    <Compile Include="Models\ChangeRoleModel.cs" />
     <Compile Include="Models\FeaturesComponentUpdateModel.cs" />
     <Compile Include="Models\IISIndexViewModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
@@ -325,10 +328,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Core\" />
     <Folder Include="Models\Dto\" />
     <Folder Include="Views\Redis\" />
     <Folder Include="Views\Settings\" />
+    <Folder Include="Views\Users\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -343,6 +346,10 @@
     <ProjectReference Include="..\BLL\BLL.csproj">
       <Project>{ba2e7b9d-1848-4e87-8bc0-31292660edfe}</Project>
       <Name>BLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataAccessLayer\DataAccessLayer.csproj">
+      <Project>{CFA6F107-DA40-43F8-AA5C-AAD47A7BB1D8}</Project>
+      <Name>DataAccessLayer</Name>
     </ProjectReference>
     <ProjectReference Include="..\MssqlManager\MssqlManager.csproj">
       <Project>{0856C756-AE16-4E15-8E6D-D8B472ED5D9C}</Project>

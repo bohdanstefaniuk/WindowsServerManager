@@ -21,6 +21,14 @@ namespace WebUI.FullFramework.Controllers
 
         private IAuthenticationManager AuthenticationManager => HttpContext.GetOwinContext().Authentication;
 
+        public async Task<ActionResult> Index()
+        {
+            var users = await UserService.GetUsers();
+
+            return View(users);
+        }
+
+        [Authorize]
         public ActionResult Login()
         {
             return View();
@@ -90,16 +98,17 @@ namespace WebUI.FullFramework.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> ChangeUserRole(string redirectUrl, string email, Role newRole)
+        public async Task<ActionResult> ChangeUserRole(ChangeRoleModel changeRoleModel)
         {
             if (ModelState.IsValid)
             {
-                var result = await UserService.ChangeUserRole(newRole, email);
+                var result = await UserService.ChangeUserRole(changeRoleModel.Role, changeRoleModel.Email);
 
                 if (result.Succedeed)
                 {
-                    return Redirect(redirectUrl);
+                    return Redirect(changeRoleModel.RedirectUrl);
                 }
                 ModelState.AddModelError(result.Property, result.Message);
             }
