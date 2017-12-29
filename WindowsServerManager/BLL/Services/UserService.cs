@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -6,6 +8,7 @@ using BLL.Dto;
 using BLL.Infrastructure;
 using BLL.Interfaces;
 using DataAccessLayer.Entities;
+using DataAccessLayer.Enums;
 using DataAccessLayer.Interfaces;
 using Microsoft.AspNet.Identity;
 
@@ -62,6 +65,31 @@ namespace BLL.Services
             }
                
             return claim;
+        }
+
+        /// <summary>
+        /// Change role for user
+        /// </summary>
+        /// <param name="role">New user role</param>
+        /// <param name="email">User email address</param>
+        /// <returns>True when role changed</returns>
+        public async Task<OperationDetails> ChangeUserRole(Role role, string email)
+        {
+            var user = await Database.UserManager.Users.FirstOrDefaultAsync(x => x.Email == email);
+            var roles = user.Claims.Where(x => x.ClaimType == ClaimTypes.Role).Select(x => x.ClaimValue);
+            var result = await Database.UserManager.RemoveFromRolesAsync(user.Id, roles.ToArray());
+
+            if (result.Succeeded)
+            {
+                result = await Database.UserManager.AddToRoleAsync(user.Id, role.ToString());
+            }
+
+            if (result.Errors.Any())
+            {
+                return new OperationDetails(false, result.Errors.FirstOrDefault(), "");
+            }
+
+            return new OperationDetails(true, "Роль успешно изменена", "");
         }
 
         public void Dispose()

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataAccessLayer.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -21,6 +22,8 @@ namespace WebUI.FullFramework.Models
         public string Address { get; set; }
         [Required]
         public string Name { get; set; }
+        [Required]
+        public Role Role { get; set; }
     }
 
 }

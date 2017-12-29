@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using BLL.Dto;
 using BLL.Infrastructure;
 using BLL.Interfaces;
+using DataAccessLayer.Enums;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using WebUI.FullFramework.Models;
@@ -71,14 +72,14 @@ namespace WebUI.FullFramework.Controllers
         {
             if (ModelState.IsValid)
             {
-                UserDTO userDto = new UserDTO
+                var userDto = new UserDTO
                 {
                     Email = model.Email,
                     Password = model.Password,
                     Name = model.Name,
-                    Role = "user"
+                    Role = model.Role.ToString()
                 };
-                OperationDetails operationDetails = await UserService.Create(userDto);
+                var operationDetails = await UserService.Create(userDto);
                 if (operationDetails.Succedeed)
                 {
                     return View("SuccessRegister");
@@ -86,6 +87,24 @@ namespace WebUI.FullFramework.Controllers
                 ModelState.AddModelError(operationDetails.Property, operationDetails.Message);
             }
             return View(model);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult> ChangeUserRole(string redirectUrl, string email, Role newRole)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await UserService.ChangeUserRole(newRole, email);
+
+                if (result.Succedeed)
+                {
+                    return Redirect(redirectUrl);
+                }
+                ModelState.AddModelError(result.Property, result.Message);
+            }
+            
+            return View();
         }
     }
 }
