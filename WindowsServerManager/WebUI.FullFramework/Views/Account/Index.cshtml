@@ -46,11 +46,31 @@
                             <td>@user.UserName</td>
                             <td>@user.Role</td>
                             <td>
-                                <div class="toolbarItem text-center">
-                                    <span class="btn-group" id="sp_span_bcActions">
-                                        <button class="ts-btn ts-btn-mini" type="button" data-popup="sp_span_bcActionsContent">
-                                            Actions <span class="glyphicon glyphicon-chevron-down"></span></button>
-                                    </span>
+                                <div class="action-dropdown">
+                                    <div class="toolbarItem text-center" data-toggle="dropdown">
+                                        <span class="btn-group" id="sp_span_bcActions">
+                                            <button class="ts-btn ts-btn-mini"
+                                                    type="button"
+                                                    onclick="showUserActionPopup('popup_@user.Id')"
+                                                    data-user-email="@user.Email"
+                                                    data-user-id="@user.Id"
+                                                    data-toggle="dropdown">
+                                                Actions <span class="glyphicon glyphicon-chevron-down"></span></button>
+                                        </span>
+                                    </div>
+                                    <div id="popup_@user.Id" class="dropdown-content">
+                                        <a href="#">Open</a>
+                                        @if (user.IsEnabled)
+                                        {
+                                            <a href="#" onclick="disableUser('@user.Id', @user.IsEnabled)">Disable</a>
+                                        }
+                                        else
+                                        {
+                                            <a href="#" onclick="disableUser('@user.Id', @user.IsEnabled)">Enable</a>
+                                        }
+
+                                        <a href="#" onclick="deleteUser('@user.Id')">Delete</a>
+                                    </div>
                                 </div>
                             </td>
                         </tr>
@@ -67,3 +87,42 @@
         </div>
     </div>
 </section>
+
+@Scripts.Render("~/Scripts/Custom/AdminPageUtils.js")
+@Scripts.Render("~/Scripts/Custom/AjaxPost.js")
+
+<script>
+    var ajaxPost = AjaxPost();
+
+    function showUserActionPopup(dropdownId) {
+        document.getElementById(dropdownId).classList.toggle("show");
+    }
+
+    function disableUser(userId, status) {
+        if (confirm('Вы уверены что хотите деактивировать пользователя?')) {
+            const url = `@Url.Action("SetUserEnableStatus", "Account")?id=${userId}&status=${!status}`;
+            ajaxPost.post(url);
+        }
+    }
+
+    function deleteUser(userId) {
+        if (confirm('ВНИМАНИЕ! Вы уверены что хотите УДАЛИТЬ пользователя?')) {
+            const url = `@Url.Action("DeleteUser", "Account")?id=${userId}`;
+            ajaxPost.post(url);
+        }
+    }
+
+    window.onclick = function(event) {
+        if (!event.target.matches('.dropbtn')) {
+
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            var i;
+            for (i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+            }
+        }
+    }
+</script>

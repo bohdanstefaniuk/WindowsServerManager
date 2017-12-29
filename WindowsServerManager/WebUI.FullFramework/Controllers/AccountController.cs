@@ -106,6 +106,22 @@ namespace WebUI.FullFramework.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<JsonResult> SetUserEnableStatus(string id, bool status)
+        {
+            try
+            {
+                await UserService.ChangeIsEnabled(status, id);
+            }
+            catch (Exception e)
+            {
+                return Json(new { success = false, responseText = $"{e.Message}" }, JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(new { success = true, responseText = $"Success" }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> ChangeUserRole(ChangeRoleModel changeRoleModel)

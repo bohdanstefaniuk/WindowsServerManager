@@ -284,6 +284,7 @@
     <Content Include="Resources\Images\work-logo.jpg" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\Custom\AdminPageUtils.js" />
     <Content Include="Scripts\Custom\AjaxPost.js" />
     <Content Include="Scripts\Custom\FeatureManager.js" />
     <Content Include="Scripts\Custom\IISPageComponens.js" />

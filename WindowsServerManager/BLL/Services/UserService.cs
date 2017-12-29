@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Security.Claims;
@@ -108,9 +107,9 @@ namespace BLL.Services
                 .FirstOrDefaultAsync();
         }
 
-        public async Task ChangeIsEnabled(bool isEnabled, string email)
+        public async Task ChangeIsEnabled(bool isEnabled, string id)
         {
-            var user = await Database.UserManager.Users.FirstOrDefaultAsync(x => x.Email == email);
+            var user = await Database.UserManager.Users.FirstOrDefaultAsync(x => x.Id == id);
             user.IsEnabled = isEnabled;
             await Database.SaveAsync();
         }
@@ -130,7 +129,8 @@ namespace BLL.Services
                     Name = applicationUser.Name,
                     Password = null,
                     Role = role.Name,
-                    UserName = applicationUser.UserName
+                    UserName = applicationUser.UserName,
+                    IsEnabled = applicationUser.IsEnabled.HasValue && applicationUser.IsEnabled.Value
                 };
                 usersDto.Add(user);
             }

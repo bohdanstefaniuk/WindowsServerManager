@@ -15,6 +15,6 @@ namespace BLL.Interfaces
         Task<OperationDetails> ChangeUserRole(Role role, string email);
         Task<List<UserDTO>> GetUsers();
         Task<bool?> IsUserEnabled(string email);
-        Task ChangeIsEnabled(bool isEnabled, string email);
+        Task ChangeIsEnabled(bool isEnabled, string id);
     }
 }
