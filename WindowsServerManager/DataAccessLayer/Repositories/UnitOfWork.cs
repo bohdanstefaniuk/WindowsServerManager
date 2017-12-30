@@ -11,8 +11,10 @@ namespace DataAccessLayer.Repositories
     {
         private readonly ApplicationDbContext _dbContext = new ApplicationDbContext();
         private SettingsRepository _settingsRepository;
+        private ActionLogsRepository _actionLogsRepository;
 
         public SettingsRepository Settings => _settingsRepository ?? (_settingsRepository = new SettingsRepository(_dbContext));
+        public ActionLogsRepository ActionLogs => _actionLogsRepository ?? (_actionLogsRepository = new ActionLogsRepository(_dbContext));
 
         public void Save()
         {

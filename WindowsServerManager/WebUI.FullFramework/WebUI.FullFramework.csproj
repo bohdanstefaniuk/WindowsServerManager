@@ -207,11 +207,12 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ActionLogsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IISController.cs" />
     <Compile Include="Controllers\RedisController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
-    <Compile Include="Controllers\UsersController.cs" />
+    <Compile Include="Core\ActionLoggerAttribute.cs" />
     <Compile Include="Core\NLogger.cs" />
     <Compile Include="Enums\IISViewActionType.cs" />
     <Compile Include="Global.asax.cs">
@@ -329,13 +330,14 @@
     <Content Include="Views\Account\Index.cshtml" />
     <Content Include="Views\Shared\_AdminLayout.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Account\User.cshtml" />
+    <Content Include="Views\Settings\Index.cshtml" />
+    <Content Include="Views\ActionLogs\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\Dto\" />
     <Folder Include="Views\Redis\" />
-    <Folder Include="Views\Settings\" />
-    <Folder Include="Views\Users\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

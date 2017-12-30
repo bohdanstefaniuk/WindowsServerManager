@@ -6,9 +6,9 @@ using System.Web.Mvc;
 
 namespace WebUI.FullFramework.Controllers
 {
-    public class UsersController : Controller
+    public class ActionLogsController : Controller
     {
-        // GET: Users
+        // GET: ActionLogs
         public ActionResult Index()
         {
             return View();

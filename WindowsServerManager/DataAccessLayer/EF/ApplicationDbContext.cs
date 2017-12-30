@@ -16,5 +16,6 @@ namespace DataAccessLayer.EF
         public ApplicationDbContext(): base("DbConnection") {}
 
         public DbSet<Settings> Settings { get; set; }
+        public DbSet<ActionLog> ActionLogs { get; set; }
     }
 }

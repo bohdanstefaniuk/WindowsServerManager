@@ -9,8 +9,10 @@ using BLL.Dto;
 using BLL.Infrastructure;
 using BLL.Interfaces;
 using DataAccessLayer.Enums;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using WebUI.FullFramework.Core;
 using WebUI.FullFramework.Models;
 
 namespace WebUI.FullFramework.Controllers
@@ -27,6 +29,40 @@ namespace WebUI.FullFramework.Controllers
             var users = await UserService.GetUsers();
 
             return View(users);
+        }
+
+        [Authorize]
+        [ActionLogger]
+        public async Task<ActionResult> Edit(string email)
+        {
+            var user = await UserService.GetUser(email);
+            ViewBag.IsOwner = User.Identity.GetUserId() == user.Id;
+            ViewBag.IsAdmin = User.IsInRole("Admin");
+            return View("User", user);
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Edit(UserDTO editModel)
+        {
+            var isAdmin = User.IsInRole("Admin");
+            var currentUserId = User.Identity.GetUserId();
+
+            if (ModelState.IsValid)
+            {
+                if (editModel.Id != currentUserId && !isAdmin)
+                {
+                    ModelState.AddModelError("", @"У вас нет прав на редактирование данной записи");
+                    ViewBag.IsAdmin = false;
+                    ViewBag.IsOwner = currentUserId == editModel.Id;
+                    return View("User", editModel);
+                }
+
+                await UserService.UpdateUser(editModel, isAdmin);
+            }
+
+            return RedirectToAction("Index");
         }
 
         public ActionResult Login()

@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EF\ApplicationDbContext.cs" />
+    <Compile Include="Entities\ActionLog.cs" />
     <Compile Include="Entities\ApplicationRole.cs" />
     <Compile Include="Entities\ApplicationUser.cs" />
     <Compile Include="Entities\Entity.cs" />
@@ -72,8 +73,13 @@
     <Compile Include="Migrations\201712292218485_Add-Is-EnabledField.Designer.cs">
       <DependentUpon>201712292218485_Add-Is-EnabledField.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201712301436335_Add-action-logs.cs" />
+    <Compile Include="Migrations\201712301436335_Add-action-logs.Designer.cs">
+      <DependentUpon>201712301436335_Add-action-logs.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\ActionLogsRepository.cs" />
     <Compile Include="Repositories\IdentityUnitOfWork.cs" />
     <Compile Include="Repositories\SettingsRepository.cs" />
     <Compile Include="Repositories\UnitOfWork.cs" />
@@ -93,6 +99,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201712292218485_Add-Is-EnabledField.resx">
       <DependentUpon>201712292218485_Add-Is-EnabledField.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712301436335_Add-action-logs.resx">
+      <DependentUpon>201712301436335_Add-action-logs.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

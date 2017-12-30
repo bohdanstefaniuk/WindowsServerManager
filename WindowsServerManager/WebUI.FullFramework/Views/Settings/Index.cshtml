@@ -1,0 +1,91 @@
+﻿@model IEnumerable<DataAccessLayer.Entities.Settings>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<section class="container-fluid">
+    <div class="row">
+        <div class="actionBar">
+            <p class="actionBarElement">Find setting:</p>
+            <div class="actionBarElement">
+                <input type="text" class="input-text" />
+            </div>
+            <button class="ts-btn ts-btn-mini actionBarElement">
+                Filter
+            </button>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="userTable">
+            <table class="userList dark">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Code</th>
+                        <th>Value</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Any())
+                    {
+                        foreach (var setting in Model)
+                        {
+                            <tr>
+                                <td>@setting.Id</td>
+                                <td>@setting.Name</td>
+                                <td>@setting.Code</td>
+                                <td>@setting.Value</td>
+                                <td>
+                                        <div class="toolbarItem text-center" data-toggle="dropdown">
+                                            <span class="btn-group" id="sp_span_bcActions">
+                                                <a class="ts-btn ts-btn-mini"
+                                                        type="button"
+                                                        onclick="showUserActionPopup('popup_@setting.Id')"
+                                                        data-setting-code="@setting.Code"
+                                                        data-setting-id="@setting.Id"
+                                                        data-toggle="dropdown">
+                                                    Open
+                                                </a>
+                                            </span>
+                                        </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="4">Нет данных</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<script>
+    var ajaxPost = AjaxPost();
+
+    function showUserActionPopup(dropdownId) {
+        document.getElementById(dropdownId).classList.toggle("show");
+    }
+
+    window.onclick = function(event) {
+        if (!event.target.matches('.dropbtn')) {
+
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            var i;
+            for (i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+            }
+        }
+    }
+</script>

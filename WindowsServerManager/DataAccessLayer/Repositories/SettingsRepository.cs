@@ -19,14 +19,14 @@ namespace DataAccessLayer.Repositories
             _dbContext = context;
         }
 
-        public IEnumerable<Settings> GetAll()
+        public async Task<IEnumerable<Settings>> GetAll()
         {
-            return _dbContext.Settings;
+            return await _dbContext.Settings.ToListAsync();
         }
 
-        public Settings Get(Guid id)
+        public async Task<Settings> Get(Guid id)
         {
-            return _dbContext.Settings.SingleOrDefault(x => x.Id == id);
+            return await _dbContext.Settings.SingleOrDefaultAsync(x => x.Id == id);
         }
 
         public Settings GetByCode(string code)

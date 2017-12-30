@@ -59,7 +59,7 @@
                                         </span>
                                     </div>
                                     <div id="popup_@user.Id" class="dropdown-content">
-                                        <a href="#">Open</a>
+                                        <a href="@Url.Action("Edit", "Account", new {email = user.Email})">Open</a>
                                         @if (user.IsEnabled)
                                         {
                                             <a href="#" onclick="disableUser('@user.Id', @user.IsEnabled)">Disable</a>

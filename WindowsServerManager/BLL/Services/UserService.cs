@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Security.Claims;
@@ -145,6 +146,37 @@ namespace BLL.Services
             await Database.SaveAsync();
 
             return await Database.UserManager.Users.AnyAsync(x => x.Id == id);
+        }
+
+        public async Task<UserDTO> GetUser(string email)
+        {
+            var user = await Database.UserManager.FindByEmailAsync(email);
+
+            var role = await Database.RoleManager.FindByIdAsync(user.Roles.FirstOrDefault()?.RoleId);
+            var userDTO = new UserDTO
+            {
+                Name = user.Name,
+                Email = user.Email,
+                Id = user.Id,
+                Role = role.Name,
+                UserName = user.UserName,
+                IsEnabled = user.IsEnabled.HasValue && user.IsEnabled.Value
+            };
+            return userDTO;
+        }
+
+        public async Task UpdateUser(UserDTO model, bool isAdmin)
+        {
+            var user = await Database.UserManager.FindByIdAsync(model.Id);
+            user.Name = model.Name;
+            user.UserName = model.Email;
+            if (isAdmin)
+            {
+                user.IsEnabled = model.IsEnabled;
+            }
+            
+            await Database.SaveAsync();
+            await Database.UserManager.SetEmailAsync(model.Id, model.Email);
         }
 
         public void Dispose()
