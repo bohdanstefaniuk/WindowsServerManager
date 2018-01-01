@@ -11,5 +11,6 @@ namespace BLL.Interfaces
         IConnectionStringsService CreateConnectionStringsService();
         IApplicationPoolService CreateApplciationPoolService();
         IRedisService CreateRedisManager();
+        IActionLogger CreateActionLogger();
     }
 }

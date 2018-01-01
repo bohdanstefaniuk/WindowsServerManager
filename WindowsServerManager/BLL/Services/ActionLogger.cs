@@ -44,14 +44,14 @@ namespace BLL.Services
             }
         }
 
-        public async Task<IEnumerable<ActionLog>> GetActionLogsAsync()
+        public IEnumerable<ActionLog> GetActionLogsAsync()
         {
-            return await _unitOfWork.ActionLogs.GetAll();
+            return _unitOfWork.ActionLogs.GetAll();
         }
 
-        public async Task<IEnumerable<ActionLog>> GetActionLogsAsync(string filterValue)
+        public IEnumerable<ActionLog> GetActionLogsAsync(string filterValue)
         {
-            return await _unitOfWork.ActionLogs.GetAll();
+            return _unitOfWork.ActionLogs.GetAll();
         }
 
         private void SaveLogs()
@@ -62,6 +62,12 @@ namespace BLL.Services
             }
             _unitOfWork.Save();
             _logs.Clear();
+        }
+
+        public void Dispose()
+        {
+            _unitOfWork?.Dispose();
+            GC.SuppressFinalize(this);
         }
     }
 }

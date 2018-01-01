@@ -20,14 +20,14 @@ namespace DataAccessLayer.Repositories
         }
 
 
-        public async Task<IEnumerable<ActionLog>> GetAll()
+        public IEnumerable<ActionLog> GetAll()
         {
-            return await _dbContext.ActionLogs.ToListAsync();
+            return _dbContext.ActionLogs.ToList();
         }
 
-        public async Task<ActionLog> Get(Guid id)
+        public ActionLog Get(Guid id)
         {
-            return await _dbContext.ActionLogs.SingleOrDefaultAsync(x => x.Id == id);
+            return _dbContext.ActionLogs.SingleOrDefault(x => x.Id == id);
         }
 
         public ActionLog GetByCode(string code)

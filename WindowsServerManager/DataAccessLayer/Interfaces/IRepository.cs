@@ -7,8 +7,8 @@ namespace DataAccessLayer.Interfaces
 {
     interface IRepository<T> where T : class
     {
-        Task<IEnumerable<T>> GetAll();
-        Task<T> Get(Guid id);
+        IEnumerable<T> GetAll();
+        T Get(Guid id);
         T GetByCode(string Code);
         void Create(T item);
         void Update(T item);

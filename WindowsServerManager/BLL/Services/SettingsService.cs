@@ -20,12 +20,12 @@ namespace BLL.Services
 
         public List<Settings> GetSettings()
         {
-            return _unitOfWork.Settings.GetAll().Result.ToList();
+            return _unitOfWork.Settings.GetAll().ToList();
         }
 
         public Settings GetSettingsById(Guid id)
         {
-            return _unitOfWork.Settings.Get(id).Result;
+            return _unitOfWork.Settings.Get(id);
         }
 
         public Settings GetSettingByCode(string code)
@@ -35,7 +35,7 @@ namespace BLL.Services
 
         public void CreateSettings(Settings settings)
         {
-            var allSettings = _unitOfWork.Settings.GetAll().Result;
+            var allSettings = _unitOfWork.Settings.GetAll();
             if (allSettings.Any(x => x.Code == settings.Code))
             {
                 throw new Exception("Данная настройка уже существует");

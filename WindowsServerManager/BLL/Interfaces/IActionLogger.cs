@@ -1,14 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using DataAccessLayer.Entities;
 
 namespace BLL.Interfaces
 {
-    public interface IActionLogger
+    public interface IActionLogger: IDisposable
     {
         void AddLog(ActionLog log);
-        Task<IEnumerable<ActionLog>> GetActionLogsAsync();
-        Task<IEnumerable<ActionLog>> GetActionLogsAsync(string filterValue);
+        IEnumerable<ActionLog> GetActionLogsAsync();
+        IEnumerable<ActionLog> GetActionLogsAsync(string filterValue);
         void Save();
     }
 }

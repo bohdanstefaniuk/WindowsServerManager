@@ -77,6 +77,10 @@
     <Compile Include="Migrations\201712301436335_Add-action-logs.Designer.cs">
       <DependentUpon>201712301436335_Add-action-logs.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201801011816486_update-db.cs" />
+    <Compile Include="Migrations\201801011816486_update-db.Designer.cs">
+      <DependentUpon>201801011816486_update-db.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ActionLogsRepository.cs" />
@@ -102,6 +106,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201712301436335_Add-action-logs.resx">
       <DependentUpon>201712301436335_Add-action-logs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801011816486_update-db.resx">
+      <DependentUpon>201801011816486_update-db.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

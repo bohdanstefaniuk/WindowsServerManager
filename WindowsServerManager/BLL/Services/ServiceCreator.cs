@@ -42,6 +42,11 @@ namespace BLL.Services
             return new ApplicationPoolService();
         }
 
+        public IActionLogger CreateActionLogger()
+        {
+            return ActionLogger.GetInstance();
+        }
+
         public IRedisService CreateRedisManager()
         {
             return new RedisService();
