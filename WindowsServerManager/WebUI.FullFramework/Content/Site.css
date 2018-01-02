@@ -156,8 +156,8 @@ table {
     border-collapse: separate;
     border-spacing: 2px;
     border-color: grey;
-    overflow-x: auto;
-    display: block;
+    /*overflow-x: auto;
+    display: block;*/
 }
 
 table.userList {
