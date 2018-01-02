@@ -207,14 +207,15 @@
     <Compile Include="Interfaces\IUserService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Interfaces\IJsTreeMenuService.cs" />
-    <Compile Include="Services\ActionLogger.cs" />
+    <Compile Include="Infrastructure\ActionLogger.cs" />
+    <Compile Include="Services\ActionLogsService.cs" />
     <Compile Include="Services\ConnectionStringsService.cs" />
     <Compile Include="Services\DbService.cs" />
     <Compile Include="Services\FeatureService.cs" />
     <Compile Include="Interfaces\IConnectionStringsService.cs" />
     <Compile Include="Interfaces\IRedisService.cs" />
     <Compile Include="Services\FileSystemService.cs" />
-    <Compile Include="Interfaces\IActionLogger.cs" />
+    <Compile Include="Interfaces\IActionLogsService.cs" />
     <Compile Include="Services\JsTreeMenuService.cs" />
     <Compile Include="Services\RedisService.cs" />
     <Compile Include="Services\ServiceCreator.cs" />

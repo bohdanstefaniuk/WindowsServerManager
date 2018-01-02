@@ -10,11 +10,11 @@ namespace WebUI.FullFramework.Controllers
 {
     public class ActionLogsController : Controller
     {
-        private IActionLogger ActionLogger => HttpContext.GetOwinContext().GetUserManager<IActionLogger>();
+        private IActionLogsService ActionLogsService => HttpContext.GetOwinContext().GetUserManager<IActionLogsService>();
         // GET: ActionLogs
         public ActionResult Index()
         {
-            var actionLogs = ActionLogger.GetActionLogsAsync();
+            var actionLogs = ActionLogsService.GetActionLogs();
             return View(actionLogs);
         }
     }

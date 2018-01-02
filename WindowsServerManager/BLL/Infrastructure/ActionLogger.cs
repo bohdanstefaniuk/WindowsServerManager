@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BLL.Interfaces;
 using DataAccessLayer.Entities;
 using DataAccessLayer.Repositories;
 
-namespace BLL.Services
+namespace BLL.Infrastructure
 {
-    public class ActionLogger : IActionLogger
+    public class ActionLogger
     {
         private const int _logsMaxCount = 10;
         private static readonly ActionLogger Instance = new ActionLogger();
@@ -42,16 +38,6 @@ namespace BLL.Services
                     SaveLogs();
                 }
             }
-        }
-
-        public IEnumerable<ActionLog> GetActionLogsAsync()
-        {
-            return _unitOfWork.ActionLogs.GetAll();
-        }
-
-        public IEnumerable<ActionLog> GetActionLogsAsync(string filterValue)
-        {
-            return _unitOfWork.ActionLogs.GetAll();
         }
 
         private void SaveLogs()

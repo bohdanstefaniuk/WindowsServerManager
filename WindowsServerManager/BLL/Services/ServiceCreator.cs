@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BLL.Infrastructure;
 using BLL.Interfaces;
 using DataAccessLayer.Repositories;
 
@@ -42,9 +43,9 @@ namespace BLL.Services
             return new ApplicationPoolService();
         }
 
-        public IActionLogger CreateActionLogger()
+        public IActionLogsService CreateActionLogger()
         {
-            return ActionLogger.GetInstance();
+            return new ActionLogsService(new UnitOfWork());
         }
 
         public IRedisService CreateRedisManager()
