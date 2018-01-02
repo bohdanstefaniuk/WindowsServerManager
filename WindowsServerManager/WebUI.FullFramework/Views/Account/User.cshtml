@@ -3,49 +3,107 @@
     ViewBag.Title = "User";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+@Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
 
 <section class="container-fluid">
     <div class="block-center" style="width: 90%">
-        @using (Html.BeginForm("Edit", "Account"))
-        {
-            @Html.AntiForgeryToken()
-            @Html.HiddenFor(x => x.Id)
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            <div class="row line">
-                <p class="col-md-2">Email</p>
-                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "input-text col-md-4" } })
-                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger col-md-4" })
-            </div>
-            <div class="row line">
-                <p class="col-md-2">Name</p>
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "input-text col-md-4" } })
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger col-md-4" })
-            </div>
-            if (ViewBag.IsAdmin)
+        <div class="row">
+            @if (ViewBag.IsOwner || ViewBag.IsAdmin)
             {
-                 <div class="row line">
-                     <p class="col-md-2">User enable status</p>
-                     @Html.EditorFor(model => model.IsEnabled, new { htmlAttributes = new { @class = "col-md-4" } })
-                     @Html.ValidationMessageFor(model => model.IsEnabled, "", new { @class = "text-danger col-md-4" })
-                 </div>
+                <button type="submit" class="ts-btn submitButton" id="changePasswordBlockShowButton">Change password</button>
             }
-            <div class="row line">
-                <p class="col-md-2">System role</p>
-                @Html.EditorFor(model => model.Role, new { htmlAttributes = new { @class = "col-md-4", disable = "disable" } })
-                @Html.ValidationMessageFor(model => model.Role, "", new { @class = "text-danger col-md-4" })
+            @if (ViewBag.IsAdmin)
+            {
+                <button type="submit" class="ts-btn submitButton" id="changeRoleBlockShowButton">Change role</button>
+            } 
+        </div>
+        <div class="row">
+            <div class="col-md-6" style="padding: 15px;">
+                @using (Html.BeginForm("Edit", "Account"))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(x => x.Id)
+                    @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+                    <div class="row line">
+                        <p class="col-md-4">Email</p>
+                        @Html.EditorFor(model => model.Email, new {htmlAttributes = new {@class = "input-text col-md-8"}})
+                        
+                    </div>
+                    <div class="row">
+                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger col-md-8 col-md-offset-4" })
+                    </div>
+                    <div class="row line">
+                        <p class="col-md-4">Name</p>
+                        @Html.EditorFor(model => model.Name, new {htmlAttributes = new {@class = "input-text col-md-8"}})
+                    </div>
+                    <div class="row">
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger col-md-8 col-md-offset-4" })
+                    </div>
+                    if (ViewBag.IsAdmin)
+                    {
+                        <div class="row line">
+                            <p class="col-md-4">User enable status</p>
+                            @Html.EditorFor(model => model.IsEnabled, new {htmlAttributes = new {@class = "col-md-8"}})
+                            
+                        </div>
+                        <div class="row">
+                            @Html.ValidationMessageFor(model => model.IsEnabled, "", new { @class = "text-danger col-md-8 col-md-offset-4" })
+                        </div>
+                    }
+                    <div class="row line">
+                        <p class="col-md-4">System role</p>
+                        @Html.EditorFor(model => model.Role, new {htmlAttributes = new {@class = "col-md-8", disable = "disable"}})
+                    </div>
+                    <div class="row">
+                        @Html.ValidationMessageFor(model => model.Role, "", new { @class = "text-danger col-md-8 col-md-offset-4" })
+                    </div>
+                    <br/>
+                    <button type="submit" class="ts-btn-primary submitButton">Save</button>
+                }
             </div>
-            <br/>
-            if (ViewBag.IsOwner || ViewBag.IsAdmin)
-            {
-                <button type="submit" class="ts-btn submitButton">Change password</button>
-            }
-            if (ViewBag.IsAdmin)
-            {
-                <button type="submit" class="ts-btn submitButton">Change role</button> 
-            }
-            <br/><br/>
-            <button type="submit" class="ts-btn-primary submitButton">Save</button>
-        }
+            <div class="col-md-6">
+                <div class="row @(ViewBag.ChangePasswordBlockVisible ? "": "hidden")" id="change-password-target">
+                    @{ Html.RenderAction("ChangePassword", "Account", new { userId  = Model.Id});}
+                </div>
+                <div class="row hidden" id="change-role-target">
+                    Test
+                </div>
+            </div>
+        </div>
     </div>
 </section>
+<script>
+    $("#changePasswordBlockShowButton").click(function() {
+        const changePasswordBlock = $("#change-password-target");
+        const changeRoleTarget = $("#change-role-target");
 
+        const changePasswordExistsHidden = changePasswordBlock.hasClass("hidden");
+        const changeRoleExistsHidden = changeRoleTarget.hasClass("hidden");
+
+        if (changePasswordExistsHidden) {
+            changePasswordBlock.removeClass("hidden");
+            if (!changeRoleExistsHidden) {
+                changeRoleTarget.addClass("hidden");
+            }
+        } else {
+            changePasswordBlock.addClass("hidden");
+        }
+    });
+
+    $("#changeRoleBlockShowButton").click(function () {
+        const changePasswordBlock = $("#change-password-target");
+        const changeRoleTarget = $("#change-role-target");
+
+        const changePasswordExistsHidden = changePasswordBlock.hasClass("hidden");
+        const changeRoleExistsHidden = changeRoleTarget.hasClass("hidden");
+
+        if (changeRoleExistsHidden) {
+            changeRoleTarget.removeClass("hidden");
+            if (!changePasswordExistsHidden) {
+                changePasswordBlock.addClass("hidden");
+            }
+        } else {
+            changeRoleTarget.addClass("hidden");
+        }
+    });
+</script>

@@ -220,6 +220,7 @@
     </Compile>
     <Compile Include="Helpers\JsTreeMenuHelper.cs" />
     <Compile Include="Helpers\MenuHelper.cs" />
+    <Compile Include="Models\ChangePasswordModel.cs" />
     <Compile Include="Models\ChangeRoleModel.cs" />
     <Compile Include="Models\FeaturesComponentUpdateModel.cs" />
     <Compile Include="Models\IISIndexViewModel.cs" />
@@ -285,16 +286,30 @@
     <Content Include="Resources\Images\work-logo.jpg" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\cldr.js" />
+    <Content Include="Scripts\cldr\event.js" />
+    <Content Include="Scripts\cldr\supplemental.js" />
+    <Content Include="Scripts\cldr\unresolved.js" />
     <Content Include="Scripts\Custom\AdminPageUtils.js" />
     <Content Include="Scripts\Custom\AjaxPost.js" />
     <Content Include="Scripts\Custom\FeatureManager.js" />
     <Content Include="Scripts\Custom\IISPageComponens.js" />
     <Content Include="Scripts\Custom\StyleEngine.js" />
+    <Content Include="Scripts\globalize.js" />
+    <Content Include="Scripts\globalize\currency.js" />
+    <Content Include="Scripts\globalize\date.js" />
+    <Content Include="Scripts\globalize\message.js" />
+    <Content Include="Scripts\globalize\number.js" />
+    <Content Include="Scripts\globalize\plural.js" />
+    <Content Include="Scripts\globalize\relative-time.js" />
+    <Content Include="Scripts\globalize\unit.js" />
     <Content Include="Scripts\jquery-3.2.1.js" />
     <Content Include="Scripts\jquery-3.2.1.min.js" />
     <Content Include="Scripts\jquery-3.2.1.slim.js" />
     <Content Include="Scripts\jquery-3.2.1.slim.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -333,6 +348,7 @@
     <Content Include="Views\Account\User.cshtml" />
     <Content Include="Views\Settings\Index.cshtml" />
     <Content Include="Views\ActionLogs\Index.cshtml" />
+    <Content Include="Views\Account\_ChangePassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

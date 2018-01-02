@@ -139,6 +139,18 @@ namespace BLL.Services
             return usersDto;
         }
 
+        public async Task<OperationDetails> ChangePassword(string id, string oldPassword, string newPassword)
+        {
+            var result = await Database.UserManager.ChangePasswordAsync(id, oldPassword, newPassword);
+
+            if (result.Errors.Any())
+            {
+                return new OperationDetails(false, result.Errors.FirstOrDefault(), "");
+            }
+
+            return new OperationDetails(true, "Пароль успешно изменен", "");
+        }
+
         public async Task<bool> DeleteUser(string id)
         {
             var user = await Database.UserManager.Users.FirstOrDefaultAsync(x => x.Id == id);

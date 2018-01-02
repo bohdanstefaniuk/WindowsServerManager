@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using BLL.Dto;
-using BLL.Infrastructure;
 using BLL.Interfaces;
-using DataAccessLayer.Enums;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -38,6 +34,7 @@ namespace WebUI.FullFramework.Controllers
             var user = await UserService.GetUser(email);
             ViewBag.IsOwner = User.Identity.GetUserId() == user.Id;
             ViewBag.IsAdmin = User.IsInRole("Admin");
+            ViewBag.ChangePasswordBlockVisible = false;
             return View("User", user);
         }
 
@@ -173,10 +170,51 @@ namespace WebUI.FullFramework.Controllers
             return Json(new { success = true, responseText = $"Success" }, JsonRequestBehavior.AllowGet);
         }
 
+        [Authorize]
+        public PartialViewResult ChangePassword(string userId)
+        {
+            var changeRoleModel = new ChangePasswordModel
+            {
+                UserId = userId
+            };
+
+            ViewBag.ChangePasswordStatus = "";
+            return PartialView("_ChangePassword", changeRoleModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public async Task<PartialViewResult> ChangePassword(ChangePasswordModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await UserService.ChangePassword(model.UserId, model.OldPassword, model.NewPassword);
+                model = new ChangePasswordModel
+                {
+                    UserId = model.UserId
+                };
+                if (result.Succedeed)
+                {
+                    ViewBag.ChangePasswordStatus = "Success";
+                    return PartialView("_ChangePassword", model);
+                }
+                ModelState.AddModelError("", result.Message);
+            }
+
+            ViewBag.ChangePasswordBlockVisible = true;
+            ViewBag.ChangePasswordStatus = "Fail";
+            model = new ChangePasswordModel
+            {
+                UserId = model.UserId
+            };
+            return PartialView("_ChangePassword", model);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> ChangeUserRole(ChangeRoleModel changeRoleModel)
+        public async Task<PartialViewResult> ChangeUserRole(ChangeRoleModel changeRoleModel)
         {
             if (ModelState.IsValid)
             {
@@ -184,12 +222,12 @@ namespace WebUI.FullFramework.Controllers
 
                 if (result.Succedeed)
                 {
-                    return Redirect(changeRoleModel.RedirectUrl);
+                    return PartialView("_ChangePassword");
                 }
                 ModelState.AddModelError(result.Property, result.Message);
             }
             
-            return View();
+            return PartialView();
         }
     }
 }

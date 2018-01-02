@@ -20,5 +20,6 @@ namespace BLL.Interfaces
         Task<bool> DeleteUser(string id);
         Task<UserDTO> GetUser(string email);
         Task UpdateUser(UserDTO model, bool isAdmin);
+        Task<OperationDetails> ChangePassword(string id, string oldPassword, string newPassword);
     }
 }
