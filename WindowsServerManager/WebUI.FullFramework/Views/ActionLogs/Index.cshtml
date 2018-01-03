@@ -14,30 +14,48 @@
             <button class="ts-btn ts-btn-mini actionBarElement">
                 Filter
             </button>
+            <dd>
+                <div class="mutliSelect" id="multi-select">
+                    <ul>
+                    
+                    </ul>
+                </div>
+            </dd>
+            <div class="button-group">
+                <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-cog"></span> <span class="caret"></span></button>
+                <ul class="dropdown-menu" id="change-coll-visible">
+                    <li><a href="#" class="small" data-value="option1" tabIndex="-1"><input type="checkbox"/>&nbsp;Option 1</a></li>
+                    <li><a href="#" class="small" data-value="option2" tabIndex="-1"><input type="checkbox"/>&nbsp;Option 2</a></li>
+                    <li><a href="#" class="small" data-value="option3" tabIndex="-1"><input type="checkbox"/>&nbsp;Option 3</a></li>
+                    <li><a href="#" class="small" data-value="option4" tabIndex="-1"><input type="checkbox"/>&nbsp;Option 4</a></li>
+                    <li><a href="#" class="small" data-value="option5" tabIndex="-1"><input type="checkbox"/>&nbsp;Option 5</a></li>
+                    <li><a href="#" class="small" data-value="option6" tabIndex="-1"><input type="checkbox"/>&nbsp;Option 6</a></li>
+                </ul>
+            </div>
         </div>
     </div>
     <br />
     <div class="row">
         <div class="userTable">
-            <table class="userList dark">
+            <table class="userList dark" id="action-logs-table">
                 <thead>
                     <tr>
-                        <th>Action</th>
-                        <th>Controller</th>
-                        <th>ActionParams</th>
-                        <th>OriginalUrl</th>
-                        <th>UserHost</th>
-                        <th>UserAgent</th>
-                        <th>HttpMethod</th>
-                        <th>Form</th>
-                        <th>Query</th>
-                        <th>Referer</th>
-                        <th>Headers</th>
-                        <th>Cookies</th>
-                        <th>UserName</th>
-                        <th>StartExecution</th>
-                        <th>FinishExecution</th>
-                        <th>ExecutionTime</th>
+                        <th class="coll">Action</th>
+                        <th class="coll">Controller</th>
+                        <th class="coll">ActionParams</th>
+                        <th class="coll">OriginalUrl</th>
+                        <th class="coll">UserHost</th>
+                        <th class="coll">UserAgent</th>
+                        <th class="coll">HttpMethod</th>
+                        <th class="coll">Form</th>
+                        <th class="coll">Query</th>
+                        <th class="coll">Referer</th>
+                        <th class="coll">Headers</th>
+                        <th class="coll">Cookies</th>
+                        <th class="coll">UserName</th>
+                        <th class="coll">StartExecution</th>
+                        <th class="coll">FinishExecution</th>
+                        <th class="coll">ExecutionTime</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -92,23 +110,59 @@
 </section>
 
 <script>
-    var ajaxPost = AjaxPost();
+    var hideElements = [];
+    var visibleElements = [];
 
-    function showUserActionPopup(dropdownId) {
-        document.getElementById(dropdownId).classList.toggle("show");
-    }
+    function initColumsFilterSelect() {
+        var tableCols = $("#action-logs-table thead tr th");
+        var multiSelect = $("#multi-select ul");
 
-    window.onclick = function(event) {
-        if (!event.target.matches('.dropbtn')) {
+        $.each(tableCols,
+            function(key, item) {
+                var $li = $("<li></li>");
+                var $input = $("<input/>");
 
-            var dropdowns = document.getElementsByClassName("dropdown-content");
-            var i;
-            for (i = 0; i < dropdowns.length; i++) {
-                var openDropdown = dropdowns[i];
-                if (openDropdown.classList.contains('show')) {
-                    openDropdown.classList.remove('show');
-                }
-            }
+                $input.attr("type", "checkbox");
+                $input.attr("checked", "checked");
+                $input.val(item.outerText);
+                $li.append($input);
+                $li.append(item.outerText);
+
+                multiSelect.append($li);
+                visibleElements.push(item.outerText);
+            });
+    };
+
+    var options = [];
+
+    $('#change-coll-visible a').on('click', function(event) {
+
+        var $target = $(event.currentTarget),
+            val = $target.attr('data-value'),
+            $inp = $target.find('input'),
+            idx;
+
+        if ((idx = options.indexOf(val)) > -1) {
+            options.splice(idx, 1);
+            setTimeout(function() {$inp.prop('checked', false)}, 0);
+        } else {
+            options.push(val);
+            setTimeout(function() { $inp.prop( 'checked', true ) }, 0);
         }
-    }
+
+        $(event.target).blur();
+      
+        console.log(options);
+        return false;
+    });
+
+    function initVisibleColls(elems) {
+        $.each(elems,
+            function(key, item) {
+                $(`#action-logs-table tbody tr td:nth-child(${$(`#action-logs-table thead tr th.coll:contains(${item})`).index() + 1})`).hide();
+            });
+    };
+
+    //initColumsFilterSelect();
+    initVisibleColls(hideElements);
 </script>

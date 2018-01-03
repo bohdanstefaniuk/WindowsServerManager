@@ -318,3 +318,42 @@ table.dark tr:hover {
 .show {
     display: block;
 }
+
+
+
+dd {
+    margin: 0px;
+    padding: 0px;
+}
+
+dd ul {
+    margin: -1px 0 0 0;
+}
+
+dd {
+    position: relative;
+}
+
+dd ul {
+    background-color: #4F6877;
+    border: 0;
+    color: #fff;
+    display: none;
+    left: 0px;
+    padding: 2px 15px 2px 5px;
+    position: absolute;
+    top: 2px;
+    width: 280px;
+    list-style: none;
+    height: 100px;
+    overflow: auto;
+}
+
+dd ul li a {
+    padding: 5px;
+    display: block;
+}
+
+dd ul li a:hover {
+    background-color: #fff;
+}
