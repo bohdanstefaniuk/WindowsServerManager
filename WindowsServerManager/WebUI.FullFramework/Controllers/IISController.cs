@@ -98,7 +98,7 @@ namespace WebUI.FullFramework.Controllers
             return PartialView("_ConnectionStringsComponent");
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin, Developers")]
         [ChildActionOnly]
         public PartialViewResult GetConfigurationFileComponent(string path, IISSiteType siteType)
         {
@@ -220,7 +220,7 @@ namespace WebUI.FullFramework.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Admin, Developers")]
         public JsonResult DeleteApplication(DeleteApplicationDto dto)
         {
             try
