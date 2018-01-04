@@ -65,9 +65,9 @@
                         <li>
                             <a href="@Url.Action("Index", "Settings")">Настройки</a>
                         </li>
-                        @*<li>
-                            <a href="@Url.Action("Edit", "Account", new { email = Session["UserEmail"] })">Мой аккаунт</a>
-                        </li>*@
+                        <li>
+                            <a href="@Url.Action("Edit", "Account", new { email = HttpContext.Current.User.Identity.Name })">Мой аккаунт</a>
+                        </li>
                         <li class="divider"></li>
                         <li>
                             <a href="@Url.Action("Logout", "Account")">Выход</a>
