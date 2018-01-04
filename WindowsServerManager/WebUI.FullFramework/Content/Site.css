@@ -357,3 +357,7 @@ dd ul li a {
 dd ul li a:hover {
     background-color: #fff;
 }
+
+.inline {
+    display: inline;
+}

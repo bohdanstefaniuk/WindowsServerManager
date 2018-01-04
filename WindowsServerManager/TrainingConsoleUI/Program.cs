@@ -9,6 +9,7 @@ using BLL.Services;
 using FileSystemManager;
 using MssqlManager;
 using MssqlManager.Dto;
+using DataAccessLayer.Entities;
 
 namespace TrainingConsoleUI
 {

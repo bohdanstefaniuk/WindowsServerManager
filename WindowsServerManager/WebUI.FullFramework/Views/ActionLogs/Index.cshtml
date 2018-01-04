@@ -14,22 +14,12 @@
             <button class="ts-btn ts-btn-mini actionBarElement">
                 Filter
             </button>
-            <dd>
-                <div class="mutliSelect" id="multi-select">
-                    <ul>
-                    
-                    </ul>
-                </div>
-            </dd>
-            <div class="button-group">
-                <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-cog"></span> <span class="caret"></span></button>
+            <p class="actionBarElement" style="margin-left: 20px;">
+                Visible columns: 
+            </p>
+            <div class="dropdown actionBarElement">
+                <button type="button" class="ts-btn btn-default ts-btn-mini dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-cog"></span> <span class="caret"></span></button>
                 <ul class="dropdown-menu" id="change-coll-visible">
-                    <li><a href="#" class="small" data-value="option1" tabIndex="-1"><input type="checkbox"/>&nbsp;Option 1</a></li>
-                    <li><a href="#" class="small" data-value="option2" tabIndex="-1"><input type="checkbox"/>&nbsp;Option 2</a></li>
-                    <li><a href="#" class="small" data-value="option3" tabIndex="-1"><input type="checkbox"/>&nbsp;Option 3</a></li>
-                    <li><a href="#" class="small" data-value="option4" tabIndex="-1"><input type="checkbox"/>&nbsp;Option 4</a></li>
-                    <li><a href="#" class="small" data-value="option5" tabIndex="-1"><input type="checkbox"/>&nbsp;Option 5</a></li>
-                    <li><a href="#" class="small" data-value="option6" tabIndex="-1"><input type="checkbox"/>&nbsp;Option 6</a></li>
                 </ul>
             </div>
         </div>
@@ -110,59 +100,121 @@
 </section>
 
 <script>
-    var hideElements = [];
-    var visibleElements = [];
+    var allColls = [];
+    var visibleColls = [];
+    var defaultVisibleColls = [
+        "Action",
+        "Controller",
+        "ActionParams",
+        "OriginalUrl",
+        "HttpMethod",
+        "UserName",
+        "StartExecution"
+    ];
 
     function initColumsFilterSelect() {
-        var tableCols = $("#action-logs-table thead tr th");
-        var multiSelect = $("#multi-select ul");
+        var tableColls = $("#action-logs-table thead tr th");
+        allColls = Array.from(tableColls, (x) => x.outerText);
+        var multiSelectUl = $("#change-coll-visible");
 
-        $.each(tableCols,
-            function(key, item) {
-                var $li = $("<li></li>");
-                var $input = $("<input/>");
-
-                $input.attr("type", "checkbox");
-                $input.attr("checked", "checked");
-                $input.val(item.outerText);
-                $li.append($input);
-                $li.append(item.outerText);
-
-                multiSelect.append($li);
-                visibleElements.push(item.outerText);
-            });
-    };
-
-    var options = [];
-
-    $('#change-coll-visible a').on('click', function(event) {
-
-        var $target = $(event.currentTarget),
-            val = $target.attr('data-value'),
-            $inp = $target.find('input'),
-            idx;
-
-        if ((idx = options.indexOf(val)) > -1) {
-            options.splice(idx, 1);
-            setTimeout(function() {$inp.prop('checked', false)}, 0);
-        } else {
-            options.push(val);
-            setTimeout(function() { $inp.prop( 'checked', true ) }, 0);
+        if (defaultVisibleColls.length === 0) {
+            defaultVisibleColls = allColls;
         }
 
-        $(event.target).blur();
-      
-        console.log(options);
-        return false;
-    });
+        $.each(allColls,
+            function (key, item) {
+                // Add new menu item into columns visible select
+                // <li><a href="#" class="small" data-value="option1" tabIndex="-1"><input type="checkbox"/>&nbsp;Option 1</a></li>
 
-    function initVisibleColls(elems) {
-        $.each(elems,
+                var $li = $("<li></li>");
+                var $a = $("<a></a>");
+                var $input = $("<input/>");
+
+                $a.attr("href", "#");
+                $a.attr("class", "small");
+                $a.attr("data-value", item);
+                $a.attr("tabIndex", "-1");
+
+                $input.attr("type", "checkbox");
+                if (defaultVisibleColls.indexOf(item) > -1) {
+                    $input.attr("checked", "checked");
+                    visibleColls.push(item);
+                }
+                $input.val(item);
+
+                $a.append($input);
+                $a.append(item);
+                $li.append($a);
+
+                multiSelectUl.append($li);
+            });
+
+        setClickEventForCollsSelect();
+    };
+
+    function setClickEventForCollsSelect() {
+        $('#change-coll-visible a').on('click', function(event) {
+
+            var $target = $(event.currentTarget),
+                val = $target.attr('data-value'),
+                $inp = $target.find('input'),
+                idx;
+
+            if ((idx = visibleColls.indexOf(val)) > -1) {
+                visibleColls.splice(idx, 1);
+                setTimeout(function() {$inp.prop('checked', false)}, 0);
+            } else {
+                visibleColls.push(val);
+                setTimeout(function() { $inp.prop('checked', true) }, 0);
+            }
+
+            var hidenColls = arr_diff(visibleColls, allColls);
+            hideColls(hidenColls);
+            showColls(visibleColls);
+            $(event.target).blur();
+            return false;
+        });
+    };
+
+    function hideColls(hidenColls) {
+        $.each(hidenColls,
             function(key, item) {
                 $(`#action-logs-table tbody tr td:nth-child(${$(`#action-logs-table thead tr th.coll:contains(${item})`).index() + 1})`).hide();
+                $(`#action-logs-table thead tr th:nth-child(${$(`#action-logs-table thead tr th.coll:contains(${item})`).index() + 1})`).hide();
             });
     };
 
-    //initColumsFilterSelect();
-    initVisibleColls(hideElements);
+    function showColls(visibleColls) {
+        $.each(visibleColls,
+            function (key, item) {
+                $(`#action-logs-table tbody tr td:nth-child(${$(`#action-logs-table thead tr th.coll:contains(${item})`).index() + 1})`).show();
+                $(`#action-logs-table thead tr th:nth-child(${$(`#action-logs-table thead tr th.coll:contains(${item})`).index() + 1})`).show();
+            });
+    };
+
+    function arr_diff (a1, a2) {
+
+        var a = [], diff = [];
+
+        for (var i = 0; i < a1.length; i++) {
+            a[a1[i]] = true;
+        }
+
+        for (var i = 0; i < a2.length; i++) {
+            if (a[a2[i]]) {
+                delete a[a2[i]];
+            } else {
+                a[a2[i]] = true;
+            }
+        }
+
+        for (var k in a) {
+            diff.push(k);
+        }
+
+        return diff;
+    };
+
+    initColumsFilterSelect();
+    hideColls(arr_diff(visibleColls, allColls));
 </script>
