@@ -24,7 +24,7 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li class="@Html.IsSelected(actions: "Index", controllers: "IIS", cssClass: "active")">
-                    <a href="@Url.Action("Index","IIS")">Application pools</a>
+                    <a href="@Url.Action("Index","IIS")">Sites & Applications</a>
                 </li>
                 <li class="@Html.IsSelected(actions: "Index", controllers: "Redis", cssClass: "active")">
                     <a href="#">Redis</a>
@@ -65,9 +65,9 @@
                         <li>
                             <a href="@Url.Action("Index", "Settings")">Настройки</a>
                         </li>
-                        <li>
+                        @*<li>
                             <a href="@Url.Action("Edit", "Account", new { email = Session["UserEmail"] })">Мой аккаунт</a>
-                        </li>
+                        </li>*@
                         <li class="divider"></li>
                         <li>
                             <a href="@Url.Action("Logout", "Account")">Выход</a>
