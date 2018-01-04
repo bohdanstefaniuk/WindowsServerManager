@@ -103,14 +103,14 @@
                                 <p class="text-center">Очистить Redis</p>
                             </a>
                         </div>
-                        <div class="IISButton text-center @(Model.ActionViewType == IISViewActionType.ConnectionStringsComponent ? "IISButtonSelected" : "")">
+                        @*<div class="IISButton text-center @(Model.ActionViewType == IISViewActionType.ConnectionStringsComponent ? "IISButtonSelected" : "")">
                             <a href="@Url.Action("Index", "IIS", new { viewActionType = IISViewActionType.ConnectionStringsComponent, siteType =  Model.SiteType, applicationPath =  Model.ApplicationPath })">
                                 <img src="@Url.Content("~/Resources/Images/DatabaseSetting_16x.svg")"
                                      alt=""
                                      class="IISButtonIco">
                                 <p class="text-center">Строки подключений</p>
                             </a>
-                        </div>
+                        </div>*@
                         <div class="IISButton text-center @(Model.ActionViewType == IISViewActionType.ConfigFileComponent ? "IISButtonSelected" : "")">
                             <a href="@Url.Action("Index", "IIS", new { viewActionType = IISViewActionType.ConfigFileComponent, siteType =  Model.SiteType, applicationPath =  Model.ApplicationPath })">
                                 <img src="@Url.Content("~/Resources/Images/ConfigurationFile_16x.svg")"
@@ -145,13 +145,13 @@
                             Html.RenderAction("GetInformationComponent", "IIS", new { path =  Model.ApplicationPath, siteType =  Model.SiteType });
                             break;
                         case IISViewActionType.ConnectionStringsComponent:
-                            Html.RenderAction("GetConnectionStringsComponent", "IIS");
+                            Html.RenderAction("GetConnectionStringsComponent", "IIS", new { path = Model.ApplicationPath, siteType = Model.SiteType });
                             break;
                         case IISViewActionType.FeaturesComponent:
                             Html.RenderAction("GetFeaturesComponent", "IIS", new { db = Model.Database, redisDb = Model.RedisDatabase });
                             break;
                         case IISViewActionType.ConfigFileComponent:
-                            Html.RenderAction("GetConfigurationFileComponent", "IIS");
+                            Html.RenderAction("GetConfigurationFileComponent", "IIS", new { path = Model.ApplicationPath, siteType = Model.SiteType });
                             break;
                     }
                 </div>

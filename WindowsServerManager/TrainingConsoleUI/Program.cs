@@ -19,10 +19,8 @@ namespace TrainingConsoleUI
         {
             // Here you can execute your code withot running full web UI (ASP.NET MVC or ASP.NET Core)
 
-            Console.ReadKey();
-
-            var dbService = new DbService();
-            dbService.DropDatabase("TestDatabase_delete").GetAwaiter();
+            var fileReader = new FileReader();
+            Console.WriteLine(fileReader.ReadTextFileAsync(@"C:\Projects\_Core7112\TSBpm\Src\Lib\Terrasoft.WebApp.Loader\Web.config").Result);
 
             // Delay
             Console.Read();

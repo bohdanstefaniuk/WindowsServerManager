@@ -177,6 +177,7 @@
   <ItemGroup>
     <Compile Include="ApplicationPoolManager.cs" />
     <Compile Include="ConnectionStringManager.cs" />
+    <Compile Include="FileReader.cs" />
     <Compile Include="SitesManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools\AppPoolManagerConfiguration.cs" />

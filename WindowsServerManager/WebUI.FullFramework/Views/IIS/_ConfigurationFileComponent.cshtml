@@ -1,8 +1,14 @@
-﻿<div class="panel panel-default">
+﻿@model string
+@Styles.Render("~/Content/CodeHightlightStyles/monokai-sublime.css")
+
+<div class="panel panel-default">
     <div class="panel-heading">
-        <h3 class="panel-title">Информация</h3>
+        <h3 class="panel-title">Конфигурационный файл</h3>
     </div>
     <div class="panel-body">
-        <textarea class="form-control" rows="3"></textarea>
+        <pre><code class="xml">@Model</code></pre>
     </div>
 </div>
+
+@Scripts.Render("~/Scripts/highlight.pack.js")
+<script>hljs.initHighlightingOnLoad();</script>

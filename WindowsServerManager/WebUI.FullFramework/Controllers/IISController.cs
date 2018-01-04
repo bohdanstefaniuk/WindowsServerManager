@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Configuration;
 using System.Web;
 using System.Web.Mvc;
+using AppPoolManager;
 using BLL.Dto;
 using BLL.Enums;
 using BLL.Interfaces;
@@ -54,14 +56,7 @@ namespace WebUI.FullFramework.Controllers
                 RedisDatabase = redisDb
             };
 
-            if (!string.IsNullOrEmpty(db))
-            {
-                viewModel.IsFeatureTableExist = FeatureService.GetFeatureTableExist(db).GetAwaiter().GetResult();
-            }
-            else
-            {
-                viewModel.IsFeatureTableExist = false;
-            }
+            viewModel.IsFeatureTableExist = !string.IsNullOrEmpty(db) && FeatureService.GetFeatureTableExist(db).GetAwaiter().GetResult();
 
             if (!string.IsNullOrEmpty(applicationPath))
             {
@@ -96,16 +91,22 @@ namespace WebUI.FullFramework.Controllers
 
         [Authorize]
         [ChildActionOnly]
-        public PartialViewResult GetConnectionStringsComponent(string db)
+        public PartialViewResult GetConnectionStringsComponent(string path, IISSiteType siteType)
         {
+            //var data = ConnectionStringsService.GetSiteConnectionStrings(path, siteType == IISSiteType.Site);
+            //var connectionStrings = data.ConnectionStrings;
             return PartialView("_ConnectionStringsComponent");
         }
 
         [Authorize]
         [ChildActionOnly]
-        public PartialViewResult GetConfigurationFileComponent(string db)
+        public PartialViewResult GetConfigurationFileComponent(string path, IISSiteType siteType)
         {
-            return PartialView("_ConfigurationFileComponent");
+            var filePath = ConnectionStringsService.GetConfigurationFilePath(path, siteType);
+
+            var fileReader = new FileReader();
+            var fileText = fileReader.ReadTextFile(filePath);
+            return PartialView("_ConfigurationFileComponent", fileText);
         }
 
         [Authorize]

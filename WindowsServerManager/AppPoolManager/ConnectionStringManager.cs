@@ -11,12 +11,12 @@ namespace AppPoolManager
     {
         private readonly SitesManager _sitesManager;
         private readonly string _redisConnectionStringKey;
-        private readonly string _appConfigFineName;
+        private readonly string _appConfigFileName;
 
-        public ConnectionStringManager(string redisConnectionStringKey, string appConfigFineName)
+        public ConnectionStringManager(string redisConnectionStringKey, string appConfigFileName)
         {
             _redisConnectionStringKey = redisConnectionStringKey;
-            _appConfigFineName = appConfigFineName;
+            _appConfigFileName = appConfigFileName;
             _sitesManager = new SitesManager();
         }
 
@@ -28,7 +28,21 @@ namespace AppPoolManager
         /// <returns>connection strings section</returns>
         public ConnectionStringsSection GetSiteConnectionStrings(string siteName, bool isSite)
         {
-            Application rootApplication = null;
+            var map = new ExeConfigurationFileMap { ExeConfigFilename = GetConfigurationFilePath(siteName, isSite) };
+            var configFile = ConfigurationManager.OpenMappedExeConfiguration(map, ConfigurationUserLevel.None);
+
+            return configFile.ConnectionStrings;
+        }
+
+        /// <summary>
+        /// Get path to configuration file
+        /// </summary>
+        /// <param name="siteName"></param>
+        /// <param name="isSite"></param>
+        /// <returns></returns>
+        public string GetConfigurationFilePath(string siteName, bool isSite)
+        {
+            Application rootApplication;
             if (isSite)
             {
                 var site = _sitesManager.GetSiteByName(siteName);
@@ -39,15 +53,9 @@ namespace AppPoolManager
             {
                 rootApplication = _sitesManager.GetApplicationByPath(siteName);
             }
-
-            var connectionStringFileUrl = "";
-            var dictionary = rootApplication.VirtualDirectories.FirstOrDefault();
-            connectionStringFileUrl += $@"{dictionary.PhysicalPath}\{_appConfigFineName}";
-
-            var map = new ExeConfigurationFileMap { ExeConfigFilename = connectionStringFileUrl };
-            var configFile = ConfigurationManager.OpenMappedExeConfiguration(map, ConfigurationUserLevel.None);
-
-            return configFile.ConnectionStrings;
+            
+            var dictionary = rootApplication?.VirtualDirectories.FirstOrDefault();
+            return $@"{dictionary?.PhysicalPath}\{_appConfigFileName}";
         }
 
         /// <summary>
