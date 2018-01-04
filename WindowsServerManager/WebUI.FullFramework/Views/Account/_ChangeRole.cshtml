@@ -1,0 +1,36 @@
+﻿@model WebUI.FullFramework.Models.ChangeRoleModel
+    
+<div style="padding: 15px;">
+    @using (Ajax.BeginForm("ChangeUserRole", new AjaxOptions
+    {
+        HttpMethod = "POST",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "change-role-target"
+    }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(x => x.UserId)
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="row line">
+            <p class="col-md-4">Почта</p>
+            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "input-text col-md-8", @readonly = "readonly" } })
+        </div>
+        <div class="row">
+            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger col-md-8 col-md-offset-4" })
+        </div>
+        <div class="row line">
+            <p class="col-md-4">Роль</p>
+            @Html.EnumDropDownListFor(x => x.Role,
+                null,
+                new { @class = "input-text col-md-8" })
+        </div>
+        <div class="row">
+            @Html.ValidationMessageFor(model => model.Role, "", new { @class = "text-danger col-md-8 col-md-offset-4" })
+        </div>
+        <br />
+        <button type="submit" class="ts-btn-primary submitButton">Save</button>
+    }
+    <p>
+        @ViewBag.ChangeRoleStatus
+    </p>
+</div>

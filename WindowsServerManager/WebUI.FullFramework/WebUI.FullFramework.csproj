@@ -349,6 +349,7 @@
     <Content Include="Views\Settings\Index.cshtml" />
     <Content Include="Views\ActionLogs\Index.cshtml" />
     <Content Include="Views\Account\_ChangePassword.cshtml" />
+    <Content Include="Views\Account\_ChangeRole.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

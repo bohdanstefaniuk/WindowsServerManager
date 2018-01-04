@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using BLL.Dto;
 using BLL.Interfaces;
+using DataAccessLayer.Enums;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -212,6 +213,19 @@ namespace WebUI.FullFramework.Controllers
             return PartialView("_ChangePassword", model);
         }
 
+        [ChildActionOnly]
+        [Authorize(Roles = "Admin")]
+        public PartialViewResult ChangeUserRole(string userId, string email)
+        {
+            var model = new ChangeRoleModel
+            {
+                UserId = userId,
+                Email = email
+            };
+
+            return PartialView("_ChangeRole", model);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
@@ -219,16 +233,18 @@ namespace WebUI.FullFramework.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await UserService.ChangeUserRole(changeRoleModel.Role, changeRoleModel.Email);
+                var result = await UserService.ChangeUserRole(changeRoleModel.Role, changeRoleModel.UserId);
 
                 if (result.Succedeed)
                 {
-                    return PartialView("_ChangePassword");
+                    ViewBag.ChangeRoleStatus = "Success";
+                    return PartialView("_ChangeRole", changeRoleModel);
                 }
                 ModelState.AddModelError(result.Property, result.Message);
             }
-            
-            return PartialView();
+
+            ViewBag.ChangeRoleStatus = "Fail";
+            return PartialView("_ChangeRole", changeRoleModel);
         }
     }
 }

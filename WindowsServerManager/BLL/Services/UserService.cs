@@ -78,12 +78,24 @@ namespace BLL.Services
         /// Change role for user
         /// </summary>
         /// <param name="role">New user role</param>
-        /// <param name="email">User email address</param>
+        /// <param name="userId">User id</param>
         /// <returns>True when role changed</returns>
-        public async Task<OperationDetails> ChangeUserRole(Role role, string email)
+        public async Task<OperationDetails> ChangeUserRole(Role role, string userId)
         {
-            var user = await Database.UserManager.Users.Include(x => x.Claims).FirstOrDefaultAsync(x => x.Email == email);
-            var roles = user.Claims.Where(x => x.ClaimType == ClaimTypes.Role).Select(x => x.ClaimValue);
+            var user = await Database.UserManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                return new OperationDetails(false, "Данный пользователь не найден", "");
+            }
+
+            var roles = new List<string>();
+            foreach (var userRole in user.Roles)
+            {
+                var oldRole = await Database.RoleManager.FindByIdAsync(userRole.RoleId);
+                roles.Add(oldRole.Name);
+            }
+            
             var result = await Database.UserManager.RemoveFromRolesAsync(user.Id, roles.ToArray());
 
             if (result.Succeeded)
