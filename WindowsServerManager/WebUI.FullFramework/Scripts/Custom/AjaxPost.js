@@ -7,20 +7,19 @@
             data: data,
             type: "POST",
             success: function (response) {
-                if (response != null && response.success) {
+                if (response != null) {
                     alert(response.responseText);
-                } else {
-                    alert(response.responseText);
-                }
-                if (response.redirectUrl) {
-                    document.location.href = response.redirectUrl;
+
+                    if (response.redirectUrl) {
+                        document.location.href = response.redirectUrl;
+                    }
                 }
             },
             error: function (response) {
                 alert(response.responseText);
             },
-            complete: function (response) {
-                location.reload();
+            complete: function () {
+                location.location.href = "/IIS";
             }
         });
     };

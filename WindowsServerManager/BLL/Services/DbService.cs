@@ -24,7 +24,7 @@ namespace BLL.Services
 
             if (await _dbManager.GetDatabaseExists())
             {
-                await _dbManager.DropDatabaseAsync();
+                _dbManager.DropDatabase();
             }
         }
 

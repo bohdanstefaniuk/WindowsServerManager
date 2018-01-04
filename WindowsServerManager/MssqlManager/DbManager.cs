@@ -49,7 +49,7 @@ namespace MssqlManager
         /// Drop database from connection string
         /// </summary>
         /// <returns>async Task</returns>
-        public async Task DropDatabaseAsync()
+        public void DropDatabase()
         {
             _connectionString = $@"Server={_dataSource}; Initial Catalog=master; Persist Security Info=True; MultipleActiveResultSets=True; Integrated Security=SSPI;";
             var sqlExpression = $@"ALTER DATABASE [{_db}] set single_user with rollback immediate
@@ -58,12 +58,8 @@ namespace MssqlManager
             using (var connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
-                //var queries = SplitSqlStatements(sqlExpression);
-                //foreach (var query in queries)
-                //{
-                    SqlCommand command = new SqlCommand(sqlExpression, connection);
-                    await command.ExecuteNonQueryAsync();
-                //}
+                SqlCommand command = new SqlCommand(sqlExpression, connection);
+                command.ExecuteNonQuery();
                 connection.Close();
             }
         }

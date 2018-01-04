@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -83,7 +84,14 @@ namespace BLL.Services
             {
                 using (var dbService = new DbService())
                 {
-                    await dbService.DropDatabase(dto.Database);
+                    try
+                    {
+                        await dbService.DropDatabase(dto.Database);
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine(e);
+                    }
                 }
             }
 
