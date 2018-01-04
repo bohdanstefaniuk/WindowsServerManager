@@ -94,7 +94,7 @@ namespace WebUI.FullFramework.Controllers
                     {
                         IsPersistent = true
                     }, claim);
-
+                    HttpContext.Session.Add("UserEmail", model.Email);
                     return RedirectToAction("Index", "Home");
                 }
             }
@@ -105,6 +105,7 @@ namespace WebUI.FullFramework.Controllers
         public ActionResult Logout()
         {
             AuthenticationManager.SignOut();
+            HttpContext.Session.Clear();
             return RedirectToAction("Index", "Home");
         }
 

@@ -60,13 +60,13 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="#">Аккаунты</a>
+                            <a href="@Url.Action("Index", "Account")">Администрирование</a>
                         </li>
                         <li>
-                            <a href="#">Настройки</a>
+                            <a href="@Url.Action("Index", "Settings")">Настройки</a>
                         </li>
                         <li>
-                            <a href="#">Сервера</a>
+                            <a href="@Url.Action("Edit", "Account", new { email = Session["UserEmail"] })">Мой аккаунт</a>
                         </li>
                         <li class="divider"></li>
                         <li>
