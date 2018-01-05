@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using BLL.Infrastructure;
+using NLog;
 
 namespace WebUI.FullFramework
 {
@@ -16,6 +18,11 @@ namespace WebUI.FullFramework
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+        }
+
+        protected void Application_End()
+        {
+            ActionLogger.GetInstance().Save();
         }
 
         //void Application_Error(object sender, EventArgs e)
@@ -42,7 +49,7 @@ namespace WebUI.FullFramework
 
         //    // For other kinds of errors give the user some information
         //    // but stay on the default page
-            
+
 
         //    // Clear the error from the server
         //    Server.ClearError();

@@ -8,6 +8,7 @@ using BLL.Enums;
 using BLL.Interfaces;
 using BLL.Services;
 using Microsoft.AspNet.Identity.Owin;
+using WebUI.FullFramework.Core;
 using WebUI.FullFramework.Enums;
 using WebUI.FullFramework.Models;
 
@@ -140,6 +141,7 @@ namespace WebUI.FullFramework.Controllers
 
         [HttpPost]
         [Authorize]
+        [ActionLogger]
         public JsonResult SaveFeatures(FeaturesComponentUpdateModel featuresUpdateModel)
         {
             try
@@ -190,6 +192,7 @@ namespace WebUI.FullFramework.Controllers
 
         [HttpPost]
         [Authorize]
+        [ActionLogger]
         public JsonResult RecycleApplicationPool(string poolName)
         {
             bool isPoolStartedOrStarting;
@@ -223,6 +226,7 @@ namespace WebUI.FullFramework.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin, Developers")]
+        [ActionLogger]
         public JsonResult DeleteApplication(DeleteApplicationDto dto)
         {
             try

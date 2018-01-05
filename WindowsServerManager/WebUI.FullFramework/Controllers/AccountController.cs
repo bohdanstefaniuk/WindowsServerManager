@@ -29,7 +29,6 @@ namespace WebUI.FullFramework.Controllers
         }
 
         [Authorize]
-        [ActionLogger]
         public async Task<ActionResult> Edit(string email)
         {
             var user = await UserService.GetUser(email);
@@ -87,6 +86,7 @@ namespace WebUI.FullFramework.Controllers
 
         [HttpPost]
         [Authorize]
+        [ActionLogger]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(UserDTO editModel)
         {
@@ -144,8 +144,8 @@ namespace WebUI.FullFramework.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         [Authorize]
+        [ValidateAntiForgeryToken]
         public async Task<PartialViewResult> ChangePassword(ChangePasswordModel model)
         {
             if (ModelState.IsValid)
@@ -173,8 +173,9 @@ namespace WebUI.FullFramework.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
+        [ActionLogger]
+        [ValidateAntiForgeryToken]
         public async Task<PartialViewResult> ChangeUserRole(ChangeRoleModel changeRoleModel)
         {
             if (ModelState.IsValid)
@@ -218,6 +219,7 @@ namespace WebUI.FullFramework.Controllers
         }
 
         [HttpPost]
+        [ActionLogger]
         [Authorize(Roles = "Admin")]
         public async Task<JsonResult> SetUserEnableStatus(string id, bool status)
         {
@@ -234,6 +236,7 @@ namespace WebUI.FullFramework.Controllers
         }
 
         [HttpPost]
+        [ActionLogger]
         [Authorize(Roles = "Admin")]
         public async Task<JsonResult> DeleteUser(string id)
         {
