@@ -140,6 +140,11 @@ textarea {
     line-height: 0;
 }
 
+.centerBlock {
+    width: 90%;
+    margin: 0 auto;
+}
+
 .actionBarElement {
     display: inline-block;
     text-align: start;

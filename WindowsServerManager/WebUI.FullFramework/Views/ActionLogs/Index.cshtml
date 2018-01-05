@@ -1,4 +1,4 @@
-﻿@model IEnumerable<DataAccessLayer.Entities.ActionLog>
+﻿@model BLL.Common.PagedResults<DataAccessLayer.Entities.ActionLog>
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -29,48 +29,48 @@
         <div class="userTable">
             <table class="userList dark" id="action-logs-table">
                 <thead>
-                    <tr>
-                        <th class="coll">Action</th>
-                        <th class="coll">Controller</th>
-                        <th class="coll">ActionParams</th>
-                        <th class="coll">OriginalUrl</th>
-                        <th class="coll">UserHost</th>
-                        <th class="coll">UserAgent</th>
-                        <th class="coll">HttpMethod</th>
-                        <th class="coll">Form</th>
-                        <th class="coll">Query</th>
-                        <th class="coll">Referer</th>
-                        <th class="coll">Headers</th>
-                        <th class="coll">Cookies</th>
-                        <th class="coll">UserName</th>
-                        <th class="coll">StartExecution</th>
-                        <th class="coll">FinishExecution</th>
-                        <th class="coll">ExecutionTime</th>
-                    </tr>
+                <tr>
+                    <th class="coll">Action</th>
+                    <th class="coll">Controller</th>
+                    <th class="coll" style="max-width: 500px;">ActionParams</th>
+                    <th class="coll">OriginalUrl</th>
+                    <th class="coll">UserHost</th>
+                    <th class="coll">UserAgent</th>
+                    <th class="coll">HttpMethod</th>
+                    <th class="coll">Form</th>
+                    <th class="coll">Query</th>
+                    <th class="coll">Referer</th>
+                    <th class="coll">Headers</th>
+                    <th class="coll">Cookies</th>
+                    <th class="coll">UserName</th>
+                    <th class="coll">StartExecution</th>
+                    <th class="coll">FinishExecution</th>
+                    <th class="coll">ExecutionTime</th>
+                </tr>
                 </thead>
                 <tbody>
-                    @if (Model.Any())
+                @if (Model.Results.Any())
+                {
+                    foreach (var actionLog in Model.Results)
                     {
-                        foreach (var actionLog in Model)
-                        {
-                            <tr>
-                                <td>@actionLog.Action</td>
-                                <td>@actionLog.Controller</td>
-                                <td>@actionLog.ActionParams</td>
-                                <td>@actionLog.OriginalUrl</td>
-                                <td>@actionLog.UserHost</td>
-                                <td>@actionLog.UserAgent</td>
-                                <td>@actionLog.HttpMethod</td>
-                                <td>@actionLog.Form</td>
-                                <td>@actionLog.Query</td>
-                                <td>@actionLog.Referer</td>
-                                <td>@actionLog.Headers</td>
-                                <td>@actionLog.Cookies</td>
-                                <td>@actionLog.UserName</td>
-                                <td>@actionLog.StartExecution</td>
-                                <td>@actionLog.FinishExecution</td>
-                                <td>@actionLog.ExecutionTime</td>
-                                @*<td>
+                        <tr>
+                            <td>@actionLog.Action</td>
+                            <td>@actionLog.Controller</td>
+                            <td style="max-width: 500px;">@actionLog.ActionParams</td>
+                            <td>@actionLog.OriginalUrl</td>
+                            <td>@actionLog.UserHost</td>
+                            <td>@actionLog.UserAgent</td>
+                            <td>@actionLog.HttpMethod</td>
+                            <td>@actionLog.Form</td>
+                            <td>@actionLog.Query</td>
+                            <td>@actionLog.Referer</td>
+                            <td>@actionLog.Headers</td>
+                            <td>@actionLog.Cookies</td>
+                            <td>@actionLog.UserName</td>
+                            <td>@actionLog.StartExecution</td>
+                            <td>@actionLog.FinishExecution</td>
+                            <td>@actionLog.ExecutionTime</td>
+                            @*<td>
                                     <div class="toolbarItem text-center" data-toggle="dropdown">
                                         <span class="btn-group" id="sp_span_bcActions">
                                             <a class="ts-btn ts-btn-mini"
@@ -84,17 +84,36 @@
                                         </span>
                                     </div>
                                 </td>*@
-                            </tr>
-                        }
-                    }
-                    else
-                    {
-                        <tr>
-                            <td colspan="4">Нет данных</td>
                         </tr>
                     }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="4">Нет данных</td>
+                    </tr>
+                }
                 </tbody>
             </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="centerBlock">
+            <ul class="pagination">
+                <li><a href="@Url.Action("Index", "ActionLogs", new {page = 1})">&laquo;</a></li>
+                @for (var i = Model.PageNumber - 2; i <= Model.PageNumber + 5; i++)
+                {
+                    if (i == Model.PageNumber && i <= Model.TotalNumberOfPages && i > 0)
+                    {
+                        <li class="active"><a href="@Url.Action("Index", "ActionLogs", new {page = i})">@i <span class="sr-only">(current)</span></a></li>
+                    }
+                    else if (i <= Model.TotalNumberOfPages && i > 0)
+                    {
+                        <li><a href="@Url.Action("Index", "ActionLogs", new {page = i})">@i</a></li>
+                    }
+                }
+                <li><a href="@Url.Action("Index", "ActionLogs", new {page = Model.TotalNumberOfPages})">&raquo;</a></li>
+            </ul>
         </div>
     </div>
 </section>

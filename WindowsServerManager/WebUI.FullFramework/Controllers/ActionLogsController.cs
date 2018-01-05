@@ -12,9 +12,9 @@ namespace WebUI.FullFramework.Controllers
     {
         private IActionLogsService ActionLogsService => HttpContext.GetOwinContext().GetUserManager<IActionLogsService>();
         // GET: ActionLogs
-        public ActionResult Index()
+        public ActionResult Index(int page = 1)
         {
-            var actionLogs = ActionLogsService.GetActionLogs();
+            var actionLogs = ActionLogsService.GetPagedActionLogs(page, 50);
             return View(actionLogs);
         }
     }

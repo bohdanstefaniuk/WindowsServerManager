@@ -191,6 +191,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\PagedResults.cs" />
     <Compile Include="Dto\ApplicationPath.cs" />
     <Compile Include="Dto\DeleteApplicationDto.cs" />
     <Compile Include="Dto\JsTreeModel.cs" />
