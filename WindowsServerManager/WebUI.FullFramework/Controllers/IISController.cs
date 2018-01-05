@@ -42,6 +42,8 @@ namespace WebUI.FullFramework.Controllers
                         db = ConnectionStringsService.GetMssqlDb(applicationPath, true);
                         redisDb = ConnectionStringsService.GetRedisDb(applicationPath, true);
                         break;
+                    default:
+                        throw new Exception("Такой тип приложения не поддерживается");
                 }
                 
             }
@@ -53,10 +55,10 @@ namespace WebUI.FullFramework.Controllers
                 SiteType = siteType,
                 ActionViewType = viewActionType,
                 Database = db,
-                RedisDatabase = redisDb
+                RedisDatabase = redisDb,
+                IsFeatureTableExist = !string.IsNullOrEmpty(db) &&
+                                      FeatureService.GetFeatureTableExist(db).GetAwaiter().GetResult()
             };
-
-            viewModel.IsFeatureTableExist = !string.IsNullOrEmpty(db) && FeatureService.GetFeatureTableExist(db).GetAwaiter().GetResult();
 
             if (!string.IsNullOrEmpty(applicationPath))
             {

@@ -1,4 +1,6 @@
-﻿@using WebUI.FullFramework.Enums
+﻿@using DataAccessLayer.Enums
+@using WebUI.FullFramework.Core
+@using WebUI.FullFramework.Enums
 @using WebUI.FullFramework.Helpers
 @model WebUI.FullFramework.Models.IISIndexViewModel
 
@@ -85,15 +87,18 @@
                                 </a>
                             </div>
                         }
-                        <div class="IISButton text-center">
-                            <a href="#" data-toggle="modal" data-target="#deleteApplicationModal">
-                                <img src="@Url.Content("~/Resources/Images/DeleteTranslation_16x.svg")"
-                                     alt=""
-                                     id="deleteApplicationActionButton"
-                                     class="IISButtonIco">
-                                <p class="text-center">Удалить приложение</p>
-                            </a>
-                        </div>
+                        @if (IdentityHelper.IsUserInRole(Role.Admin, Role.Developers))
+                        {
+                            <div class="IISButton text-center">
+                                <a href="#" data-toggle="modal" data-target="#deleteApplicationModal">
+                                    <img src="@Url.Content("~/Resources/Images/DeleteTranslation_16x.svg")"
+                                         alt=""
+                                         id="deleteApplicationActionButton"
+                                         class="IISButtonIco">
+                                    <p class="text-center">Удалить приложение</p>
+                                </a>
+                            </div>
+                        }
                         <div class="IISButton text-center">
                             <a href="#">
                                 <img src="@Url.Content("~/Resources/Images/AzureRedisCache_color_16x.svg")"
@@ -111,17 +116,20 @@
                                 <p class="text-center">Строки подключений</p>
                             </a>
                         </div>*@
-                        <div class="IISButton text-center @(Model.ActionViewType == IISViewActionType.ConfigFileComponent ? "IISButtonSelected" : "")">
-                            <a href="@Url.Action("Index", "IIS", new { viewActionType = IISViewActionType.ConfigFileComponent, siteType =  Model.SiteType, applicationPath =  Model.ApplicationPath })">
-                                <img src="@Url.Content("~/Resources/Images/ConfigurationFile_16x.svg")"
-                                     alt=""
-                                     class="IISButtonIco">
-                                <p class="text-center">
-                                    Конфиг.
-                                    <br> файл
-                                </p>
-                            </a>
-                        </div>
+                        @if (IdentityHelper.IsUserInRole(Role.Admin, Role.Developers))
+                        {
+                            <div class="IISButton text-center @(Model.ActionViewType == IISViewActionType.ConfigFileComponent ? "IISButtonSelected" : "")">
+                                <a href="@Url.Action("Index", "IIS", new { viewActionType = IISViewActionType.ConfigFileComponent, siteType =  Model.SiteType, applicationPath =  Model.ApplicationPath })">
+                                    <img src="@Url.Content("~/Resources/Images/ConfigurationFile_16x.svg")"
+                                         alt=""
+                                         class="IISButtonIco">
+                                    <p class="text-center">
+                                        Конфиг.
+                                        <br> файл
+                                    </p>
+                                </a>
+                            </div>
+                        }
                         @if (Model.IsFeatureTableExist)
                         {
                             <div class="IISButton text-center @(Model.ActionViewType == IISViewActionType.FeaturesComponent ? "IISButtonSelected" : "")">
