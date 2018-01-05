@@ -1,4 +1,6 @@
-﻿@model BLL.Dto.UserDTO
+﻿@using DataAccessLayer.Enums
+@using WebUI.FullFramework.Core
+@model BLL.Dto.UserDTO
 @{
     ViewBag.Title = "User";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -8,11 +10,11 @@
 <section class="container-fluid">
     <div class="block-center" style="width: 90%">
         <div class="row">
-            @if (ViewBag.IsOwner || ViewBag.IsAdmin)
+            @if (ViewBag.IsOwner || IdentityHelper.IsUserInRole(Role.Admin))
             {
                 <button type="submit" class="ts-btn submitButton" id="changePasswordBlockShowButton">Change password</button>
             }
-            @if (ViewBag.IsAdmin)
+            @if (IdentityHelper.IsUserInRole(Role.Admin, Role.Developers))
             {
                 <button type="submit" class="ts-btn submitButton" id="changeRoleBlockShowButton">Change role</button>
             } 
@@ -52,7 +54,7 @@
                     }
                     <div class="row line">
                         <p class="col-md-4">System role</p>
-                        @Html.EditorFor(model => model.Role, new {htmlAttributes = new {@class = "col-md-8", disable = "disable"}})
+                        @Html.EditorFor(model => model.Role, new {htmlAttributes = new {@class = "input-text col-md-8", @readonly = "readonly" } })
                     </div>
                     <div class="row">
                         @Html.ValidationMessageFor(model => model.Role, "", new { @class = "text-danger col-md-8 col-md-offset-4" })

@@ -1,4 +1,6 @@
-﻿@using WebUI.FullFramework.Helpers
+﻿@using DataAccessLayer.Enums
+@using WebUI.FullFramework.Core
+@using WebUI.FullFramework.Helpers
 <!DOCTYPE html>
 <html>
 <head>
@@ -59,14 +61,17 @@
                         <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
+                        @if (IdentityHelper.IsUserInRole(Role.Admin, Role.Developers))
+                        {
+                            <li>
+                                <a href="@Url.Action("Index", "Account")">Администрирование</a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("Index", "Settings")">Настройки</a>
+                            </li>
+                        }
                         <li>
-                            <a href="@Url.Action("Index", "Account")">Администрирование</a>
-                        </li>
-                        <li>
-                            <a href="@Url.Action("Index", "Settings")">Настройки</a>
-                        </li>
-                        <li>
-                            <a href="@Url.Action("Edit", "Account", new { email = HttpContext.Current.User.Identity.Name })">Мой аккаунт</a>
+                            <a href="@Url.Action("Edit", "Account", new {email = HttpContext.Current.User.Identity.Name})">Мой аккаунт</a>
                         </li>
                         <li class="divider"></li>
                         <li>

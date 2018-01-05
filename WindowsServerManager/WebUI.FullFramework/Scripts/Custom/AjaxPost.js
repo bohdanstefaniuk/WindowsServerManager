@@ -12,6 +12,8 @@
 
                     if (response.redirectUrl) {
                         document.location.href = response.redirectUrl;
+                    } else {
+                        location.reload();
                     }
                 }
             },

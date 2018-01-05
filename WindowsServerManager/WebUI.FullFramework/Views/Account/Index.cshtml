@@ -1,4 +1,6 @@
-﻿@model IEnumerable<BLL.Dto.UserDTO>
+﻿@using DataAccessLayer.Enums
+@using WebUI.FullFramework.Core
+@model IEnumerable<BLL.Dto.UserDTO>
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -18,9 +20,12 @@
     </div>
     <br/>
     <div class="row">
-        <div class="block-center" style="width: 90%;">
-            <a class="ts-btn" href="@Url.Action("Register", "Account")"><span class="glyphicon glyphicon-plus"></span> Add new user</a>
-        </div>
+        @if (IdentityHelper.IsUserInRole(Role.Admin))
+        {
+            <div class="block-center" style="width: 90%;">
+                <a class="ts-btn" href="@Url.Action("Register", "Account")"><span class="glyphicon glyphicon-plus"></span> Add new user</a>
+            </div>
+        }
     </div>
     <br/>
     <div class="row">

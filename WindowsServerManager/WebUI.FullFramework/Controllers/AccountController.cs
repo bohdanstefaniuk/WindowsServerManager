@@ -39,6 +39,52 @@ namespace WebUI.FullFramework.Controllers
             return View("User", user);
         }
 
+        public ActionResult Login()
+        {
+            return View();
+        }
+
+        [Authorize]
+        public ActionResult Logout()
+        {
+            AuthenticationManager.SignOut();
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index", "Home");
+        }
+
+        [Authorize]
+        public ActionResult Register()
+        {
+            return View();
+        }
+
+        [Authorize]
+        public PartialViewResult ChangePassword(string userId)
+        {
+            var changeRoleModel = new ChangePasswordModel
+            {
+                UserId = userId
+            };
+
+            ViewBag.ChangePasswordStatus = "";
+            return PartialView("_ChangePassword", changeRoleModel);
+        }
+
+        [ChildActionOnly]
+        [Authorize]
+        public PartialViewResult ChangeUserRole(string userId, string email)
+        {
+            var model = new ChangeRoleModel
+            {
+                UserId = userId,
+                Email = email
+            };
+
+            return PartialView("_ChangeRole", model);
+        }
+
+        #region Methods: API
+
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
@@ -61,11 +107,6 @@ namespace WebUI.FullFramework.Controllers
             }
 
             return RedirectToAction("Index");
-        }
-
-        public ActionResult Login()
-        {
-            return View();
         }
 
         [HttpPost]
@@ -102,18 +143,54 @@ namespace WebUI.FullFramework.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         [Authorize]
-        public ActionResult Logout()
+        public async Task<PartialViewResult> ChangePassword(ChangePasswordModel model)
         {
-            AuthenticationManager.SignOut();
-            HttpContext.Session.Clear();
-            return RedirectToAction("Index", "Home");
+            if (ModelState.IsValid)
+            {
+                var result = await UserService.ChangePassword(model.UserId, model.OldPassword, model.NewPassword);
+                model = new ChangePasswordModel
+                {
+                    UserId = model.UserId
+                };
+                if (result.Succedeed)
+                {
+                    ViewBag.ChangePasswordStatus = "Success";
+                    return PartialView("_ChangePassword", model);
+                }
+                ModelState.AddModelError("", result.Message);
+            }
+
+            ViewBag.ChangePasswordBlockVisible = true;
+            ViewBag.ChangePasswordStatus = "Fail";
+            model = new ChangePasswordModel
+            {
+                UserId = model.UserId
+            };
+            return PartialView("_ChangePassword", model);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public ActionResult Register()
+        public async Task<PartialViewResult> ChangeUserRole(ChangeRoleModel changeRoleModel)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+                var result = await UserService.ChangeUserRole(changeRoleModel.Role, changeRoleModel.UserId);
+
+                if (result.Succedeed)
+                {
+                    ViewBag.ChangeRoleStatus = "Success";
+                    return PartialView("_ChangeRole", changeRoleModel);
+                }
+                ModelState.AddModelError(result.Property, result.Message);
+            }
+
+            ViewBag.ChangeRoleStatus = "Fail";
+            return PartialView("_ChangeRole", changeRoleModel);
         }
 
         [HttpPost]
@@ -172,79 +249,6 @@ namespace WebUI.FullFramework.Controllers
             return Json(new { success = true, responseText = $"Success" }, JsonRequestBehavior.AllowGet);
         }
 
-        [Authorize]
-        public PartialViewResult ChangePassword(string userId)
-        {
-            var changeRoleModel = new ChangePasswordModel
-            {
-                UserId = userId
-            };
-
-            ViewBag.ChangePasswordStatus = "";
-            return PartialView("_ChangePassword", changeRoleModel);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize]
-        public async Task<PartialViewResult> ChangePassword(ChangePasswordModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var result = await UserService.ChangePassword(model.UserId, model.OldPassword, model.NewPassword);
-                model = new ChangePasswordModel
-                {
-                    UserId = model.UserId
-                };
-                if (result.Succedeed)
-                {
-                    ViewBag.ChangePasswordStatus = "Success";
-                    return PartialView("_ChangePassword", model);
-                }
-                ModelState.AddModelError("", result.Message);
-            }
-
-            ViewBag.ChangePasswordBlockVisible = true;
-            ViewBag.ChangePasswordStatus = "Fail";
-            model = new ChangePasswordModel
-            {
-                UserId = model.UserId
-            };
-            return PartialView("_ChangePassword", model);
-        }
-
-        [ChildActionOnly]
-        [Authorize(Roles = "Admin")]
-        public PartialViewResult ChangeUserRole(string userId, string email)
-        {
-            var model = new ChangeRoleModel
-            {
-                UserId = userId,
-                Email = email
-            };
-
-            return PartialView("_ChangeRole", model);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
-        public async Task<PartialViewResult> ChangeUserRole(ChangeRoleModel changeRoleModel)
-        {
-            if (ModelState.IsValid)
-            {
-                var result = await UserService.ChangeUserRole(changeRoleModel.Role, changeRoleModel.UserId);
-
-                if (result.Succedeed)
-                {
-                    ViewBag.ChangeRoleStatus = "Success";
-                    return PartialView("_ChangeRole", changeRoleModel);
-                }
-                ModelState.AddModelError(result.Property, result.Message);
-            }
-
-            ViewBag.ChangeRoleStatus = "Fail";
-            return PartialView("_ChangeRole", changeRoleModel);
-        }
+        #endregion
     }
 }

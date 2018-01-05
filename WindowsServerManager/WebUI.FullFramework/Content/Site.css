@@ -361,3 +361,7 @@ dd ul li a:hover {
 .inline {
     display: inline;
 }
+
+.dropdown-backdrop {
+    display: none;
+}

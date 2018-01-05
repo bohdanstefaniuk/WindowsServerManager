@@ -1,4 +1,6 @@
-﻿@using WebUI.FullFramework.Helpers
+﻿@using DataAccessLayer.Enums
+@using WebUI.FullFramework.Core
+@using WebUI.FullFramework.Helpers
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -13,21 +15,25 @@
                 <div class="sidebar-item @Html.IsSelected(controllers: "Account", actions: "Index,Register", cssClass: "active")">
                     <a href="@Url.Action("Index", "Account")">Users</a>
                 </div>
-                <div class="sidebar-item">
+                @*//TODO Delete comment 
+                    <div class="sidebar-item">
                     <a href="#">Roles</a>
-                </div>
-                <div class="sidebar-category">
-                    System
-                </div>
-                <div class="sidebar-item @Html.IsSelected(controllers: "Settings", actions: "Index", cssClass: "active")">
-                    <a href="@Url.Action("Index","Settings")">Settings</a>
-                </div>
-                <div class="sidebar-item @Html.IsSelected(controllers: "ActionLogs", actions: "Index", cssClass: "active")">
-                    <a href="@Url.Action("Index", "ActionLogs")">Action log</a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="#">Application log</a>
-                </div>
+                </div>*@
+                @if (IdentityHelper.IsUserInRole(Role.Admin, Role.Developers))
+                {
+                    <div class="sidebar-category">
+                        System
+                    </div>
+                    <div class="sidebar-item @Html.IsSelected(controllers: "Settings", actions: "Index", cssClass: "active")">
+                        <a href="@Url.Action("Index","Settings")">Settings</a>
+                    </div>
+                    <div class="sidebar-item @Html.IsSelected(controllers: "ActionLogs", actions: "Index", cssClass: "active")">
+                        <a href="@Url.Action("Index", "ActionLogs")">Action log</a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="#">Application log</a>
+                    </div>
+                }
             </div>
         </div>
         <div class="col-md-10">
