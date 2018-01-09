@@ -18,7 +18,6 @@ namespace DataAccessLayer.SeedData
                     Code = "ApplicationDbServer",
                     Value = "TestServer"
                 },
-
                 new Settings
                 {
                     Id = Guid.NewGuid(),
@@ -26,13 +25,33 @@ namespace DataAccessLayer.SeedData
                     Code = "ConfigurationFileName",
                     Value = "Web.config"
                 },
-
                 new Settings
                 {
                     Id = Guid.NewGuid(),
                     Name = "Ключи по которым осуществлять поиск строки подключения для Redis.",
                     Code = "RedisConnectionKeys",
                     Value = "redis"
+                },
+                new Settings
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Bpmonline sys. admin user name",
+                    Code = "BpmonlineUserName",
+                    Value = "Supervisor"
+                },
+                new Settings
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Bpmonline sys. admin user name",
+                    Code = "BpmonlineUserPassword",
+                    Value = "Supervisor"
+                },
+                new Settings
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Bpmonline features service name",
+                    Code = "BpmonlineFeaturesServiceName",
+                    Value = "FeatureService"
                 }
             };
 
