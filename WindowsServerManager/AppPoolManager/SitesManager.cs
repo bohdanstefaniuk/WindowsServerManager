@@ -76,7 +76,7 @@ namespace AppPoolManager
         {
             var site = _serverManager.Sites[siteName];
             return site.Applications.SingleOrDefault(x =>
-                x.Path.IndexOf(appPath, StringComparison.OrdinalIgnoreCase) >= 0);
+                string.Equals(x.Path, appPath, StringComparison.CurrentCultureIgnoreCase));
         }
 
         public bool DeleteSite(string name)

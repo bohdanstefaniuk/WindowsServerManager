@@ -62,7 +62,7 @@ namespace AppPoolManager
         public ApplicationPool GetApplicationPoolByName(string name)
         {
             var pools = _serverManager.ApplicationPools;
-            return pools.SingleOrDefault(x => x.Name.IndexOf(name, StringComparison.OrdinalIgnoreCase) >= 0);
+            return pools.SingleOrDefault(x => string.Equals(x.Name, name, StringComparison.CurrentCultureIgnoreCase));
         }
 
         /// <summary>
