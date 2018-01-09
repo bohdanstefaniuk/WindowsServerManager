@@ -36,6 +36,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrepareTestData", "PrepareT
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestUtils", "UnitTestUtils\UnitTestUtils.csproj", "{08209B97-939A-42F2-B853-3B77E9128299}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BpmonlineIntegrationManager", "BpmonlineIntegrationManager\BpmonlineIntegrationManager.csproj", "{0A9C3FCD-A814-460F-BB40-E1D0E9DEEDB0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -90,6 +92,10 @@ Global
 		{08209B97-939A-42F2-B853-3B77E9128299}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{08209B97-939A-42F2-B853-3B77E9128299}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{08209B97-939A-42F2-B853-3B77E9128299}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A9C3FCD-A814-460F-BB40-E1D0E9DEEDB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A9C3FCD-A814-460F-BB40-E1D0E9DEEDB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A9C3FCD-A814-460F-BB40-E1D0E9DEEDB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A9C3FCD-A814-460F-BB40-E1D0E9DEEDB0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -105,6 +111,7 @@ Global
 		{05828741-68AC-4DA5-A255-06F4D8BC15CC} = {9AF104FE-9719-4C9F-A08F-1267725F7434}
 		{4C990870-0A36-4326-9B14-45A099BED8FB} = {E3800140-68A7-4E11-9040-B418ADCE9A1B}
 		{08209B97-939A-42F2-B853-3B77E9128299} = {E3800140-68A7-4E11-9040-B418ADCE9A1B}
+		{0A9C3FCD-A814-460F-BB40-E1D0E9DEEDB0} = {9AF104FE-9719-4C9F-A08F-1267725F7434}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B18A6BFC-735F-446D-8922-6AEA7368F418}

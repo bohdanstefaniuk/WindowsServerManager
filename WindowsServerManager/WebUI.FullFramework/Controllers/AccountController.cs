@@ -20,6 +20,7 @@ namespace WebUI.FullFramework.Controllers
 
         private IAuthenticationManager AuthenticationManager => HttpContext.GetOwinContext().Authentication;
 
+        // localhost/Account/Email/lol2mail.ru
         [Authorize]
         public async Task<ActionResult> Index()
         {

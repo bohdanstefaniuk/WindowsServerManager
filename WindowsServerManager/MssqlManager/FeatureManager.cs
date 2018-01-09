@@ -62,7 +62,7 @@ namespace MssqlManager
         /// Get features from Feature/AdminUnitFeatureState tables
         /// </summary>
         /// <returns>list of features</returns>
-        public async Task<IEnumerable<FeatureDto>> GetFeatures()
+        public async Task<IEnumerable<FeatureDto>> GetFeatures(int skip = 0, int take = 50)
         {
             const string sqlExpression = @"SELECT f.Id, f.Code, a.FeatureState 
                                          FROM Feature as f
@@ -101,6 +101,7 @@ namespace MssqlManager
         /// </summary>
         /// <param name="features">List of features which need to update</param>
         /// <returns>async Task</returns>
+        [Obsolete("Use bpmonline service (BpmonlineIntegrationManager project, FeatureManager.SetFeaturesState)")]
         public async Task SetFeaturesState(List<FeatureDto> features)
         {
             var groupByFeatureState = features.GroupBy(x => x.State);
