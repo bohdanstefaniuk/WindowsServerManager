@@ -18,7 +18,7 @@ namespace BpmonlineIntegrationManager
 
         public void ConnectService()
         {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(@"http://localhost/Build7112/")
+            HttpWebRequest request = (HttpWebRequest) WebRequest.Create(@"http://localhost/Build7112/");
         }
     }
 }
