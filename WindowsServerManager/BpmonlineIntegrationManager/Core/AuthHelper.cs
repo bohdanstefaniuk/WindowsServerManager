@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using System.Security.Authentication;
 using Newtonsoft.Json;
 
 namespace BpmonlineIntegrationManager.Core
@@ -36,31 +37,25 @@ namespace BpmonlineIntegrationManager.Core
                 }
             }
 
-            // Вспомогательный объект, в который будут десериализованы данные HTTP-ответа.
-            ResponseStatus status = null;
-            // Получение ответа от сервера. Если аутентификация проходит успешно, в свойство AuthCookie будут
-            // помещены cookie, которые могут быть использованы для последующих запросов.
+            ResponseStatus status;
             using (var response = (HttpWebResponse)authRequest.GetResponse())
             {
                 using (var reader = new StreamReader(response.GetResponseStream()))
                 {
-                    // Десериализация HTTP-ответа во вспомогательный объект.
                     string responseText = reader.ReadToEnd();
                     status = JsonConvert.DeserializeObject<ResponseStatus>(responseText);
                 }
 
             }
-
-            // Проверка статуса аутентификации.
+            
             if (status != null)
             {
-                // Успешная аутентификация.
                 if (status.Code == 0)
                 {
                     return true;
                 }
-                // Сообщение о неудачной аутентификации.
-                Console.WriteLine(status.Message);
+                
+                throw new AuthenticationException(status.Message);
             }
             return false;
         }
