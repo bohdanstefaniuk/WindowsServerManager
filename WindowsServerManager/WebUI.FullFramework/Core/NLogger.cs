@@ -19,11 +19,17 @@ namespace WebUI.FullFramework.Core
             Nlog.Log(LogLevel.Error, exception, exception.Message);
         }
 
+        public static void Log(Exception exception, HttpContext context)
+        {
+            Log(context);
+            Log(exception);
+        }
+
         private static string RequestToString(HttpRequest request)
         {
             var message = new StringBuilder();
             message.Append("Http method: " + request.HttpMethod);
-            message.Append(" Uri: ").Append(request.Url);
+            message.Append("|Uri: ").Append(request.Url);
             return message.ToString();
         }
     }
