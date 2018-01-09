@@ -230,6 +230,7 @@ namespace WebUI.FullFramework.Controllers
             }
             catch (Exception e)
             {
+                NLogger.Log(e);
                 return Json(new { success = false, responseText = $"{e.Message}" }, JsonRequestBehavior.AllowGet);
             }
 
@@ -247,6 +248,7 @@ namespace WebUI.FullFramework.Controllers
             }
             catch (Exception e)
             {
+                NLogger.Log(e);
                 return Json(new { success = false, responseText = $"{e.Message}" }, JsonRequestBehavior.AllowGet);
             }
 

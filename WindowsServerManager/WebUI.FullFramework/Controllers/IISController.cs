@@ -44,7 +44,9 @@ namespace WebUI.FullFramework.Controllers
                         redisDb = ConnectionStringsService.GetRedisDb(applicationPath, true);
                         break;
                     default:
-                        throw new Exception("Такой тип приложения не поддерживается");
+                        var exception = new Exception("Такой тип приложения не поддерживается");
+                        NLogger.Log(exception);
+                        throw exception;
                 }
                 
             }
@@ -150,6 +152,7 @@ namespace WebUI.FullFramework.Controllers
             }
             catch (Exception e)
             {
+                NLogger.Log(e);
                 return Json(new { success = false, responseText = $"{e.Message}" }, JsonRequestBehavior.AllowGet);
             }
 
@@ -167,6 +170,7 @@ namespace WebUI.FullFramework.Controllers
             }
             catch (Exception e)
             {
+                NLogger.Log(e);
                 return Json(new { success = false, responseText = $"{e.Message}" }, JsonRequestBehavior.AllowGet);
             }
 
@@ -184,6 +188,7 @@ namespace WebUI.FullFramework.Controllers
             }
             catch (Exception e)
             {
+                NLogger.Log(e);
                 return Json(new { success = false, responseText = $"{e.Message}" }, JsonRequestBehavior.AllowGet);
             }
 
@@ -202,6 +207,7 @@ namespace WebUI.FullFramework.Controllers
             }
             catch (Exception e)
             {
+                NLogger.Log(e);
                 return Json(new { success = false, responseText = $"{e.Message}" }, JsonRequestBehavior.AllowGet);
             }
 
@@ -218,6 +224,7 @@ namespace WebUI.FullFramework.Controllers
             }
             catch (Exception e)
             {
+                NLogger.Log(e);
                 return Json(new { success = false, responseText = $"{e.Message}" }, JsonRequestBehavior.AllowGet);
             }
 
@@ -240,6 +247,7 @@ namespace WebUI.FullFramework.Controllers
             }
             catch (Exception e)
             {
+                NLogger.Log(e);
                 return Json(new { success = false, responseText = $"{e.Message}" }, JsonRequestBehavior.AllowGet);
             }
 

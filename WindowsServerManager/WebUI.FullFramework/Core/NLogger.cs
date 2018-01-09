@@ -1,23 +1,30 @@
-﻿//namespace WebUI.FullFramework.Core
-//{
-//    public class NLogExceptionLogger : ExceptionLogger
-//    {
-//        private static readonly Logger Nlog = LogManager.GetCurrentClassLogger();
-//        public override void Log(ExceptionLoggerContext context)
-//        {
-//            Nlog.LogException(LogLevel.Error, RequestToString(context.Request), context.Exception);
-//        }
+﻿using System;
+using System.Net.Http;
+using System.Text;
+using System.Web;
+using NLog;
 
-//        private static string RequestToString(HttpRequestMessage request)
-//        {
-//            var message = new StringBuilder();
-//            if (request.Method != null)
-//                message.Append(request.Method);
+namespace WebUI.FullFramework.Core
+{
+    public class NLogger
+    {
+        private static readonly Logger Nlog = LogManager.GetCurrentClassLogger();
+        public static void Log(HttpContext context)
+        {
+            Nlog.Log(LogLevel.Error, context.Error, RequestToString(context.Request));
+        }
 
-//            if (request.RequestUri != null)
-//                message.Append(" ").Append(request.RequestUri);
+        public static void Log(Exception exception)
+        {
+            Nlog.Log(LogLevel.Error, exception, exception.Message);
+        }
 
-//            return message.ToString();
-//        }
-//    }
-//}
+        private static string RequestToString(HttpRequest request)
+        {
+            var message = new StringBuilder();
+            message.Append("Http method: " + request.HttpMethod);
+            message.Append(" Uri: ").Append(request.Url);
+            return message.ToString();
+        }
+    }
+}
