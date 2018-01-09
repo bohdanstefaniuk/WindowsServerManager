@@ -89,7 +89,7 @@ namespace AppPoolManager
 
         public bool DeleteApplication(string name, string siteName)
         {
-            var application = GetApplicationByPath(name);
+            var application = GetApplicationByPath(name, siteName);
             var sites = _serverManager.Sites[siteName];
             sites.Applications.Remove(application);
             _serverManager.CommitChanges();
