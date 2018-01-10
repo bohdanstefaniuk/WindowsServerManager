@@ -10,6 +10,7 @@ namespace AppPoolManager
     public class SitesManager : IDisposable
     {
         private readonly ServerManager _serverManager;
+
         public SitesManager()
         {
             _serverManager = new ServerManager();
@@ -24,9 +25,14 @@ namespace AppPoolManager
             return _serverManager.Sites;
         }
 
+        /// <summary>
+        /// Get site exists
+        /// </summary>
+        /// <param name="name">Site name</param>
+        /// <returns></returns>
         private bool IsSiteExists(string name)
         {
-            return _serverManager.Sites.Any(x => x.Name.IndexOf(name, StringComparison.OrdinalIgnoreCase) >= 0);
+            return _serverManager.Sites.Any(x => string.Equals(x.Name, name, StringComparison.CurrentCultureIgnoreCase));
         }
 
         /// <summary>
@@ -51,6 +57,11 @@ namespace AppPoolManager
             return site.Applications;
         }
 
+        /// <summary>
+        /// Get application by path
+        /// </summary>
+        /// <param name="appPath">Application path</param>
+        /// <returns>Application</returns>
         public Application GetApplicationByPath(string appPath)
         {
             var sites = _serverManager.Sites;
@@ -72,6 +83,12 @@ namespace AppPoolManager
             return application;
         }
 
+        /// <summary>
+        /// Get application by name for concrete site
+        /// </summary>
+        /// <param name="appPath"></param>
+        /// <param name="siteName"></param>
+        /// <returns></returns>
         public Application GetApplicationByPath(string appPath, string siteName)
         {
             var site = _serverManager.Sites[siteName];
@@ -79,6 +96,27 @@ namespace AppPoolManager
                 string.Equals(x.Path, appPath, StringComparison.CurrentCultureIgnoreCase));
         }
 
+
+        /// <summary>
+        /// Get all aplications by pool
+        /// </summary>
+        /// <param name="poolName">Application pool name</param>
+        /// <returns>Collection of applications</returns>
+        public IEnumerable<Application> GetApplicationsByPool(string poolName)
+        {
+            var apps = (from site in _serverManager.Sites
+                from app in site.Applications
+                where app.ApplicationPoolName.Equals(poolName)
+                select app);
+
+            return apps;
+        }
+
+        /// <summary>
+        /// Delete site by name
+        /// </summary>
+        /// <param name="name">Site name</param>
+        /// <returns>true when site doesn`t exists</returns>
         public bool DeleteSite(string name)
         {
             var site = GetSiteByName(name);
@@ -87,6 +125,12 @@ namespace AppPoolManager
             return !IsSiteExists(name);
         }
 
+        /// <summary>
+        /// Delete application by name for concrete site
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="siteName"></param>
+        /// <returns></returns>
         public bool DeleteApplication(string name, string siteName)
         {
             var application = GetApplicationByPath(name, siteName);
@@ -96,6 +140,11 @@ namespace AppPoolManager
             return !_serverManager.Sites.Any(x => x.Applications.Contains(application));
         }
 
+        /// <summary>
+        /// TODO GetSiteConnectionStrings()
+        /// </summary>
+        /// <param name="siteName"></param>
+        /// <returns></returns>
         public List<string> GetSiteConnectionStrings(string siteName)
         {
             return default(List<string>);
