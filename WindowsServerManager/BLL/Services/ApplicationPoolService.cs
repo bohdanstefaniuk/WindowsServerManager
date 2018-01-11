@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Dynamic;
 using System.Linq;
@@ -7,6 +8,7 @@ using AppPoolManager;
 using BLL.Dto;
 using BLL.Enums;
 using BLL.Interfaces;
+using Microsoft.Web.Administration;
 
 namespace BLL.Services
 {
@@ -120,6 +122,14 @@ namespace BLL.Services
         public bool IsPoolStoppingOrStopped(string poolName)
         {
             return _applicationPoolManager.IsPoolStoppingOrStopped(poolName);
+        }
+
+        public IEnumerable<Application> GetApplicationsByPool(string poolName)
+        {
+            using (var siteManager = new SitesManager())
+            {
+                return siteManager.GetApplicationsByPool(poolName);
+            }
         }
 
         public void Dispose()
