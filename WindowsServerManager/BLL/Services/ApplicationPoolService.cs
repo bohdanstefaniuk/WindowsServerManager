@@ -39,12 +39,22 @@ namespace BLL.Services
             return _applicationPoolManager.StopPoolByName(name);
         }
 
+        /// <summary>
+        /// Recycle application pool by name
+        /// </summary>
+        /// <param name="name">Application pool name</param>
+        /// <returns>True when pool starting or started</returns>
         public bool RecyclePoolByName(string name)
         {
             return _applicationPoolManager.RecyclePoolByName(name);
         }
 
         // TODO Refactor Need to exlude facade method
+        /// <summary>
+        /// Delete application and related files/site/database.
+        /// </summary>
+        /// <param name="dto">Delete params</param>
+        /// <returns>async task</returns>
         public async Task DeleteApplicationAsync(DeleteApplicationDto dto)
         {
             var rootPath = "";
