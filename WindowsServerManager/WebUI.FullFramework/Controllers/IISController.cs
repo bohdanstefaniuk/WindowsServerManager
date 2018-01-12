@@ -16,10 +16,14 @@ namespace WebUI.FullFramework.Controllers
 {
     public class IISController : Controller
     {
+        #region Fields: dependency injection
+
         private IFeatureService FeatureService => HttpContext.GetOwinContext().GetUserManager<IFeatureService>();
         private IConnectionStringsService ConnectionStringsService => HttpContext.GetOwinContext().GetUserManager<IConnectionStringsService>();
         private IApplicationPoolService ApplicationPoolService => HttpContext.GetOwinContext().GetUserManager<IApplicationPoolService>();
         private IRedisService RedisService => HttpContext.GetOwinContext().GetUserManager<IRedisService>();
+
+        #endregion
 
         // TODO Change for view model
         [Authorize]
