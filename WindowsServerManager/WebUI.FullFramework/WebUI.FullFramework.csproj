@@ -212,6 +212,7 @@
     <Compile Include="Controllers\IISController.cs" />
     <Compile Include="Controllers\RedisController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
+    <Compile Include="Core\ActionExceptionAttribute.cs" />
     <Compile Include="Core\ActionLoggerAttribute.cs" />
     <Compile Include="Core\IdentityHelper.cs" />
     <Compile Include="Core\NLogger.cs" />
