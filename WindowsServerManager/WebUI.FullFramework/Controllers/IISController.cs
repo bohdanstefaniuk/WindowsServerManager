@@ -48,7 +48,6 @@ namespace WebUI.FullFramework.Controllers
                         NLogger.Log(exception);
                         throw exception;
                 }
-                
             }
 
             var viewModel = new IISIndexViewModel
@@ -144,112 +143,62 @@ namespace WebUI.FullFramework.Controllers
         [HttpPost]
         [Authorize]
         [ActionLogger]
+        [ActionException]
         public JsonResult SaveFeatures(FeaturesComponentUpdateModel featuresUpdateModel)
         {
-            try
-            {
-                FeatureService.UpdateFeatures(featuresUpdateModel.Features, featuresUpdateModel.Db, featuresUpdateModel.RedisDb).GetAwaiter();
-            }
-            catch (Exception e)
-            {
-                NLogger.Log(System.Web.HttpContext.Current);
-                return Json(new { success = false, responseText = $"{e.Message}" }, JsonRequestBehavior.AllowGet);
-            }
-
+            FeatureService.UpdateFeatures(featuresUpdateModel.Features, featuresUpdateModel.Db, featuresUpdateModel.RedisDb).GetAwaiter();
             return Json(new { success = true, responseText = $"Success" }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         [Authorize]
+        [ActionException]
         public JsonResult StopApplicationPool(string poolName)
         {
-            bool isPoolStopedOrStoping;
-            try
-            {
-                isPoolStopedOrStoping = ApplicationPoolService.StopPoolByName(poolName);
-            }
-            catch (Exception e)
-            {
-                NLogger.Log(e);
-                return Json(new { success = false, responseText = $"{e.Message}" }, JsonRequestBehavior.AllowGet);
-            }
-
+            var isPoolStopedOrStoping = ApplicationPoolService.StopPoolByName(poolName);
             return Json(new { success = true, responseText = $"Success", poolStatus = isPoolStopedOrStoping }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         [Authorize]
+        [ActionException]
         public JsonResult StartApplicationPool(string poolName)
         {
-            bool isPoolStartedOrStarting;
-            try
-            {
-                isPoolStartedOrStarting = ApplicationPoolService.StartPoolByName(poolName);
-            }
-            catch (Exception e)
-            {
-                NLogger.Log(e);
-                return Json(new { success = false, responseText = $"{e.Message}" }, JsonRequestBehavior.AllowGet);
-            }
-
+            var isPoolStartedOrStarting = ApplicationPoolService.StartPoolByName(poolName);
             return Json(new { success = true, responseText = $"Success", poolStatus = isPoolStartedOrStarting }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         [Authorize]
         [ActionLogger]
+        [ActionException]
         public JsonResult RecycleApplicationPool(string poolName)
         {
-            bool isPoolStartedOrStarting;
-            try
-            {
-                isPoolStartedOrStarting = ApplicationPoolService.RecyclePoolByName(poolName);
-            }
-            catch (Exception e)
-            {
-                NLogger.Log(e);
-                return Json(new { success = false, responseText = $"{e.Message}" }, JsonRequestBehavior.AllowGet);
-            }
-
+            var isPoolStartedOrStarting = ApplicationPoolService.RecyclePoolByName(poolName);
             return Json(new { success = true, responseText = $"Success", poolStatus = isPoolStartedOrStarting }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         [Authorize]
+        [ActionException]
         public JsonResult FlushRedisDb(int redisDb)
         {
-            try
-            {
-                RedisService.FlushDatabaseAsync(redisDb).GetAwaiter();
-            }
-            catch (Exception e)
-            {
-                NLogger.Log(e);
-                return Json(new { success = false, responseText = $"{e.Message}" }, JsonRequestBehavior.AllowGet);
-            }
-
+            RedisService.FlushDatabaseAsync(redisDb).GetAwaiter();
             return Json(new { success = true, responseText = $"Success" }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin, Developers")]
         [ActionLogger]
+        [ActionException]
         public JsonResult DeleteApplication(DeleteApplicationDto dto)
         {
-            try
+            if ((string.IsNullOrEmpty(dto.SiteName) && dto.SiteType == IISSiteType.Application) || string.IsNullOrEmpty(dto.Name))
             {
-                if ((string.IsNullOrEmpty(dto.SiteName) && dto.SiteType == IISSiteType.Application) || string.IsNullOrEmpty(dto.Name))
-                {
-                    throw new NullReferenceException("Site name or application path is null");
-                }
+                throw new NullReferenceException("Site name or application path is null");
+            }
 
-                ApplicationPoolService.DeleteApplicationAsync(dto).GetAwaiter();
-            }
-            catch (Exception e)
-            {
-                NLogger.Log(e);
-                return Json(new { success = false, responseText = $"{e.Message}" }, JsonRequestBehavior.AllowGet);
-            }
+            ApplicationPoolService.DeleteApplicationAsync(dto).GetAwaiter();
 
             var redirectUrl = Url.Action("Index", "IIS");
             return Json(new { success = true, responseText = "Success", redirectUrl }, JsonRequestBehavior.AllowGet);
