@@ -28,6 +28,12 @@ namespace BLL.Services
             }
         }
 
+        public async Task<bool> IsDatabaseExists(string database)
+        {
+            _dbManager.ConfigureConnectionString(database);
+            return await _dbManager.GetDatabaseExists();
+        }
+
         public void Dispose()
         {
             GC.SuppressFinalize(this);

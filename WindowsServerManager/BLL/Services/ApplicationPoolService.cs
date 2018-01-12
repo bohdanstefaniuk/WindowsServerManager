@@ -16,10 +16,59 @@ namespace BLL.Services
     {
         private readonly ApplicationPoolManager _applicationPoolManager;
 
+        #region Constructors: Public
+
         public ApplicationPoolService()
         {
             _applicationPoolManager = new ApplicationPoolManager();
         }
+
+        #endregion
+
+        #region Methods: Privat
+
+        private bool DeleteApplicationPool(string applicationPoolName)
+        {
+            try
+            {
+                _applicationPoolManager.Delete(applicationPoolName);
+                return _applicationPoolManager.GetApplicationPoolByName(applicationPoolName) == null;
+            }
+            catch
+            {
+                // ignored
+            }
+
+            return false;
+        }
+
+        private async Task<bool> DeleteDatabase(string databaseName)
+        {
+            using (var dbService = new DbService())
+            {
+                try
+                {
+                    await dbService.DropDatabase(databaseName);
+                    return await dbService.IsDatabaseExists(databaseName);
+                }
+                catch
+                {
+                    // ignored
+                }
+            }
+
+            return false;
+        }
+
+        private void DeleteFolder(string path)
+        {
+            var fileSystemService = new FileSystemService();
+            fileSystemService.DeleteFolder(path);
+        }
+
+        #endregion
+
+        #region Methods: Public
 
         /// <summary>
         /// Start application pool by name
@@ -28,7 +77,7 @@ namespace BLL.Services
         /// <returns>true if application pool starting or started</returns>
         public bool StartPoolByName(string name)
         {
-           return _applicationPoolManager.StartPoolByName(name);
+            return _applicationPoolManager.StartPoolByName(name);
         }
 
         /// <summary>
@@ -51,7 +100,6 @@ namespace BLL.Services
             return _applicationPoolManager.RecyclePoolByName(name);
         }
 
-        // TODO Refactor Need to exlude facade method
         /// <summary>
         /// Delete application and related files/site/database.
         /// </summary>
@@ -84,46 +132,56 @@ namespace BLL.Services
                         siteManager.DeleteApplication(app.Path, dto.SiteName);
                         break;
                 }
-                
+                siteManager.Dispose();
+
             }
 
             if (dto.DeleteStates.NeedDeleteApplicationPool)
             {
-                _applicationPoolManager.Delete(applicationPoolName);
+                DeleteApplicationPool(applicationPoolName);
             }
 
             if (dto.DeleteStates.NeedDeleteDatabase && !string.IsNullOrEmpty(dto.Database))
             {
-                using (var dbService = new DbService())
-                {
-                    try
-                    {
-                        await dbService.DropDatabase(dto.Database);
-                    }
-                    catch (Exception e)
-                    {
-                        Debug.WriteLine(e);
-                    }
-                }
+                await DeleteDatabase(dto.Database);
             }
 
             if (dto.DeleteStates.NeedDeleteFiles)
             {
-                var fileSystemService = new FileSystemService();
-                fileSystemService.DeleteFolder(rootPath);
+                DeleteFolder(rootPath);
+            }
+
+            if (dto.DeleteStates.NeedDeleteChildApplications)
+            {
+                
             }
         }
 
+        /// <summary>
+        /// Get status of application pool
+        /// </summary>
+        /// <param name="poolName">application pool name</param>
+        /// <returns>true when pool started or starting</returns>
         public bool IsPoolStartingOrStarted(string poolName)
         {
             return _applicationPoolManager.IsPoolStartingOrStarted(poolName);
         }
 
+        /// <summary>
+        /// Get status of application pool
+        /// </summary>
+        /// <param name="poolName">application pool name</param>
+        /// <returns>true when pool stoped or stoping</returns>
         public bool IsPoolStoppingOrStopped(string poolName)
         {
             return _applicationPoolManager.IsPoolStoppingOrStopped(poolName);
         }
 
+        /// <summary>
+        /// Get list of application for pool
+        /// </summary>
+        /// <param name="poolName">Applciation pool name</param>
+        /// <returns></returns>
         public IEnumerable<Application> GetApplicationsByPool(string poolName)
         {
             using (var siteManager = new SitesManager())
@@ -132,10 +190,15 @@ namespace BLL.Services
             }
         }
 
+        /// <inheritdoc />
         public void Dispose()
         {
             _applicationPoolManager?.Dispose();
             GC.SuppressFinalize(this);
         }
+
+        #endregion
+
+
     }
 }

@@ -22,5 +22,6 @@ namespace BLL.Dto
         public bool NeedDeleteApplicationPool { get; set; }
         public bool NeedDeleteFiles { get; set; }
         public bool NeedDeleteDatabase { get; set; }
+        public bool NeedDeleteChildApplications { get; set; }
     }
 }
