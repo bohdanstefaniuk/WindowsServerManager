@@ -137,6 +137,7 @@ namespace WebUI.FullFramework.Controllers
             ViewBag.SiteName = siteName;
             ViewBag.SiteType = siteType;
             ViewBag.Database = database;
+
             return PartialView("_DeleteApplicationModal");
         }
 

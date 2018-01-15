@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using BLL.Dto;
 using BLL.Enums;
+using Microsoft.Web.Administration;
 
 namespace BLL.Interfaces
 {
@@ -15,6 +17,7 @@ namespace BLL.Interfaces
         bool RecyclePoolByName(string name);
         bool IsPoolStartingOrStarted(string poolName);
         bool IsPoolStoppingOrStopped(string poolName);
+        IEnumerable<Application> GetApplicationsByPool(string poolName);
         Task DeleteApplicationAsync(DeleteApplicationDto dto);
     }
 }
